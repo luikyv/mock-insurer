@@ -1,0 +1,174 @@
+services:
+  # insurer:
+  #   build:
+  #     context: .
+  #     dockerfile: cmd/server/Dockerfile
+  #   environment:
+  #     - ENV=LOCAL
+  #     - TRANSPORT_CERT_PATH=/app/keys/server_transport.crt
+  #     - TRANSPORT_KEY_PATH=/app/keys/server_transport.key
+  #   volumes:
+  #     - ./keys/server_transport.crt:/app/keys/server_transport.crt:ro
+  #     - ./keys/server_transport.key:/app/keys/server_transport.key:ro
+  #   depends_on:
+  #     psql:
+  #       condition: service_started
+
+  psql:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mockinsurer
+    ports:
+      - "5432:5432"
+    networks:
+      default:
+        aliases:
+          - database.local
+
+  # TODO: Remove this service. Mock the unit tests since the cs will use the real database.
+  psql-test:
+    profiles:
+      - test
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mockinsurer
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/migrations:/docker-entrypoint-initdb.d/
+    networks:
+      default:
+        aliases:
+          - database.local
+
+  gateway:
+    build:
+      context: .
+      dockerfile: cmd/gateway/Dockerfile
+    volumes:
+      - ./keys/:/keys:ro
+      - ./auth/static:/auth/static:ro
+    ports:
+      - 443:443
+    networks:
+      default:
+        aliases:
+          - mockinsurer.local
+          - app.mockinsurer.local
+          - auth.mockinsurer.local
+          - matls-auth.mockinsurer.local
+          - api.mockinsurer.local
+          - matls-api.mockinsurer.local
+          - directory.local
+          - matls-directory.local
+          - auth.sandbox.directory.opinbrasil.com.br
+          - matls-api.sandbox.directory.opinbrasil.com.br
+          - keystore.local
+          - keystore.sandbox.directory.opinbrasil.com.br
+    # Make the host machine accessible from the container.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # migration:
+  #   build:
+  #     context: .
+  #     dockerfile: ./cmd/migration/Dockerfile
+  #   environment:
+  #     - ENV=LOCAL
+  #     - DB_MIGRATIONS_PATH=file://db/migrations
+  #   volumes:
+  #     - ./db/migrations:/app/db/migrations:ro
+  #   depends_on:
+  #     psql:
+  #       condition: service_started
+
+  cs-httpd:
+    profiles:
+      - conformance
+    build:
+      context: ./conformance/suite/httpd
+      # Modified version of the httpd/Dockerfile_static from the Conformance Suite
+      # to use debian/eol:buster.
+      dockerfile_inline: |
+        FROM debian/eol:buster
+        RUN apt-get update \
+        	&& apt-get install -y apache2 ssl-cert \
+        	&& apt-get clean
+        RUN \
+        	echo 'Listen 8443' > /etc/apache2/ports.conf \
+        	&& a2enmod headers proxy proxy_http rewrite ssl \
+        	&& a2dissite 000-default.conf
+        COPY server-static.conf /etc/apache2/sites-enabled
+        ENTRYPOINT ["apachectl", "-DFOREGROUND"]
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./conformance/suite/src/main/resources/:/usr/local/apache2/htdocs/
+    depends_on:
+      - cs-server
+    networks:
+      default:
+        aliases:
+          - localhost.emobix.co.uk
+
+  cs-server:
+    profiles:
+      - conformance
+    hostname: server
+    build:
+      dockerfile_inline: |
+        # Modified version of the server/Dockerfile from the Conformance Suite
+        # to use eclipse-temurin:17-jdk-jammy.
+        FROM eclipse-temurin:17-jdk-jammy
+        RUN apt-get update && apt-get install redir
+    ports:
+      - "9999:9999"
+    volumes:
+      - ./conformance/suite/target/:/server/
+    command: >
+      java
+      -Xdebug -Xrunjdwp:transport=dt_socket,address=*:9999,server=y,suspend=n
+      -jar /server/libopin.jar
+      -Djdk.tls.maxHandshakeMessageSize=65536
+      --fintechlabs.base_url=https://localhost.emobix.co.uk:8443
+      --fintechlabs.base_mtls_url=https://localhost.emobix.co.uk:8444
+      --fintechlabs.devmode=true
+      --fintechlabs.startredir=true
+      --fintechlabs.yacs.directory.uri=http://directory.local/participants
+    depends_on:
+      - cs-mongodb
+    logging:
+      # limit logs retained on host
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "5"
+
+  cs-mongodb:
+    profiles:
+      - conformance
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      default:
+        aliases:
+          - mongodb
+  
+  cs-builder:
+    profiles:
+      - build-only
+    image: maven:3-openjdk-17
+    volumes:
+      - maven-cache:/root/.m2
+      - ./conformance/suite:/usr/src/mymaven
+    working_dir: /usr/src/mymaven
+    command: mvn -B clean package -DskipTests=true
+
+volumes:
+  maven-cache:
+    driver: local

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock Insurer – Consent</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <script nonce="{{ .Nonce }}">
+      window.history.pushState({}, "", "{{ .BaseURL }}/authorize/{{ .CallbackID }}/consent");
+    </script>
+  </head>
+  <body class="h-full flex items-center justify-center px-4 py-10">
+    <main class="w-full max-w-md">
+      <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+        <!-- header -->
+        <div class="px-6 pt-6 pb-4 text-center">
+          <h1 class="text-base font-semibold text-slate-900">Mock Insurer</h1>
+          <p class="text-xs text-slate-500">Data sharing consent</p>
+          <p class="mt-3 text-xs text-slate-500">
+            Expand each section and uncheck what you don't want to share.
+          </p>
+        </div>
+
+        {{ if .BusinessCNPJ }}
+        <div class="px-6">
+          <div class="mb-4 rounded-lg bg-slate-50 border border-slate-100 px-3 py-2 text-xs text-slate-700">
+            <strong>Company (CNPJ):</strong> {{ .BusinessCNPJ }}
+          </div>
+        </div>
+        {{ end }}
+
+        <div class="px-6 pb-6 space-y-4">
+          <form action="{{ .BaseURL }}/authorize/{{ .CallbackID }}/consent" method="POST" class="space-y-4">
+
+            {{ if .AutoPolicies }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="auto-policies-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Auto Policies</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="auto-policies-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="auto-policies-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which auto policies to share.</p>
+                  <button
+                    type="button"
+                    id="auto-policies-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .AutoPolicies }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="auto-policies"
+                        value="{{ .ID }}"
+                        checked
+                        class="auto-policy-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
+            <!-- primary action -->
+            <div class="pt-1 flex flex-col items-center gap-2">
+              <input type="hidden" name="consent" value="true" />
+              <button
+                id="consent-button"
+                type="submit"
+                class="w-full rounded-lg bg-green-600 text-white text-sm font-medium py-2.5 hover:bg-green-700 focus:ring-2 focus:ring-green-200 transition"
+              >
+                Consent and continue
+              </button>
+            </div>
+          </form>
+
+          <!-- secondary action -->
+          <form action="{{ .BaseURL }}/authorize/{{ .CallbackID }}/consent" method="POST">
+            <input type="hidden" name="consent" value="false" />
+            <button
+              type="submit"
+              class="w-full rounded-lg bg-slate-100 text-slate-700 text-sm font-medium py-2.5 hover:bg-slate-200 focus:ring-2 focus:ring-slate-200 transition"
+            >
+              Deny
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <script src="/static/js/consent.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "mockinsurer-auth-ui",
+  "version": "1.0.0",
+  "description": "Mock Insurer Authentication UI",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./tailwind.css -o ./static/css/styles.css --minify"
+  },
+  "author": "Luiky Vasconcelos",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "tailwindcss": "^4.1.16"
+  }
+}
