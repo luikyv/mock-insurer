@@ -1,18 +1,18 @@
 services:
-  # insurer:
-  #   build:
-  #     context: .
-  #     dockerfile: cmd/server/Dockerfile
-  #   environment:
-  #     - ENV=LOCAL
-  #     - TRANSPORT_CERT_PATH=/app/keys/server_transport.crt
-  #     - TRANSPORT_KEY_PATH=/app/keys/server_transport.key
-  #   volumes:
-  #     - ./keys/server_transport.crt:/app/keys/server_transport.crt:ro
-  #     - ./keys/server_transport.key:/app/keys/server_transport.key:ro
-  #   depends_on:
-  #     psql:
-  #       condition: service_started
+  insurer:
+    build:
+      context: .
+      dockerfile: cmd/server/Dockerfile
+    environment:
+      - ENV=LOCAL
+      - TRANSPORT_CERT_PATH=/app/keys/server_transport.crt
+      - TRANSPORT_KEY_PATH=/app/keys/server_transport.key
+    volumes:
+      - ./keys/server_transport.crt:/app/keys/server_transport.crt:ro
+      - ./keys/server_transport.key:/app/keys/server_transport.key:ro
+    depends_on:
+      psql:
+        condition: service_started
 
   psql:
     image: postgres
@@ -73,18 +73,18 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  # migration:
-  #   build:
-  #     context: .
-  #     dockerfile: ./cmd/migration/Dockerfile
-  #   environment:
-  #     - ENV=LOCAL
-  #     - DB_MIGRATIONS_PATH=file://db/migrations
-  #   volumes:
-  #     - ./db/migrations:/app/db/migrations:ro
-  #   depends_on:
-  #     psql:
-  #       condition: service_started
+  migration:
+    build:
+      context: .
+      dockerfile: ./cmd/migration/Dockerfile
+    environment:
+      - ENV=LOCAL
+      - DB_MIGRATIONS_PATH=file://db/migrations
+    volumes:
+      - ./db/migrations:/app/db/migrations:ro
+    depends_on:
+      psql:
+        condition: service_started
 
   cs-httpd:
     profiles:

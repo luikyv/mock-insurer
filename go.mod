@@ -50,6 +50,6 @@ require (
 
 require (
 	github.com/go-jose/go-jose/v4 v4.1.3
-	github.com/luikyv/go-oidc v0.14.0
+	github.com/luikyv/go-oidc v0.15.0
 	golang.org/x/crypto v0.45.0 // indirect
 )
