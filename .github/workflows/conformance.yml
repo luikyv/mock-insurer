@@ -54,13 +54,19 @@ jobs:
 
             echo "Wait for mock insurer to be ready"
             timeout 300 bash -c '
-            while [ "$(curl -skf -o /dev/null -w ''%{http_code}'' https://auth.mockinsurer.local/.well-known/openid-configuration)" != "200" ]; do
-              echo "Mock insurer not ready, sleeping for 2 seconds"
+            while true; do
+              status_code=$(curl -skf -o /dev/null -w ''%{http_code}'' https://auth.mockinsurer.local/.well-known/openid-configuration || echo "000")
+              if [ "$status_code" = "200" ]; then
+                break
+              fi
+              echo "Mock insurer not ready (status code: $status_code), sleeping for 2 seconds"
               sleep 2
             done
             echo "Mock insurer is ready"
             ' || {
               echo "Timeout reached before the mock insurer is ready"
+              echo "=== Container Logs ==="
+              docker compose logs --tail=100 insurer gateway psql migration || true
               exit 1
             }
 
