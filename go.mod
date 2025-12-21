@@ -1,6 +1,6 @@
 module github.com/luikyv/mock-insurer
 
-go 1.24
+go 1.24.0
 
 toolchain go1.24.2
 
@@ -44,12 +44,12 @@ require (
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
-	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 )
 
 require (
-	github.com/go-jose/go-jose/v4 v4.1.2
-	github.com/luikyv/go-oidc v0.13.0
-	golang.org/x/crypto v0.41.0 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.3
+	github.com/luikyv/go-oidc v0.14.0
+	golang.org/x/crypto v0.45.0 // indirect
 )
