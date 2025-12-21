@@ -53,7 +53,7 @@ jobs:
             }
 
             echo "Wait for mock insurer to be ready"
-            timeout 300 bash -c '
+            timeout 60 bash -c '
             while true; do
               status_code=$(curl -skf -o /dev/null -w ''%{http_code}'' https://auth.mockinsurer.local/.well-known/openid-configuration || echo "000")
               if [ "$status_code" = "200" ]; then
