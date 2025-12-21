@@ -168,6 +168,28 @@ CREATE OR REPLACE VIEW consent_resources AS
     -- FROM consent_credit_contracts
     -- JOIN authorised_consents ON consent_credit_contracts.consent_id = authorised_consents.id AND consent_credit_contracts.org_id = authorised_consents.org_id;
 
+CREATE TABLE insurance_auto_quotes (
+    id TEXT PRIMARY KEY,
+    consent_id TEXT NOT NULL,
+    status TEXT NOT NULL,
+    status_updated_at TIMESTAMPTZ DEFAULT now(),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_auto_quote_leads (
+    id TEXT PRIMARY KEY,
+    consent_id TEXT NOT NULL,
+    status TEXT NOT NULL,
+    status_updated_at TIMESTAMPTZ DEFAULT now(),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
 CREATE TABLE idempotency_records (
     id TEXT PRIMARY KEY,
     status_code INTEGER NOT NULL,

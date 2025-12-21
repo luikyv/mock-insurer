@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/luikyv/mock-insurer/internal/auto"
+	"github.com/luikyv/mock-insurer/internal/insurer"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"github.com/luikyv/mock-insurer/internal/user"
 	"gorm.io/gorm"
@@ -40,11 +41,11 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 			TermEndDate:         mustParseBrazilDate("2022-12-31"),
 			LeadInsurerCode:     pointerOf("string"),
 			LeadInsurerPolicyID: pointerOf("string"),
-			MaxLMG: auto.AmountDetails{
+			MaxLMG: insurer.AmountDetails{
 				Amount:         "100.00",
 				UnitType:       "PORCENTAGEM",
 				UnitTypeOthers: pointerOf("Horas"),
-				Unit: &auto.AmountDetailsUnit{
+				Unit: &insurer.Unit{
 					Code:        "R$",
 					Description: "BRL",
 				},
@@ -53,7 +54,7 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 			Insureds: []auto.Insured{
 				{
 					Identification:           "12345678900",
-					IdentificationType:       auto.IdentificationTypeCPF,
+					IdentificationType:       insurer.IdentificationTypeCPF,
 					IdentificationTypeOthers: pointerOf("RNE"),
 					Name:                     "Nome Sobrenome",
 					BirthDate:                mustParseBrazilDate("1990-06-12"),
@@ -68,7 +69,7 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 			Beneficiaries: &[]auto.Beneficiary{
 				{
 					Identification:           "12345678900",
-					IdentificationType:       auto.IdentificationTypeCPF,
+					IdentificationType:       insurer.IdentificationTypeCPF,
 					IdentificationTypeOthers: pointerOf("RNE"),
 					Name:                     "Nome Sobrenome",
 				},
@@ -76,7 +77,7 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 			Principals: &[]auto.Principal{
 				{
 					Identification:           "12345678900",
-					IdentificationType:       auto.IdentificationTypeCPF,
+					IdentificationType:       insurer.IdentificationTypeCPF,
 					IdentificationTypeOthers: pointerOf("RNE"),
 					Name:                     "Nome Sobrenome",
 					PostCode:                 "10000000",
@@ -94,7 +95,7 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 					TypeOthers:               pointerOf("string"),
 					Identification:           pointerOf("12345678900"),
 					BrokerID:                 pointerOf("644587421"),
-					IdentificationType:       pointerOf(auto.IdentificationTypeCPF),
+					IdentificationType:       pointerOf(insurer.IdentificationTypeCPF),
 					IdentificationTypeOthers: pointerOf("RNE"),
 					Name:                     "Nome Sobrenome",
 					PostCode:                 pointerOf("10000000"),
@@ -130,11 +131,11 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 							Description:        pointerOf("string"),
 							InternalCode:       pointerOf("string"),
 							SusepProcessNumber: "string",
-							LMI: &auto.AmountDetails{
+							LMI: insurer.AmountDetails{
 								Amount:         "5486585.13",
 								UnitType:       "PORCENTAGEM",
 								UnitTypeOthers: pointerOf("Horas"),
-								Unit: &auto.AmountDetailsUnit{
+								Unit: &insurer.Unit{
 									Code:        "R$",
 									Description: "BRL",
 								},
@@ -150,11 +151,11 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 							GracePeriodStartDate:      pointerOf(mustParseBrazilDate("2022-12-31")),
 							GracePeriodEndDate:        pointerOf(mustParseBrazilDate("2022-12-31")),
 							AdjustmentRate:            pointerOf("10.00"),
-							PremiumAmount: auto.AmountDetails{
+							PremiumAmount: insurer.AmountDetails{
 								Amount:         "829276",
 								UnitType:       "PORCENTAGEM",
 								UnitTypeOthers: pointerOf("Horas"),
-								Unit: &auto.AmountDetailsUnit{
+								Unit: &insurer.Unit{
 									Code:        "R$",
 									Description: "BRL",
 								},
@@ -180,11 +181,11 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 					Deductible: &auto.CoverageDeductible{
 						Type:       auto.CoverageDeductibleTypeReduced,
 						TypeOthers: pointerOf("string"),
-						Amount: &auto.AmountDetails{
+						Amount: &insurer.AmountDetails{
 							Amount:         "19.72",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
@@ -200,38 +201,38 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 					POS: &auto.CoveragePOS{
 						ApplicationType: auto.CoveragePOSApplicationTypeValue,
 						Description:     pointerOf("string"),
-						MinValue: &auto.AmountDetails{
+						MinValue: &insurer.AmountDetails{
 							Amount:         "7488583.06",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
 						},
-						MaxValue: &auto.AmountDetails{
+						MaxValue: &insurer.AmountDetails{
 							Amount:         "14.48",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
 						},
-						Percentage: &auto.AmountDetails{
+						Percentage: &insurer.AmountDetails{
 							Amount:         "99384484480.01",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
 						},
-						ValueOthers: &auto.AmountDetails{
+						ValueOthers: &insurer.AmountDetails{
 							Amount:         "57794",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
@@ -246,12 +247,12 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 					CededPercentage: "10.00",
 				},
 			},
-			RepairNetwork:               pointerOf(auto.RepairNetworkReferred),
+			RepairNetwork:               auto.RepairNetworkReferred,
 			RepairNetworkOthers:         pointerOf("string"),
 			RepairedPartsUsageType:      auto.RepairedPartsUsageTypeNewAndUsed,
 			RepairedPartsClassification: auto.RepairedPartsClassificationOriginalAndCompatible,
 			RepairedPartsNationality:    auto.RepairedPartsNationalityNationalAndImported,
-			ValidityType:                auto.ValidityTypeSemestralIntermittent,
+			ValidityType:                insurer.ValidityTypeSemestralIntermittent,
 			ValidateTypeOthers:          pointerOf("string"),
 			OtherCompensations:          pointerOf("string"),
 			OtherBenefits:               pointerOf(auto.OtherBenefitsDiscounts),
@@ -270,11 +271,11 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 			},
 			Premium: auto.PremiumData{
 				PaymentsQuantity: "4",
-				Amount: auto.AmountDetails{
+				Amount: insurer.AmountDetails{
 					Amount:         "87381.35",
 					UnitType:       "PORCENTAGEM",
 					UnitTypeOthers: pointerOf("Horas"),
-					Unit: &auto.AmountDetailsUnit{
+					Unit: &insurer.Unit{
 						Code:        "R$",
 						Description: "BRL",
 					},
@@ -284,11 +285,11 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 						Branch:      "0111",
 						Code:        auto.CoverageCodeComprehensive,
 						Description: pointerOf("string"),
-						PremiumAmount: auto.AmountDetails{
+						PremiumAmount: insurer.AmountDetails{
 							Amount:         "734876.20",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
@@ -301,18 +302,18 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 						MovementType:           auto.PaymentMovementTypePremiumLiquidation,
 						MovementOrigin:         pointerOf(auto.PaymentMovementOriginDirectIssuance),
 						MovementPaymentsNumber: 0,
-						Amount: auto.AmountDetails{
+						Amount: insurer.AmountDetails{
 							Amount:         "57468.28",
 							UnitType:       "PORCENTAGEM",
 							UnitTypeOthers: pointerOf("Horas"),
-							Unit: &auto.AmountDetailsUnit{
+							Unit: &insurer.Unit{
 								Code:        "R$",
 								Description: "BRL",
 							},
 						},
 						MaturityDate:             mustParseBrazilDate("2022-12-31"),
 						TellerID:                 pointerOf("string"),
-						TellerIDType:             pointerOf(auto.IdentificationTypeCPF),
+						TellerIDType:             pointerOf(insurer.IdentificationTypeCPF),
 						TellerIDOthers:           pointerOf("RNE"),
 						TellerName:               pointerOf("string"),
 						FinancialInstitutionCode: pointerOf("string"),

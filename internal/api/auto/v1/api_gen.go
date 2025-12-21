@@ -19,6 +19,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/luikyv/mock-insurer/internal/api"
+	"github.com/luikyv/mock-insurer/internal/insurer"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"github.com/oapi-codegen/runtime"
 	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
@@ -27,408 +28,6 @@ import (
 const (
 	OAuth2SecurityScopes = "OAuth2Security.Scopes"
 	OpenIdScopes         = "OpenId.Scopes"
-)
-
-// Defines values for AmountDetailsUnitCode.
-const (
-	AmountDetailsUnitCodeAf         AmountDetailsUnitCode = "Af"
-	AmountDetailsUnitCodeB          AmountDetailsUnitCode = "B/."
-	AmountDetailsUnitCodeBr         AmountDetailsUnitCode = "Br"
-	AmountDetailsUnitCodeBs         AmountDetailsUnitCode = "Bs."
-	AmountDetailsUnitCodeBsF        AmountDetailsUnitCode = "Bs F"
-	AmountDetailsUnitCodeC          AmountDetailsUnitCode = "C$"
-	AmountDetailsUnitCodeD          AmountDetailsUnitCode = "D"
-	AmountDetailsUnitCodeDB         AmountDetailsUnitCode = "Db"
-	AmountDetailsUnitCodeDin        AmountDetailsUnitCode = "din"
-	AmountDetailsUnitCodeDollarSign AmountDetailsUnitCode = "$"
-	AmountDetailsUnitCodeEmpty      AmountDetailsUnitCode = "د.إ"
-	AmountDetailsUnitCodeFt         AmountDetailsUnitCode = "Ft"
-	AmountDetailsUnitCodeG          AmountDetailsUnitCode = "G"
-	AmountDetailsUnitCodeK          AmountDetailsUnitCode = "K"
-	AmountDetailsUnitCodeKn         AmountDetailsUnitCode = "Kn"
-	AmountDetailsUnitCodeKr         AmountDetailsUnitCode = "kr"
-	AmountDetailsUnitCodeKz         AmountDetailsUnitCode = "Kz"
-	AmountDetailsUnitCodeKč         AmountDetailsUnitCode = "Kč"
-	AmountDetailsUnitCodeL          AmountDetailsUnitCode = "L"
-	AmountDetailsUnitCodeLe         AmountDetailsUnitCode = "Le"
-	AmountDetailsUnitCodeM          AmountDetailsUnitCode = "m"
-	AmountDetailsUnitCodeMK         AmountDetailsUnitCode = "MK"
-	AmountDetailsUnitCodeMTn        AmountDetailsUnitCode = "MTn"
-	AmountDetailsUnitCodeN1         AmountDetailsUnitCode = "৳"
-	AmountDetailsUnitCodeN10        AmountDetailsUnitCode = "₪"
-	AmountDetailsUnitCodeN11        AmountDetailsUnitCode = "₹"
-	AmountDetailsUnitCodeN12        AmountDetailsUnitCode = "ع.د"
-	AmountDetailsUnitCodeN13        AmountDetailsUnitCode = "﷼"
-	AmountDetailsUnitCodeN14        AmountDetailsUnitCode = "៛"
-	AmountDetailsUnitCodeN15        AmountDetailsUnitCode = "₩"
-	AmountDetailsUnitCodeN16        AmountDetailsUnitCode = "د.ك"
-	AmountDetailsUnitCodeN17        AmountDetailsUnitCode = "〒"
-	AmountDetailsUnitCodeN18        AmountDetailsUnitCode = "₭"
-	AmountDetailsUnitCodeN19        AmountDetailsUnitCode = "ل.ل"
-	AmountDetailsUnitCodeN2         AmountDetailsUnitCode = "ب.د"
-	AmountDetailsUnitCodeN20        AmountDetailsUnitCode = "ل.د"
-	AmountDetailsUnitCodeN21        AmountDetailsUnitCode = "د.م."
-	AmountDetailsUnitCodeN22        AmountDetailsUnitCode = "₮"
-	AmountDetailsUnitCodeN23        AmountDetailsUnitCode = "₨"
-	AmountDetailsUnitCodeN24        AmountDetailsUnitCode = "ރ."
-	AmountDetailsUnitCodeN25        AmountDetailsUnitCode = "₦"
-	AmountDetailsUnitCodeN26        AmountDetailsUnitCode = "ر.ع."
-	AmountDetailsUnitCodeN27        AmountDetailsUnitCode = "₱"
-	AmountDetailsUnitCodeN28        AmountDetailsUnitCode = "₲"
-	AmountDetailsUnitCodeN29        AmountDetailsUnitCode = "ر.ق"
-	AmountDetailsUnitCodeN3         AmountDetailsUnitCode = "₣"
-	AmountDetailsUnitCodeN30        AmountDetailsUnitCode = "ر.س"
-	AmountDetailsUnitCodeN31        AmountDetailsUnitCode = "ل.س"
-	AmountDetailsUnitCodeN32        AmountDetailsUnitCode = "฿"
-	AmountDetailsUnitCodeN33        AmountDetailsUnitCode = "د.ت"
-	AmountDetailsUnitCodeN34        AmountDetailsUnitCode = "₤"
-	AmountDetailsUnitCodeN35        AmountDetailsUnitCode = "₴"
-	AmountDetailsUnitCodeN36        AmountDetailsUnitCode = "₫"
-	AmountDetailsUnitCodeN4         AmountDetailsUnitCode = "¥"
-	AmountDetailsUnitCodeN5         AmountDetailsUnitCode = "₡"
-	AmountDetailsUnitCodeN6         AmountDetailsUnitCode = "د.ج"
-	AmountDetailsUnitCodeN7         AmountDetailsUnitCode = "£"
-	AmountDetailsUnitCodeN8         AmountDetailsUnitCode = "€"
-	AmountDetailsUnitCodeN9         AmountDetailsUnitCode = "₵"
-	AmountDetailsUnitCodeNA         AmountDetailsUnitCode = "N/A"
-	AmountDetailsUnitCodeNfk        AmountDetailsUnitCode = "Nfk"
-	AmountDetailsUnitCodeP          AmountDetailsUnitCode = "P"
-	AmountDetailsUnitCodeQ          AmountDetailsUnitCode = "Q"
-	AmountDetailsUnitCodeR          AmountDetailsUnitCode = "R$"
-	AmountDetailsUnitCodeR1         AmountDetailsUnitCode = "R"
-	AmountDetailsUnitCodeRM         AmountDetailsUnitCode = "RM"
-	AmountDetailsUnitCodeRp         AmountDetailsUnitCode = "Rp"
-	AmountDetailsUnitCodeRs         AmountDetailsUnitCode = "Rs"
-	AmountDetailsUnitCodeS          AmountDetailsUnitCode = "S/."
-	AmountDetailsUnitCodeSh         AmountDetailsUnitCode = "Sh"
-	AmountDetailsUnitCodeT          AmountDetailsUnitCode = "T$"
-	AmountDetailsUnitCodeT1         AmountDetailsUnitCode = "T"
-	AmountDetailsUnitCodeUM         AmountDetailsUnitCode = "UM"
-	AmountDetailsUnitCodeVt         AmountDetailsUnitCode = "Vt"
-	AmountDetailsUnitCodeZK         AmountDetailsUnitCode = "ZK"
-	AmountDetailsUnitCodeZł         AmountDetailsUnitCode = "zł"
-	AmountDetailsUnitCodeƑ          AmountDetailsUnitCode = "ƒ"
-	AmountDetailsUnitCodeЅМ         AmountDetailsUnitCode = "ЅМ"
-	AmountDetailsUnitCodeДен        AmountDetailsUnitCode = "ден"
-	AmountDetailsUnitCodeКМ         AmountDetailsUnitCode = "КМ"
-	AmountDetailsUnitCodeЛв         AmountDetailsUnitCode = "лв"
-	AmountDetailsUnitCodeМан        AmountDetailsUnitCode = "ман"
-	AmountDetailsUnitCodeР          AmountDetailsUnitCode = "р."
-	AmountDetailsUnitCodeԴ          AmountDetailsUnitCode = "Դ"
-	AmountDetailsUnitCodeᲚ          AmountDetailsUnitCode = "ლ"
-)
-
-// Defines values for AmountDetailsUnitDescription.
-const (
-	AmountDetailsUnitDescriptionADP AmountDetailsUnitDescription = "ADP"
-	AmountDetailsUnitDescriptionAED AmountDetailsUnitDescription = "AED"
-	AmountDetailsUnitDescriptionAFA AmountDetailsUnitDescription = "AFA"
-	AmountDetailsUnitDescriptionAFN AmountDetailsUnitDescription = "AFN"
-	AmountDetailsUnitDescriptionALK AmountDetailsUnitDescription = "ALK"
-	AmountDetailsUnitDescriptionALL AmountDetailsUnitDescription = "ALL"
-	AmountDetailsUnitDescriptionAMD AmountDetailsUnitDescription = "AMD"
-	AmountDetailsUnitDescriptionANG AmountDetailsUnitDescription = "ANG"
-	AmountDetailsUnitDescriptionAOA AmountDetailsUnitDescription = "AOA"
-	AmountDetailsUnitDescriptionAOK AmountDetailsUnitDescription = "AOK"
-	AmountDetailsUnitDescriptionAON AmountDetailsUnitDescription = "AON"
-	AmountDetailsUnitDescriptionAOR AmountDetailsUnitDescription = "AOR"
-	AmountDetailsUnitDescriptionARA AmountDetailsUnitDescription = "ARA"
-	AmountDetailsUnitDescriptionARP AmountDetailsUnitDescription = "ARP"
-	AmountDetailsUnitDescriptionARS AmountDetailsUnitDescription = "ARS"
-	AmountDetailsUnitDescriptionARY AmountDetailsUnitDescription = "ARY"
-	AmountDetailsUnitDescriptionATS AmountDetailsUnitDescription = "ATS"
-	AmountDetailsUnitDescriptionAUD AmountDetailsUnitDescription = "AUD"
-	AmountDetailsUnitDescriptionAWG AmountDetailsUnitDescription = "AWG"
-	AmountDetailsUnitDescriptionAYM AmountDetailsUnitDescription = "AYM"
-	AmountDetailsUnitDescriptionAZM AmountDetailsUnitDescription = "AZM"
-	AmountDetailsUnitDescriptionAZN AmountDetailsUnitDescription = "AZN"
-	AmountDetailsUnitDescriptionBAD AmountDetailsUnitDescription = "BAD"
-	AmountDetailsUnitDescriptionBAM AmountDetailsUnitDescription = "BAM"
-	AmountDetailsUnitDescriptionBBD AmountDetailsUnitDescription = "BBD"
-	AmountDetailsUnitDescriptionBDT AmountDetailsUnitDescription = "BDT"
-	AmountDetailsUnitDescriptionBEC AmountDetailsUnitDescription = "BEC"
-	AmountDetailsUnitDescriptionBEF AmountDetailsUnitDescription = "BEF"
-	AmountDetailsUnitDescriptionBEL AmountDetailsUnitDescription = "BEL"
-	AmountDetailsUnitDescriptionBGJ AmountDetailsUnitDescription = "BGJ"
-	AmountDetailsUnitDescriptionBGK AmountDetailsUnitDescription = "BGK"
-	AmountDetailsUnitDescriptionBGL AmountDetailsUnitDescription = "BGL"
-	AmountDetailsUnitDescriptionBGN AmountDetailsUnitDescription = "BGN"
-	AmountDetailsUnitDescriptionBHD AmountDetailsUnitDescription = "BHD"
-	AmountDetailsUnitDescriptionBIF AmountDetailsUnitDescription = "BIF"
-	AmountDetailsUnitDescriptionBMD AmountDetailsUnitDescription = "BMD"
-	AmountDetailsUnitDescriptionBND AmountDetailsUnitDescription = "BND"
-	AmountDetailsUnitDescriptionBOB AmountDetailsUnitDescription = "BOB"
-	AmountDetailsUnitDescriptionBOP AmountDetailsUnitDescription = "BOP"
-	AmountDetailsUnitDescriptionBOV AmountDetailsUnitDescription = "BOV"
-	AmountDetailsUnitDescriptionBRB AmountDetailsUnitDescription = "BRB"
-	AmountDetailsUnitDescriptionBRC AmountDetailsUnitDescription = "BRC"
-	AmountDetailsUnitDescriptionBRE AmountDetailsUnitDescription = "BRE"
-	AmountDetailsUnitDescriptionBRL AmountDetailsUnitDescription = "BRL"
-	AmountDetailsUnitDescriptionBRN AmountDetailsUnitDescription = "BRN"
-	AmountDetailsUnitDescriptionBRR AmountDetailsUnitDescription = "BRR"
-	AmountDetailsUnitDescriptionBSD AmountDetailsUnitDescription = "BSD"
-	AmountDetailsUnitDescriptionBTN AmountDetailsUnitDescription = "BTN"
-	AmountDetailsUnitDescriptionBUK AmountDetailsUnitDescription = "BUK"
-	AmountDetailsUnitDescriptionBWP AmountDetailsUnitDescription = "BWP"
-	AmountDetailsUnitDescriptionBYB AmountDetailsUnitDescription = "BYB"
-	AmountDetailsUnitDescriptionBYN AmountDetailsUnitDescription = "BYN"
-	AmountDetailsUnitDescriptionBYR AmountDetailsUnitDescription = "BYR"
-	AmountDetailsUnitDescriptionBZD AmountDetailsUnitDescription = "BZD"
-	AmountDetailsUnitDescriptionCAD AmountDetailsUnitDescription = "CAD"
-	AmountDetailsUnitDescriptionCDF AmountDetailsUnitDescription = "CDF"
-	AmountDetailsUnitDescriptionCHC AmountDetailsUnitDescription = "CHC"
-	AmountDetailsUnitDescriptionCHE AmountDetailsUnitDescription = "CHE"
-	AmountDetailsUnitDescriptionCHF AmountDetailsUnitDescription = "CHF"
-	AmountDetailsUnitDescriptionCHW AmountDetailsUnitDescription = "CHW"
-	AmountDetailsUnitDescriptionCLF AmountDetailsUnitDescription = "CLF"
-	AmountDetailsUnitDescriptionCLP AmountDetailsUnitDescription = "CLP"
-	AmountDetailsUnitDescriptionCNY AmountDetailsUnitDescription = "CNY"
-	AmountDetailsUnitDescriptionCOP AmountDetailsUnitDescription = "COP"
-	AmountDetailsUnitDescriptionCOU AmountDetailsUnitDescription = "COU"
-	AmountDetailsUnitDescriptionCRC AmountDetailsUnitDescription = "CRC"
-	AmountDetailsUnitDescriptionCSD AmountDetailsUnitDescription = "CSD"
-	AmountDetailsUnitDescriptionCSJ AmountDetailsUnitDescription = "CSJ"
-	AmountDetailsUnitDescriptionCSK AmountDetailsUnitDescription = "CSK"
-	AmountDetailsUnitDescriptionCUC AmountDetailsUnitDescription = "CUC"
-	AmountDetailsUnitDescriptionCUP AmountDetailsUnitDescription = "CUP"
-	AmountDetailsUnitDescriptionCVE AmountDetailsUnitDescription = "CVE"
-	AmountDetailsUnitDescriptionCYP AmountDetailsUnitDescription = "CYP"
-	AmountDetailsUnitDescriptionCZK AmountDetailsUnitDescription = "CZK"
-	AmountDetailsUnitDescriptionDDM AmountDetailsUnitDescription = "DDM"
-	AmountDetailsUnitDescriptionDEM AmountDetailsUnitDescription = "DEM"
-	AmountDetailsUnitDescriptionDJF AmountDetailsUnitDescription = "DJF"
-	AmountDetailsUnitDescriptionDKK AmountDetailsUnitDescription = "DKK"
-	AmountDetailsUnitDescriptionDOP AmountDetailsUnitDescription = "DOP"
-	AmountDetailsUnitDescriptionDZD AmountDetailsUnitDescription = "DZD"
-	AmountDetailsUnitDescriptionECS AmountDetailsUnitDescription = "ECS"
-	AmountDetailsUnitDescriptionECV AmountDetailsUnitDescription = "ECV"
-	AmountDetailsUnitDescriptionEEK AmountDetailsUnitDescription = "EEK"
-	AmountDetailsUnitDescriptionEGP AmountDetailsUnitDescription = "EGP"
-	AmountDetailsUnitDescriptionERN AmountDetailsUnitDescription = "ERN"
-	AmountDetailsUnitDescriptionESA AmountDetailsUnitDescription = "ESA"
-	AmountDetailsUnitDescriptionESB AmountDetailsUnitDescription = "ESB"
-	AmountDetailsUnitDescriptionESP AmountDetailsUnitDescription = "ESP"
-	AmountDetailsUnitDescriptionETB AmountDetailsUnitDescription = "ETB"
-	AmountDetailsUnitDescriptionEUR AmountDetailsUnitDescription = "EUR"
-	AmountDetailsUnitDescriptionFIM AmountDetailsUnitDescription = "FIM"
-	AmountDetailsUnitDescriptionFJD AmountDetailsUnitDescription = "FJD"
-	AmountDetailsUnitDescriptionFKP AmountDetailsUnitDescription = "FKP"
-	AmountDetailsUnitDescriptionFRF AmountDetailsUnitDescription = "FRF"
-	AmountDetailsUnitDescriptionGBP AmountDetailsUnitDescription = "GBP"
-	AmountDetailsUnitDescriptionGEK AmountDetailsUnitDescription = "GEK"
-	AmountDetailsUnitDescriptionGEL AmountDetailsUnitDescription = "GEL"
-	AmountDetailsUnitDescriptionGHC AmountDetailsUnitDescription = "GHC"
-	AmountDetailsUnitDescriptionGHP AmountDetailsUnitDescription = "GHP"
-	AmountDetailsUnitDescriptionGHS AmountDetailsUnitDescription = "GHS"
-	AmountDetailsUnitDescriptionGIP AmountDetailsUnitDescription = "GIP"
-	AmountDetailsUnitDescriptionGMD AmountDetailsUnitDescription = "GMD"
-	AmountDetailsUnitDescriptionGNE AmountDetailsUnitDescription = "GNE"
-	AmountDetailsUnitDescriptionGNF AmountDetailsUnitDescription = "GNF"
-	AmountDetailsUnitDescriptionGNS AmountDetailsUnitDescription = "GNS"
-	AmountDetailsUnitDescriptionGQE AmountDetailsUnitDescription = "GQE"
-	AmountDetailsUnitDescriptionGRD AmountDetailsUnitDescription = "GRD"
-	AmountDetailsUnitDescriptionGTQ AmountDetailsUnitDescription = "GTQ"
-	AmountDetailsUnitDescriptionGWE AmountDetailsUnitDescription = "GWE"
-	AmountDetailsUnitDescriptionGWP AmountDetailsUnitDescription = "GWP"
-	AmountDetailsUnitDescriptionGYD AmountDetailsUnitDescription = "GYD"
-	AmountDetailsUnitDescriptionHKD AmountDetailsUnitDescription = "HKD"
-	AmountDetailsUnitDescriptionHNL AmountDetailsUnitDescription = "HNL"
-	AmountDetailsUnitDescriptionHRD AmountDetailsUnitDescription = "HRD"
-	AmountDetailsUnitDescriptionHRK AmountDetailsUnitDescription = "HRK"
-	AmountDetailsUnitDescriptionHTG AmountDetailsUnitDescription = "HTG"
-	AmountDetailsUnitDescriptionHUF AmountDetailsUnitDescription = "HUF"
-	AmountDetailsUnitDescriptionIDR AmountDetailsUnitDescription = "IDR"
-	AmountDetailsUnitDescriptionIEP AmountDetailsUnitDescription = "IEP"
-	AmountDetailsUnitDescriptionILP AmountDetailsUnitDescription = "ILP"
-	AmountDetailsUnitDescriptionILR AmountDetailsUnitDescription = "ILR"
-	AmountDetailsUnitDescriptionILS AmountDetailsUnitDescription = "ILS"
-	AmountDetailsUnitDescriptionINR AmountDetailsUnitDescription = "INR"
-	AmountDetailsUnitDescriptionIQD AmountDetailsUnitDescription = "IQD"
-	AmountDetailsUnitDescriptionIRR AmountDetailsUnitDescription = "IRR"
-	AmountDetailsUnitDescriptionISJ AmountDetailsUnitDescription = "ISJ"
-	AmountDetailsUnitDescriptionISK AmountDetailsUnitDescription = "ISK"
-	AmountDetailsUnitDescriptionITL AmountDetailsUnitDescription = "ITL"
-	AmountDetailsUnitDescriptionJMD AmountDetailsUnitDescription = "JMD"
-	AmountDetailsUnitDescriptionJOD AmountDetailsUnitDescription = "JOD"
-	AmountDetailsUnitDescriptionJPY AmountDetailsUnitDescription = "JPY"
-	AmountDetailsUnitDescriptionKES AmountDetailsUnitDescription = "KES"
-	AmountDetailsUnitDescriptionKGS AmountDetailsUnitDescription = "KGS"
-	AmountDetailsUnitDescriptionKHR AmountDetailsUnitDescription = "KHR"
-	AmountDetailsUnitDescriptionKMF AmountDetailsUnitDescription = "KMF"
-	AmountDetailsUnitDescriptionKPW AmountDetailsUnitDescription = "KPW"
-	AmountDetailsUnitDescriptionKRW AmountDetailsUnitDescription = "KRW"
-	AmountDetailsUnitDescriptionKWD AmountDetailsUnitDescription = "KWD"
-	AmountDetailsUnitDescriptionKYD AmountDetailsUnitDescription = "KYD"
-	AmountDetailsUnitDescriptionKZT AmountDetailsUnitDescription = "KZT"
-	AmountDetailsUnitDescriptionLAJ AmountDetailsUnitDescription = "LAJ"
-	AmountDetailsUnitDescriptionLAK AmountDetailsUnitDescription = "LAK"
-	AmountDetailsUnitDescriptionLBP AmountDetailsUnitDescription = "LBP"
-	AmountDetailsUnitDescriptionLKR AmountDetailsUnitDescription = "LKR"
-	AmountDetailsUnitDescriptionLRD AmountDetailsUnitDescription = "LRD"
-	AmountDetailsUnitDescriptionLSL AmountDetailsUnitDescription = "LSL"
-	AmountDetailsUnitDescriptionLSM AmountDetailsUnitDescription = "LSM"
-	AmountDetailsUnitDescriptionLTL AmountDetailsUnitDescription = "LTL"
-	AmountDetailsUnitDescriptionLTT AmountDetailsUnitDescription = "LTT"
-	AmountDetailsUnitDescriptionLUC AmountDetailsUnitDescription = "LUC"
-	AmountDetailsUnitDescriptionLUF AmountDetailsUnitDescription = "LUF"
-	AmountDetailsUnitDescriptionLUL AmountDetailsUnitDescription = "LUL"
-	AmountDetailsUnitDescriptionLVL AmountDetailsUnitDescription = "LVL"
-	AmountDetailsUnitDescriptionLVR AmountDetailsUnitDescription = "LVR"
-	AmountDetailsUnitDescriptionLYD AmountDetailsUnitDescription = "LYD"
-	AmountDetailsUnitDescriptionMAD AmountDetailsUnitDescription = "MAD"
-	AmountDetailsUnitDescriptionMDL AmountDetailsUnitDescription = "MDL"
-	AmountDetailsUnitDescriptionMGA AmountDetailsUnitDescription = "MGA"
-	AmountDetailsUnitDescriptionMGF AmountDetailsUnitDescription = "MGF"
-	AmountDetailsUnitDescriptionMKD AmountDetailsUnitDescription = "MKD"
-	AmountDetailsUnitDescriptionMLF AmountDetailsUnitDescription = "MLF"
-	AmountDetailsUnitDescriptionMMK AmountDetailsUnitDescription = "MMK"
-	AmountDetailsUnitDescriptionMNT AmountDetailsUnitDescription = "MNT"
-	AmountDetailsUnitDescriptionMOP AmountDetailsUnitDescription = "MOP"
-	AmountDetailsUnitDescriptionMRO AmountDetailsUnitDescription = "MRO"
-	AmountDetailsUnitDescriptionMRU AmountDetailsUnitDescription = "MRU"
-	AmountDetailsUnitDescriptionMTL AmountDetailsUnitDescription = "MTL"
-	AmountDetailsUnitDescriptionMTP AmountDetailsUnitDescription = "MTP"
-	AmountDetailsUnitDescriptionMUR AmountDetailsUnitDescription = "MUR"
-	AmountDetailsUnitDescriptionMVQ AmountDetailsUnitDescription = "MVQ"
-	AmountDetailsUnitDescriptionMVR AmountDetailsUnitDescription = "MVR"
-	AmountDetailsUnitDescriptionMWK AmountDetailsUnitDescription = "MWK"
-	AmountDetailsUnitDescriptionMXN AmountDetailsUnitDescription = "MXN"
-	AmountDetailsUnitDescriptionMXP AmountDetailsUnitDescription = "MXP"
-	AmountDetailsUnitDescriptionMXV AmountDetailsUnitDescription = "MXV"
-	AmountDetailsUnitDescriptionMYR AmountDetailsUnitDescription = "MYR"
-	AmountDetailsUnitDescriptionMZE AmountDetailsUnitDescription = "MZE"
-	AmountDetailsUnitDescriptionMZM AmountDetailsUnitDescription = "MZM"
-	AmountDetailsUnitDescriptionMZN AmountDetailsUnitDescription = "MZN"
-	AmountDetailsUnitDescriptionNAD AmountDetailsUnitDescription = "NAD"
-	AmountDetailsUnitDescriptionNGN AmountDetailsUnitDescription = "NGN"
-	AmountDetailsUnitDescriptionNIC AmountDetailsUnitDescription = "NIC"
-	AmountDetailsUnitDescriptionNIO AmountDetailsUnitDescription = "NIO"
-	AmountDetailsUnitDescriptionNLG AmountDetailsUnitDescription = "NLG"
-	AmountDetailsUnitDescriptionNOK AmountDetailsUnitDescription = "NOK"
-	AmountDetailsUnitDescriptionNPR AmountDetailsUnitDescription = "NPR"
-	AmountDetailsUnitDescriptionNZD AmountDetailsUnitDescription = "NZD"
-	AmountDetailsUnitDescriptionOMR AmountDetailsUnitDescription = "OMR"
-	AmountDetailsUnitDescriptionPAB AmountDetailsUnitDescription = "PAB"
-	AmountDetailsUnitDescriptionPEH AmountDetailsUnitDescription = "PEH"
-	AmountDetailsUnitDescriptionPEI AmountDetailsUnitDescription = "PEI"
-	AmountDetailsUnitDescriptionPEN AmountDetailsUnitDescription = "PEN"
-	AmountDetailsUnitDescriptionPES AmountDetailsUnitDescription = "PES"
-	AmountDetailsUnitDescriptionPGK AmountDetailsUnitDescription = "PGK"
-	AmountDetailsUnitDescriptionPHP AmountDetailsUnitDescription = "PHP"
-	AmountDetailsUnitDescriptionPKR AmountDetailsUnitDescription = "PKR"
-	AmountDetailsUnitDescriptionPLN AmountDetailsUnitDescription = "PLN"
-	AmountDetailsUnitDescriptionPLZ AmountDetailsUnitDescription = "PLZ"
-	AmountDetailsUnitDescriptionPTE AmountDetailsUnitDescription = "PTE"
-	AmountDetailsUnitDescriptionPYG AmountDetailsUnitDescription = "PYG"
-	AmountDetailsUnitDescriptionQAR AmountDetailsUnitDescription = "QAR"
-	AmountDetailsUnitDescriptionRHD AmountDetailsUnitDescription = "RHD"
-	AmountDetailsUnitDescriptionROK AmountDetailsUnitDescription = "ROK"
-	AmountDetailsUnitDescriptionROL AmountDetailsUnitDescription = "ROL"
-	AmountDetailsUnitDescriptionRON AmountDetailsUnitDescription = "RON"
-	AmountDetailsUnitDescriptionRSD AmountDetailsUnitDescription = "RSD"
-	AmountDetailsUnitDescriptionRUB AmountDetailsUnitDescription = "RUB"
-	AmountDetailsUnitDescriptionRUR AmountDetailsUnitDescription = "RUR"
-	AmountDetailsUnitDescriptionRWF AmountDetailsUnitDescription = "RWF"
-	AmountDetailsUnitDescriptionSAR AmountDetailsUnitDescription = "SAR"
-	AmountDetailsUnitDescriptionSBD AmountDetailsUnitDescription = "SBD"
-	AmountDetailsUnitDescriptionSCR AmountDetailsUnitDescription = "SCR"
-	AmountDetailsUnitDescriptionSDD AmountDetailsUnitDescription = "SDD"
-	AmountDetailsUnitDescriptionSDG AmountDetailsUnitDescription = "SDG"
-	AmountDetailsUnitDescriptionSDP AmountDetailsUnitDescription = "SDP"
-	AmountDetailsUnitDescriptionSEK AmountDetailsUnitDescription = "SEK"
-	AmountDetailsUnitDescriptionSGD AmountDetailsUnitDescription = "SGD"
-	AmountDetailsUnitDescriptionSHP AmountDetailsUnitDescription = "SHP"
-	AmountDetailsUnitDescriptionSIT AmountDetailsUnitDescription = "SIT"
-	AmountDetailsUnitDescriptionSKK AmountDetailsUnitDescription = "SKK"
-	AmountDetailsUnitDescriptionSLL AmountDetailsUnitDescription = "SLL"
-	AmountDetailsUnitDescriptionSOS AmountDetailsUnitDescription = "SOS"
-	AmountDetailsUnitDescriptionSRD AmountDetailsUnitDescription = "SRD"
-	AmountDetailsUnitDescriptionSRG AmountDetailsUnitDescription = "SRG"
-	AmountDetailsUnitDescriptionSSP AmountDetailsUnitDescription = "SSP"
-	AmountDetailsUnitDescriptionSTD AmountDetailsUnitDescription = "STD"
-	AmountDetailsUnitDescriptionSTN AmountDetailsUnitDescription = "STN"
-	AmountDetailsUnitDescriptionSUR AmountDetailsUnitDescription = "SUR"
-	AmountDetailsUnitDescriptionSVC AmountDetailsUnitDescription = "SVC"
-	AmountDetailsUnitDescriptionSYP AmountDetailsUnitDescription = "SYP"
-	AmountDetailsUnitDescriptionSZL AmountDetailsUnitDescription = "SZL"
-	AmountDetailsUnitDescriptionTHB AmountDetailsUnitDescription = "THB"
-	AmountDetailsUnitDescriptionTJR AmountDetailsUnitDescription = "TJR"
-	AmountDetailsUnitDescriptionTJS AmountDetailsUnitDescription = "TJS"
-	AmountDetailsUnitDescriptionTMM AmountDetailsUnitDescription = "TMM"
-	AmountDetailsUnitDescriptionTMT AmountDetailsUnitDescription = "TMT"
-	AmountDetailsUnitDescriptionTND AmountDetailsUnitDescription = "TND"
-	AmountDetailsUnitDescriptionTOP AmountDetailsUnitDescription = "TOP"
-	AmountDetailsUnitDescriptionTPE AmountDetailsUnitDescription = "TPE"
-	AmountDetailsUnitDescriptionTRL AmountDetailsUnitDescription = "TRL"
-	AmountDetailsUnitDescriptionTRY AmountDetailsUnitDescription = "TRY"
-	AmountDetailsUnitDescriptionTTD AmountDetailsUnitDescription = "TTD"
-	AmountDetailsUnitDescriptionTWD AmountDetailsUnitDescription = "TWD"
-	AmountDetailsUnitDescriptionTZS AmountDetailsUnitDescription = "TZS"
-	AmountDetailsUnitDescriptionUAH AmountDetailsUnitDescription = "UAH"
-	AmountDetailsUnitDescriptionUAK AmountDetailsUnitDescription = "UAK"
-	AmountDetailsUnitDescriptionUGS AmountDetailsUnitDescription = "UGS"
-	AmountDetailsUnitDescriptionUGW AmountDetailsUnitDescription = "UGW"
-	AmountDetailsUnitDescriptionUGX AmountDetailsUnitDescription = "UGX"
-	AmountDetailsUnitDescriptionUSD AmountDetailsUnitDescription = "USD"
-	AmountDetailsUnitDescriptionUSN AmountDetailsUnitDescription = "USN"
-	AmountDetailsUnitDescriptionUSS AmountDetailsUnitDescription = "USS"
-	AmountDetailsUnitDescriptionUYI AmountDetailsUnitDescription = "UYI"
-	AmountDetailsUnitDescriptionUYN AmountDetailsUnitDescription = "UYN"
-	AmountDetailsUnitDescriptionUYP AmountDetailsUnitDescription = "UYP"
-	AmountDetailsUnitDescriptionUYU AmountDetailsUnitDescription = "UYU"
-	AmountDetailsUnitDescriptionUYW AmountDetailsUnitDescription = "UYW"
-	AmountDetailsUnitDescriptionUZS AmountDetailsUnitDescription = "UZS"
-	AmountDetailsUnitDescriptionVEB AmountDetailsUnitDescription = "VEB"
-	AmountDetailsUnitDescriptionVEF AmountDetailsUnitDescription = "VEF"
-	AmountDetailsUnitDescriptionVES AmountDetailsUnitDescription = "VES"
-	AmountDetailsUnitDescriptionVNC AmountDetailsUnitDescription = "VNC"
-	AmountDetailsUnitDescriptionVND AmountDetailsUnitDescription = "VND"
-	AmountDetailsUnitDescriptionVUV AmountDetailsUnitDescription = "VUV"
-	AmountDetailsUnitDescriptionWST AmountDetailsUnitDescription = "WST"
-	AmountDetailsUnitDescriptionXAF AmountDetailsUnitDescription = "XAF"
-	AmountDetailsUnitDescriptionXAG AmountDetailsUnitDescription = "XAG"
-	AmountDetailsUnitDescriptionXAU AmountDetailsUnitDescription = "XAU"
-	AmountDetailsUnitDescriptionXBA AmountDetailsUnitDescription = "XBA"
-	AmountDetailsUnitDescriptionXBB AmountDetailsUnitDescription = "XBB"
-	AmountDetailsUnitDescriptionXBC AmountDetailsUnitDescription = "XBC"
-	AmountDetailsUnitDescriptionXBD AmountDetailsUnitDescription = "XBD"
-	AmountDetailsUnitDescriptionXCD AmountDetailsUnitDescription = "XCD"
-	AmountDetailsUnitDescriptionXDR AmountDetailsUnitDescription = "XDR"
-	AmountDetailsUnitDescriptionXEU AmountDetailsUnitDescription = "XEU"
-	AmountDetailsUnitDescriptionXFO AmountDetailsUnitDescription = "XFO"
-	AmountDetailsUnitDescriptionXFU AmountDetailsUnitDescription = "XFU"
-	AmountDetailsUnitDescriptionXOF AmountDetailsUnitDescription = "XOF"
-	AmountDetailsUnitDescriptionXPD AmountDetailsUnitDescription = "XPD"
-	AmountDetailsUnitDescriptionXPF AmountDetailsUnitDescription = "XPF"
-	AmountDetailsUnitDescriptionXPT AmountDetailsUnitDescription = "XPT"
-	AmountDetailsUnitDescriptionXRE AmountDetailsUnitDescription = "XRE"
-	AmountDetailsUnitDescriptionXSU AmountDetailsUnitDescription = "XSU"
-	AmountDetailsUnitDescriptionXTS AmountDetailsUnitDescription = "XTS"
-	AmountDetailsUnitDescriptionXUA AmountDetailsUnitDescription = "XUA"
-	AmountDetailsUnitDescriptionXXX AmountDetailsUnitDescription = "XXX"
-	AmountDetailsUnitDescriptionYDD AmountDetailsUnitDescription = "YDD"
-	AmountDetailsUnitDescriptionYER AmountDetailsUnitDescription = "YER"
-	AmountDetailsUnitDescriptionYUD AmountDetailsUnitDescription = "YUD"
-	AmountDetailsUnitDescriptionYUM AmountDetailsUnitDescription = "YUM"
-	AmountDetailsUnitDescriptionYUN AmountDetailsUnitDescription = "YUN"
-	AmountDetailsUnitDescriptionZAL AmountDetailsUnitDescription = "ZAL"
-	AmountDetailsUnitDescriptionZAR AmountDetailsUnitDescription = "ZAR"
-	AmountDetailsUnitDescriptionZMK AmountDetailsUnitDescription = "ZMK"
-	AmountDetailsUnitDescriptionZMW AmountDetailsUnitDescription = "ZMW"
-	AmountDetailsUnitDescriptionZRN AmountDetailsUnitDescription = "ZRN"
-	AmountDetailsUnitDescriptionZRZ AmountDetailsUnitDescription = "ZRZ"
-	AmountDetailsUnitDescriptionZWC AmountDetailsUnitDescription = "ZWC"
-	AmountDetailsUnitDescriptionZWD AmountDetailsUnitDescription = "ZWD"
-	AmountDetailsUnitDescriptionZWL AmountDetailsUnitDescription = "ZWL"
-	AmountDetailsUnitDescriptionZWN AmountDetailsUnitDescription = "ZWN"
-	AmountDetailsUnitDescriptionZWR AmountDetailsUnitDescription = "ZWR"
-)
-
-// Defines values for AmountDetailsUnitType.
-const (
-	AmountDetailsUnitTypeMONETARIO   AmountDetailsUnitType = "MONETARIO"
-	AmountDetailsUnitTypeOUTROS      AmountDetailsUnitType = "OUTROS"
-	AmountDetailsUnitTypePORCENTAGEM AmountDetailsUnitType = "PORCENTAGEM"
 )
 
 // Defines values for BeneficiaryInfoIdentificationType.
@@ -549,60 +148,60 @@ const (
 
 // Defines values for InsuranceAutoInsuredObjectFareCategory.
 const (
-	InsuranceAutoInsuredObjectFareCategoryN10  InsuranceAutoInsuredObjectFareCategory = "10"
-	InsuranceAutoInsuredObjectFareCategoryN11  InsuranceAutoInsuredObjectFareCategory = "11"
-	InsuranceAutoInsuredObjectFareCategoryN14A InsuranceAutoInsuredObjectFareCategory = "14A"
-	InsuranceAutoInsuredObjectFareCategoryN14B InsuranceAutoInsuredObjectFareCategory = "14B"
-	InsuranceAutoInsuredObjectFareCategoryN14C InsuranceAutoInsuredObjectFareCategory = "14C"
-	InsuranceAutoInsuredObjectFareCategoryN15  InsuranceAutoInsuredObjectFareCategory = "15"
-	InsuranceAutoInsuredObjectFareCategoryN16  InsuranceAutoInsuredObjectFareCategory = "16"
-	InsuranceAutoInsuredObjectFareCategoryN17  InsuranceAutoInsuredObjectFareCategory = "17"
-	InsuranceAutoInsuredObjectFareCategoryN18  InsuranceAutoInsuredObjectFareCategory = "18"
-	InsuranceAutoInsuredObjectFareCategoryN19  InsuranceAutoInsuredObjectFareCategory = "19"
-	InsuranceAutoInsuredObjectFareCategoryN20  InsuranceAutoInsuredObjectFareCategory = "20"
-	InsuranceAutoInsuredObjectFareCategoryN21  InsuranceAutoInsuredObjectFareCategory = "21"
-	InsuranceAutoInsuredObjectFareCategoryN22  InsuranceAutoInsuredObjectFareCategory = "22"
-	InsuranceAutoInsuredObjectFareCategoryN23  InsuranceAutoInsuredObjectFareCategory = "23"
-	InsuranceAutoInsuredObjectFareCategoryN30  InsuranceAutoInsuredObjectFareCategory = "30"
-	InsuranceAutoInsuredObjectFareCategoryN31  InsuranceAutoInsuredObjectFareCategory = "31"
-	InsuranceAutoInsuredObjectFareCategoryN40  InsuranceAutoInsuredObjectFareCategory = "40"
-	InsuranceAutoInsuredObjectFareCategoryN41  InsuranceAutoInsuredObjectFareCategory = "41"
-	InsuranceAutoInsuredObjectFareCategoryN42  InsuranceAutoInsuredObjectFareCategory = "42"
-	InsuranceAutoInsuredObjectFareCategoryN43  InsuranceAutoInsuredObjectFareCategory = "43"
-	InsuranceAutoInsuredObjectFareCategoryN50  InsuranceAutoInsuredObjectFareCategory = "50"
-	InsuranceAutoInsuredObjectFareCategoryN51  InsuranceAutoInsuredObjectFareCategory = "51"
-	InsuranceAutoInsuredObjectFareCategoryN52  InsuranceAutoInsuredObjectFareCategory = "52"
-	InsuranceAutoInsuredObjectFareCategoryN53  InsuranceAutoInsuredObjectFareCategory = "53"
-	InsuranceAutoInsuredObjectFareCategoryN58  InsuranceAutoInsuredObjectFareCategory = "58"
-	InsuranceAutoInsuredObjectFareCategoryN59  InsuranceAutoInsuredObjectFareCategory = "59"
-	InsuranceAutoInsuredObjectFareCategoryN60  InsuranceAutoInsuredObjectFareCategory = "60"
-	InsuranceAutoInsuredObjectFareCategoryN61  InsuranceAutoInsuredObjectFareCategory = "61"
-	InsuranceAutoInsuredObjectFareCategoryN62  InsuranceAutoInsuredObjectFareCategory = "62"
-	InsuranceAutoInsuredObjectFareCategoryN63  InsuranceAutoInsuredObjectFareCategory = "63"
-	InsuranceAutoInsuredObjectFareCategoryN68  InsuranceAutoInsuredObjectFareCategory = "68"
-	InsuranceAutoInsuredObjectFareCategoryN69  InsuranceAutoInsuredObjectFareCategory = "69"
-	InsuranceAutoInsuredObjectFareCategoryN70  InsuranceAutoInsuredObjectFareCategory = "70"
-	InsuranceAutoInsuredObjectFareCategoryN71  InsuranceAutoInsuredObjectFareCategory = "71"
-	InsuranceAutoInsuredObjectFareCategoryN72  InsuranceAutoInsuredObjectFareCategory = "72"
-	InsuranceAutoInsuredObjectFareCategoryN73  InsuranceAutoInsuredObjectFareCategory = "73"
-	InsuranceAutoInsuredObjectFareCategoryN80  InsuranceAutoInsuredObjectFareCategory = "80"
-	InsuranceAutoInsuredObjectFareCategoryN81  InsuranceAutoInsuredObjectFareCategory = "81"
-	InsuranceAutoInsuredObjectFareCategoryN82  InsuranceAutoInsuredObjectFareCategory = "82"
-	InsuranceAutoInsuredObjectFareCategoryN83  InsuranceAutoInsuredObjectFareCategory = "83"
-	InsuranceAutoInsuredObjectFareCategoryN84  InsuranceAutoInsuredObjectFareCategory = "84"
-	InsuranceAutoInsuredObjectFareCategoryN85  InsuranceAutoInsuredObjectFareCategory = "85"
-	InsuranceAutoInsuredObjectFareCategoryN86  InsuranceAutoInsuredObjectFareCategory = "86"
-	InsuranceAutoInsuredObjectFareCategoryN87  InsuranceAutoInsuredObjectFareCategory = "87"
-	InsuranceAutoInsuredObjectFareCategoryN88  InsuranceAutoInsuredObjectFareCategory = "88"
-	InsuranceAutoInsuredObjectFareCategoryN89  InsuranceAutoInsuredObjectFareCategory = "89"
-	InsuranceAutoInsuredObjectFareCategoryN90  InsuranceAutoInsuredObjectFareCategory = "90"
-	InsuranceAutoInsuredObjectFareCategoryN91  InsuranceAutoInsuredObjectFareCategory = "91"
-	InsuranceAutoInsuredObjectFareCategoryN92  InsuranceAutoInsuredObjectFareCategory = "92"
-	InsuranceAutoInsuredObjectFareCategoryN93  InsuranceAutoInsuredObjectFareCategory = "93"
-	InsuranceAutoInsuredObjectFareCategoryN94  InsuranceAutoInsuredObjectFareCategory = "94"
-	InsuranceAutoInsuredObjectFareCategoryN95  InsuranceAutoInsuredObjectFareCategory = "95"
-	InsuranceAutoInsuredObjectFareCategoryN96  InsuranceAutoInsuredObjectFareCategory = "96"
-	InsuranceAutoInsuredObjectFareCategoryN97  InsuranceAutoInsuredObjectFareCategory = "97"
+	N10  InsuranceAutoInsuredObjectFareCategory = "10"
+	N11  InsuranceAutoInsuredObjectFareCategory = "11"
+	N14A InsuranceAutoInsuredObjectFareCategory = "14A"
+	N14B InsuranceAutoInsuredObjectFareCategory = "14B"
+	N14C InsuranceAutoInsuredObjectFareCategory = "14C"
+	N15  InsuranceAutoInsuredObjectFareCategory = "15"
+	N16  InsuranceAutoInsuredObjectFareCategory = "16"
+	N17  InsuranceAutoInsuredObjectFareCategory = "17"
+	N18  InsuranceAutoInsuredObjectFareCategory = "18"
+	N19  InsuranceAutoInsuredObjectFareCategory = "19"
+	N20  InsuranceAutoInsuredObjectFareCategory = "20"
+	N21  InsuranceAutoInsuredObjectFareCategory = "21"
+	N22  InsuranceAutoInsuredObjectFareCategory = "22"
+	N23  InsuranceAutoInsuredObjectFareCategory = "23"
+	N30  InsuranceAutoInsuredObjectFareCategory = "30"
+	N31  InsuranceAutoInsuredObjectFareCategory = "31"
+	N40  InsuranceAutoInsuredObjectFareCategory = "40"
+	N41  InsuranceAutoInsuredObjectFareCategory = "41"
+	N42  InsuranceAutoInsuredObjectFareCategory = "42"
+	N43  InsuranceAutoInsuredObjectFareCategory = "43"
+	N50  InsuranceAutoInsuredObjectFareCategory = "50"
+	N51  InsuranceAutoInsuredObjectFareCategory = "51"
+	N52  InsuranceAutoInsuredObjectFareCategory = "52"
+	N53  InsuranceAutoInsuredObjectFareCategory = "53"
+	N58  InsuranceAutoInsuredObjectFareCategory = "58"
+	N59  InsuranceAutoInsuredObjectFareCategory = "59"
+	N60  InsuranceAutoInsuredObjectFareCategory = "60"
+	N61  InsuranceAutoInsuredObjectFareCategory = "61"
+	N62  InsuranceAutoInsuredObjectFareCategory = "62"
+	N63  InsuranceAutoInsuredObjectFareCategory = "63"
+	N68  InsuranceAutoInsuredObjectFareCategory = "68"
+	N69  InsuranceAutoInsuredObjectFareCategory = "69"
+	N70  InsuranceAutoInsuredObjectFareCategory = "70"
+	N71  InsuranceAutoInsuredObjectFareCategory = "71"
+	N72  InsuranceAutoInsuredObjectFareCategory = "72"
+	N73  InsuranceAutoInsuredObjectFareCategory = "73"
+	N80  InsuranceAutoInsuredObjectFareCategory = "80"
+	N81  InsuranceAutoInsuredObjectFareCategory = "81"
+	N82  InsuranceAutoInsuredObjectFareCategory = "82"
+	N83  InsuranceAutoInsuredObjectFareCategory = "83"
+	N84  InsuranceAutoInsuredObjectFareCategory = "84"
+	N85  InsuranceAutoInsuredObjectFareCategory = "85"
+	N86  InsuranceAutoInsuredObjectFareCategory = "86"
+	N87  InsuranceAutoInsuredObjectFareCategory = "87"
+	N88  InsuranceAutoInsuredObjectFareCategory = "88"
+	N89  InsuranceAutoInsuredObjectFareCategory = "89"
+	N90  InsuranceAutoInsuredObjectFareCategory = "90"
+	N91  InsuranceAutoInsuredObjectFareCategory = "91"
+	N92  InsuranceAutoInsuredObjectFareCategory = "92"
+	N93  InsuranceAutoInsuredObjectFareCategory = "93"
+	N94  InsuranceAutoInsuredObjectFareCategory = "94"
+	N95  InsuranceAutoInsuredObjectFareCategory = "95"
+	N96  InsuranceAutoInsuredObjectFareCategory = "96"
+	N97  InsuranceAutoInsuredObjectFareCategory = "97"
 )
 
 // Defines values for InsuranceAutoInsuredObjectModality.
@@ -1732,262 +1331,262 @@ const (
 
 // Defines values for PrincipalsCountry.
 const (
-	ABW PrincipalsCountry = "ABW"
-	AFG PrincipalsCountry = "AFG"
-	AGO PrincipalsCountry = "AGO"
-	AIA PrincipalsCountry = "AIA"
-	ALA PrincipalsCountry = "ALA"
-	ALB PrincipalsCountry = "ALB"
-	AND PrincipalsCountry = "AND"
-	ARE PrincipalsCountry = "ARE"
-	ARG PrincipalsCountry = "ARG"
-	ARM PrincipalsCountry = "ARM"
-	ASM PrincipalsCountry = "ASM"
-	ATA PrincipalsCountry = "ATA"
-	ATF PrincipalsCountry = "ATF"
-	ATG PrincipalsCountry = "ATG"
-	AUS PrincipalsCountry = "AUS"
-	AUT PrincipalsCountry = "AUT"
-	AZE PrincipalsCountry = "AZE"
-	BDI PrincipalsCountry = "BDI"
-	BEL PrincipalsCountry = "BEL"
-	BEN PrincipalsCountry = "BEN"
-	BES PrincipalsCountry = "BES"
-	BFA PrincipalsCountry = "BFA"
-	BGD PrincipalsCountry = "BGD"
-	BGR PrincipalsCountry = "BGR"
-	BHR PrincipalsCountry = "BHR"
-	BHS PrincipalsCountry = "BHS"
-	BIH PrincipalsCountry = "BIH"
-	BLM PrincipalsCountry = "BLM"
-	BLR PrincipalsCountry = "BLR"
-	BLZ PrincipalsCountry = "BLZ"
-	BMU PrincipalsCountry = "BMU"
-	BOL PrincipalsCountry = "BOL"
-	BRA PrincipalsCountry = "BRA"
-	BRB PrincipalsCountry = "BRB"
-	BRN PrincipalsCountry = "BRN"
-	BTN PrincipalsCountry = "BTN"
-	BVT PrincipalsCountry = "BVT"
-	BWA PrincipalsCountry = "BWA"
-	CAF PrincipalsCountry = "CAF"
-	CAN PrincipalsCountry = "CAN"
-	CCK PrincipalsCountry = "CCK"
-	CHE PrincipalsCountry = "CHE"
-	CHL PrincipalsCountry = "CHL"
-	CHN PrincipalsCountry = "CHN"
-	CIV PrincipalsCountry = "CIV"
-	CMR PrincipalsCountry = "CMR"
-	COD PrincipalsCountry = "COD"
-	COG PrincipalsCountry = "COG"
-	COK PrincipalsCountry = "COK"
-	COL PrincipalsCountry = "COL"
-	COM PrincipalsCountry = "COM"
-	CPV PrincipalsCountry = "CPV"
-	CRI PrincipalsCountry = "CRI"
-	CUB PrincipalsCountry = "CUB"
-	CUW PrincipalsCountry = "CUW"
-	CXR PrincipalsCountry = "CXR"
-	CYM PrincipalsCountry = "CYM"
-	CYP PrincipalsCountry = "CYP"
-	CZE PrincipalsCountry = "CZE"
-	DEU PrincipalsCountry = "DEU"
-	DJI PrincipalsCountry = "DJI"
-	DMA PrincipalsCountry = "DMA"
-	DNK PrincipalsCountry = "DNK"
-	DOM PrincipalsCountry = "DOM"
-	DZA PrincipalsCountry = "DZA"
-	ECU PrincipalsCountry = "ECU"
-	EGY PrincipalsCountry = "EGY"
-	ERI PrincipalsCountry = "ERI"
-	ESH PrincipalsCountry = "ESH"
-	ESP PrincipalsCountry = "ESP"
-	EST PrincipalsCountry = "EST"
-	ETH PrincipalsCountry = "ETH"
-	FIN PrincipalsCountry = "FIN"
-	FJI PrincipalsCountry = "FJI"
-	FLK PrincipalsCountry = "FLK"
-	FRA PrincipalsCountry = "FRA"
-	FRO PrincipalsCountry = "FRO"
-	FSM PrincipalsCountry = "FSM"
-	GAB PrincipalsCountry = "GAB"
-	GBR PrincipalsCountry = "GBR"
-	GEO PrincipalsCountry = "GEO"
-	GGY PrincipalsCountry = "GGY"
-	GHA PrincipalsCountry = "GHA"
-	GIB PrincipalsCountry = "GIB"
-	GIN PrincipalsCountry = "GIN"
-	GLP PrincipalsCountry = "GLP"
-	GMB PrincipalsCountry = "GMB"
-	GNB PrincipalsCountry = "GNB"
-	GNQ PrincipalsCountry = "GNQ"
-	GRC PrincipalsCountry = "GRC"
-	GRD PrincipalsCountry = "GRD"
-	GRL PrincipalsCountry = "GRL"
-	GTM PrincipalsCountry = "GTM"
-	GUF PrincipalsCountry = "GUF"
-	GUM PrincipalsCountry = "GUM"
-	GUY PrincipalsCountry = "GUY"
-	HKG PrincipalsCountry = "HKG"
-	HMD PrincipalsCountry = "HMD"
-	HND PrincipalsCountry = "HND"
-	HRV PrincipalsCountry = "HRV"
-	HTI PrincipalsCountry = "HTI"
-	HUN PrincipalsCountry = "HUN"
-	IDN PrincipalsCountry = "IDN"
-	IMN PrincipalsCountry = "IMN"
-	IND PrincipalsCountry = "IND"
-	IOT PrincipalsCountry = "IOT"
-	IRL PrincipalsCountry = "IRL"
-	IRN PrincipalsCountry = "IRN"
-	IRQ PrincipalsCountry = "IRQ"
-	ISL PrincipalsCountry = "ISL"
-	ISR PrincipalsCountry = "ISR"
-	ITA PrincipalsCountry = "ITA"
-	JAM PrincipalsCountry = "JAM"
-	JEY PrincipalsCountry = "JEY"
-	JOR PrincipalsCountry = "JOR"
-	JPN PrincipalsCountry = "JPN"
-	KAZ PrincipalsCountry = "KAZ"
-	KEN PrincipalsCountry = "KEN"
-	KGZ PrincipalsCountry = "KGZ"
-	KHM PrincipalsCountry = "KHM"
-	KIR PrincipalsCountry = "KIR"
-	KNA PrincipalsCountry = "KNA"
-	KOR PrincipalsCountry = "KOR"
-	KWT PrincipalsCountry = "KWT"
-	LAO PrincipalsCountry = "LAO"
-	LBN PrincipalsCountry = "LBN"
-	LBR PrincipalsCountry = "LBR"
-	LBY PrincipalsCountry = "LBY"
-	LCA PrincipalsCountry = "LCA"
-	LIE PrincipalsCountry = "LIE"
-	LKA PrincipalsCountry = "LKA"
-	LSO PrincipalsCountry = "LSO"
-	LTU PrincipalsCountry = "LTU"
-	LUX PrincipalsCountry = "LUX"
-	LVA PrincipalsCountry = "LVA"
-	MAC PrincipalsCountry = "MAC"
-	MAF PrincipalsCountry = "MAF"
-	MAR PrincipalsCountry = "MAR"
-	MCO PrincipalsCountry = "MCO"
-	MDA PrincipalsCountry = "MDA"
-	MDG PrincipalsCountry = "MDG"
-	MDV PrincipalsCountry = "MDV"
-	MEX PrincipalsCountry = "MEX"
-	MHL PrincipalsCountry = "MHL"
-	MKD PrincipalsCountry = "MKD"
-	MLI PrincipalsCountry = "MLI"
-	MLT PrincipalsCountry = "MLT"
-	MMR PrincipalsCountry = "MMR"
-	MNE PrincipalsCountry = "MNE"
-	MNG PrincipalsCountry = "MNG"
-	MNP PrincipalsCountry = "MNP"
-	MOZ PrincipalsCountry = "MOZ"
-	MRT PrincipalsCountry = "MRT"
-	MSR PrincipalsCountry = "MSR"
-	MTQ PrincipalsCountry = "MTQ"
-	MUS PrincipalsCountry = "MUS"
-	MWI PrincipalsCountry = "MWI"
-	MYS PrincipalsCountry = "MYS"
-	MYT PrincipalsCountry = "MYT"
-	NAM PrincipalsCountry = "NAM"
-	NCL PrincipalsCountry = "NCL"
-	NER PrincipalsCountry = "NER"
-	NFK PrincipalsCountry = "NFK"
-	NGA PrincipalsCountry = "NGA"
-	NIC PrincipalsCountry = "NIC"
-	NIU PrincipalsCountry = "NIU"
-	NLD PrincipalsCountry = "NLD"
-	NOR PrincipalsCountry = "NOR"
-	NPL PrincipalsCountry = "NPL"
-	NRU PrincipalsCountry = "NRU"
-	NZL PrincipalsCountry = "NZL"
-	OMN PrincipalsCountry = "OMN"
-	PAK PrincipalsCountry = "PAK"
-	PAN PrincipalsCountry = "PAN"
-	PCN PrincipalsCountry = "PCN"
-	PER PrincipalsCountry = "PER"
-	PHL PrincipalsCountry = "PHL"
-	PLW PrincipalsCountry = "PLW"
-	PNG PrincipalsCountry = "PNG"
-	POL PrincipalsCountry = "POL"
-	PRI PrincipalsCountry = "PRI"
-	PRK PrincipalsCountry = "PRK"
-	PRT PrincipalsCountry = "PRT"
-	PRY PrincipalsCountry = "PRY"
-	PSE PrincipalsCountry = "PSE"
-	PYF PrincipalsCountry = "PYF"
-	QAT PrincipalsCountry = "QAT"
-	REU PrincipalsCountry = "REU"
-	ROU PrincipalsCountry = "ROU"
-	RUS PrincipalsCountry = "RUS"
-	RWA PrincipalsCountry = "RWA"
-	SAU PrincipalsCountry = "SAU"
-	SDN PrincipalsCountry = "SDN"
-	SEN PrincipalsCountry = "SEN"
-	SGP PrincipalsCountry = "SGP"
-	SGS PrincipalsCountry = "SGS"
-	SHN PrincipalsCountry = "SHN"
-	SJM PrincipalsCountry = "SJM"
-	SLB PrincipalsCountry = "SLB"
-	SLE PrincipalsCountry = "SLE"
-	SLV PrincipalsCountry = "SLV"
-	SMR PrincipalsCountry = "SMR"
-	SOM PrincipalsCountry = "SOM"
-	SPM PrincipalsCountry = "SPM"
-	SRB PrincipalsCountry = "SRB"
-	SSD PrincipalsCountry = "SSD"
-	STP PrincipalsCountry = "STP"
-	SUR PrincipalsCountry = "SUR"
-	SVK PrincipalsCountry = "SVK"
-	SVN PrincipalsCountry = "SVN"
-	SWE PrincipalsCountry = "SWE"
-	SWZ PrincipalsCountry = "SWZ"
-	SXM PrincipalsCountry = "SXM"
-	SYC PrincipalsCountry = "SYC"
-	SYR PrincipalsCountry = "SYR"
-	TCA PrincipalsCountry = "TCA"
-	TCD PrincipalsCountry = "TCD"
-	TGO PrincipalsCountry = "TGO"
-	THA PrincipalsCountry = "THA"
-	TJK PrincipalsCountry = "TJK"
-	TKL PrincipalsCountry = "TKL"
-	TKM PrincipalsCountry = "TKM"
-	TLS PrincipalsCountry = "TLS"
-	TON PrincipalsCountry = "TON"
-	TTO PrincipalsCountry = "TTO"
-	TUN PrincipalsCountry = "TUN"
-	TUR PrincipalsCountry = "TUR"
-	TUV PrincipalsCountry = "TUV"
-	TWN PrincipalsCountry = "TWN"
-	TZA PrincipalsCountry = "TZA"
-	UGA PrincipalsCountry = "UGA"
-	UKR PrincipalsCountry = "UKR"
-	UMI PrincipalsCountry = "UMI"
-	URY PrincipalsCountry = "URY"
-	USA PrincipalsCountry = "USA"
-	UZB PrincipalsCountry = "UZB"
-	VAT PrincipalsCountry = "VAT"
-	VCT PrincipalsCountry = "VCT"
-	VEN PrincipalsCountry = "VEN"
-	VGB PrincipalsCountry = "VGB"
-	VIR PrincipalsCountry = "VIR"
-	VNM PrincipalsCountry = "VNM"
-	VUT PrincipalsCountry = "VUT"
-	WLF PrincipalsCountry = "WLF"
-	WSM PrincipalsCountry = "WSM"
-	YEM PrincipalsCountry = "YEM"
-	ZAF PrincipalsCountry = "ZAF"
-	ZMB PrincipalsCountry = "ZMB"
-	ZWE PrincipalsCountry = "ZWE"
+	PrincipalsCountryABW PrincipalsCountry = "ABW"
+	PrincipalsCountryAFG PrincipalsCountry = "AFG"
+	PrincipalsCountryAGO PrincipalsCountry = "AGO"
+	PrincipalsCountryAIA PrincipalsCountry = "AIA"
+	PrincipalsCountryALA PrincipalsCountry = "ALA"
+	PrincipalsCountryALB PrincipalsCountry = "ALB"
+	PrincipalsCountryAND PrincipalsCountry = "AND"
+	PrincipalsCountryARE PrincipalsCountry = "ARE"
+	PrincipalsCountryARG PrincipalsCountry = "ARG"
+	PrincipalsCountryARM PrincipalsCountry = "ARM"
+	PrincipalsCountryASM PrincipalsCountry = "ASM"
+	PrincipalsCountryATA PrincipalsCountry = "ATA"
+	PrincipalsCountryATF PrincipalsCountry = "ATF"
+	PrincipalsCountryATG PrincipalsCountry = "ATG"
+	PrincipalsCountryAUS PrincipalsCountry = "AUS"
+	PrincipalsCountryAUT PrincipalsCountry = "AUT"
+	PrincipalsCountryAZE PrincipalsCountry = "AZE"
+	PrincipalsCountryBDI PrincipalsCountry = "BDI"
+	PrincipalsCountryBEL PrincipalsCountry = "BEL"
+	PrincipalsCountryBEN PrincipalsCountry = "BEN"
+	PrincipalsCountryBES PrincipalsCountry = "BES"
+	PrincipalsCountryBFA PrincipalsCountry = "BFA"
+	PrincipalsCountryBGD PrincipalsCountry = "BGD"
+	PrincipalsCountryBGR PrincipalsCountry = "BGR"
+	PrincipalsCountryBHR PrincipalsCountry = "BHR"
+	PrincipalsCountryBHS PrincipalsCountry = "BHS"
+	PrincipalsCountryBIH PrincipalsCountry = "BIH"
+	PrincipalsCountryBLM PrincipalsCountry = "BLM"
+	PrincipalsCountryBLR PrincipalsCountry = "BLR"
+	PrincipalsCountryBLZ PrincipalsCountry = "BLZ"
+	PrincipalsCountryBMU PrincipalsCountry = "BMU"
+	PrincipalsCountryBOL PrincipalsCountry = "BOL"
+	PrincipalsCountryBRA PrincipalsCountry = "BRA"
+	PrincipalsCountryBRB PrincipalsCountry = "BRB"
+	PrincipalsCountryBRN PrincipalsCountry = "BRN"
+	PrincipalsCountryBTN PrincipalsCountry = "BTN"
+	PrincipalsCountryBVT PrincipalsCountry = "BVT"
+	PrincipalsCountryBWA PrincipalsCountry = "BWA"
+	PrincipalsCountryCAF PrincipalsCountry = "CAF"
+	PrincipalsCountryCAN PrincipalsCountry = "CAN"
+	PrincipalsCountryCCK PrincipalsCountry = "CCK"
+	PrincipalsCountryCHE PrincipalsCountry = "CHE"
+	PrincipalsCountryCHL PrincipalsCountry = "CHL"
+	PrincipalsCountryCHN PrincipalsCountry = "CHN"
+	PrincipalsCountryCIV PrincipalsCountry = "CIV"
+	PrincipalsCountryCMR PrincipalsCountry = "CMR"
+	PrincipalsCountryCOD PrincipalsCountry = "COD"
+	PrincipalsCountryCOG PrincipalsCountry = "COG"
+	PrincipalsCountryCOK PrincipalsCountry = "COK"
+	PrincipalsCountryCOL PrincipalsCountry = "COL"
+	PrincipalsCountryCOM PrincipalsCountry = "COM"
+	PrincipalsCountryCPV PrincipalsCountry = "CPV"
+	PrincipalsCountryCRI PrincipalsCountry = "CRI"
+	PrincipalsCountryCUB PrincipalsCountry = "CUB"
+	PrincipalsCountryCUW PrincipalsCountry = "CUW"
+	PrincipalsCountryCXR PrincipalsCountry = "CXR"
+	PrincipalsCountryCYM PrincipalsCountry = "CYM"
+	PrincipalsCountryCYP PrincipalsCountry = "CYP"
+	PrincipalsCountryCZE PrincipalsCountry = "CZE"
+	PrincipalsCountryDEU PrincipalsCountry = "DEU"
+	PrincipalsCountryDJI PrincipalsCountry = "DJI"
+	PrincipalsCountryDMA PrincipalsCountry = "DMA"
+	PrincipalsCountryDNK PrincipalsCountry = "DNK"
+	PrincipalsCountryDOM PrincipalsCountry = "DOM"
+	PrincipalsCountryDZA PrincipalsCountry = "DZA"
+	PrincipalsCountryECU PrincipalsCountry = "ECU"
+	PrincipalsCountryEGY PrincipalsCountry = "EGY"
+	PrincipalsCountryERI PrincipalsCountry = "ERI"
+	PrincipalsCountryESH PrincipalsCountry = "ESH"
+	PrincipalsCountryESP PrincipalsCountry = "ESP"
+	PrincipalsCountryEST PrincipalsCountry = "EST"
+	PrincipalsCountryETH PrincipalsCountry = "ETH"
+	PrincipalsCountryFIN PrincipalsCountry = "FIN"
+	PrincipalsCountryFJI PrincipalsCountry = "FJI"
+	PrincipalsCountryFLK PrincipalsCountry = "FLK"
+	PrincipalsCountryFRA PrincipalsCountry = "FRA"
+	PrincipalsCountryFRO PrincipalsCountry = "FRO"
+	PrincipalsCountryFSM PrincipalsCountry = "FSM"
+	PrincipalsCountryGAB PrincipalsCountry = "GAB"
+	PrincipalsCountryGBR PrincipalsCountry = "GBR"
+	PrincipalsCountryGEO PrincipalsCountry = "GEO"
+	PrincipalsCountryGGY PrincipalsCountry = "GGY"
+	PrincipalsCountryGHA PrincipalsCountry = "GHA"
+	PrincipalsCountryGIB PrincipalsCountry = "GIB"
+	PrincipalsCountryGIN PrincipalsCountry = "GIN"
+	PrincipalsCountryGLP PrincipalsCountry = "GLP"
+	PrincipalsCountryGMB PrincipalsCountry = "GMB"
+	PrincipalsCountryGNB PrincipalsCountry = "GNB"
+	PrincipalsCountryGNQ PrincipalsCountry = "GNQ"
+	PrincipalsCountryGRC PrincipalsCountry = "GRC"
+	PrincipalsCountryGRD PrincipalsCountry = "GRD"
+	PrincipalsCountryGRL PrincipalsCountry = "GRL"
+	PrincipalsCountryGTM PrincipalsCountry = "GTM"
+	PrincipalsCountryGUF PrincipalsCountry = "GUF"
+	PrincipalsCountryGUM PrincipalsCountry = "GUM"
+	PrincipalsCountryGUY PrincipalsCountry = "GUY"
+	PrincipalsCountryHKG PrincipalsCountry = "HKG"
+	PrincipalsCountryHMD PrincipalsCountry = "HMD"
+	PrincipalsCountryHND PrincipalsCountry = "HND"
+	PrincipalsCountryHRV PrincipalsCountry = "HRV"
+	PrincipalsCountryHTI PrincipalsCountry = "HTI"
+	PrincipalsCountryHUN PrincipalsCountry = "HUN"
+	PrincipalsCountryIDN PrincipalsCountry = "IDN"
+	PrincipalsCountryIMN PrincipalsCountry = "IMN"
+	PrincipalsCountryIND PrincipalsCountry = "IND"
+	PrincipalsCountryIOT PrincipalsCountry = "IOT"
+	PrincipalsCountryIRL PrincipalsCountry = "IRL"
+	PrincipalsCountryIRN PrincipalsCountry = "IRN"
+	PrincipalsCountryIRQ PrincipalsCountry = "IRQ"
+	PrincipalsCountryISL PrincipalsCountry = "ISL"
+	PrincipalsCountryISR PrincipalsCountry = "ISR"
+	PrincipalsCountryITA PrincipalsCountry = "ITA"
+	PrincipalsCountryJAM PrincipalsCountry = "JAM"
+	PrincipalsCountryJEY PrincipalsCountry = "JEY"
+	PrincipalsCountryJOR PrincipalsCountry = "JOR"
+	PrincipalsCountryJPN PrincipalsCountry = "JPN"
+	PrincipalsCountryKAZ PrincipalsCountry = "KAZ"
+	PrincipalsCountryKEN PrincipalsCountry = "KEN"
+	PrincipalsCountryKGZ PrincipalsCountry = "KGZ"
+	PrincipalsCountryKHM PrincipalsCountry = "KHM"
+	PrincipalsCountryKIR PrincipalsCountry = "KIR"
+	PrincipalsCountryKNA PrincipalsCountry = "KNA"
+	PrincipalsCountryKOR PrincipalsCountry = "KOR"
+	PrincipalsCountryKWT PrincipalsCountry = "KWT"
+	PrincipalsCountryLAO PrincipalsCountry = "LAO"
+	PrincipalsCountryLBN PrincipalsCountry = "LBN"
+	PrincipalsCountryLBR PrincipalsCountry = "LBR"
+	PrincipalsCountryLBY PrincipalsCountry = "LBY"
+	PrincipalsCountryLCA PrincipalsCountry = "LCA"
+	PrincipalsCountryLIE PrincipalsCountry = "LIE"
+	PrincipalsCountryLKA PrincipalsCountry = "LKA"
+	PrincipalsCountryLSO PrincipalsCountry = "LSO"
+	PrincipalsCountryLTU PrincipalsCountry = "LTU"
+	PrincipalsCountryLUX PrincipalsCountry = "LUX"
+	PrincipalsCountryLVA PrincipalsCountry = "LVA"
+	PrincipalsCountryMAC PrincipalsCountry = "MAC"
+	PrincipalsCountryMAF PrincipalsCountry = "MAF"
+	PrincipalsCountryMAR PrincipalsCountry = "MAR"
+	PrincipalsCountryMCO PrincipalsCountry = "MCO"
+	PrincipalsCountryMDA PrincipalsCountry = "MDA"
+	PrincipalsCountryMDG PrincipalsCountry = "MDG"
+	PrincipalsCountryMDV PrincipalsCountry = "MDV"
+	PrincipalsCountryMEX PrincipalsCountry = "MEX"
+	PrincipalsCountryMHL PrincipalsCountry = "MHL"
+	PrincipalsCountryMKD PrincipalsCountry = "MKD"
+	PrincipalsCountryMLI PrincipalsCountry = "MLI"
+	PrincipalsCountryMLT PrincipalsCountry = "MLT"
+	PrincipalsCountryMMR PrincipalsCountry = "MMR"
+	PrincipalsCountryMNE PrincipalsCountry = "MNE"
+	PrincipalsCountryMNG PrincipalsCountry = "MNG"
+	PrincipalsCountryMNP PrincipalsCountry = "MNP"
+	PrincipalsCountryMOZ PrincipalsCountry = "MOZ"
+	PrincipalsCountryMRT PrincipalsCountry = "MRT"
+	PrincipalsCountryMSR PrincipalsCountry = "MSR"
+	PrincipalsCountryMTQ PrincipalsCountry = "MTQ"
+	PrincipalsCountryMUS PrincipalsCountry = "MUS"
+	PrincipalsCountryMWI PrincipalsCountry = "MWI"
+	PrincipalsCountryMYS PrincipalsCountry = "MYS"
+	PrincipalsCountryMYT PrincipalsCountry = "MYT"
+	PrincipalsCountryNAM PrincipalsCountry = "NAM"
+	PrincipalsCountryNCL PrincipalsCountry = "NCL"
+	PrincipalsCountryNER PrincipalsCountry = "NER"
+	PrincipalsCountryNFK PrincipalsCountry = "NFK"
+	PrincipalsCountryNGA PrincipalsCountry = "NGA"
+	PrincipalsCountryNIC PrincipalsCountry = "NIC"
+	PrincipalsCountryNIU PrincipalsCountry = "NIU"
+	PrincipalsCountryNLD PrincipalsCountry = "NLD"
+	PrincipalsCountryNOR PrincipalsCountry = "NOR"
+	PrincipalsCountryNPL PrincipalsCountry = "NPL"
+	PrincipalsCountryNRU PrincipalsCountry = "NRU"
+	PrincipalsCountryNZL PrincipalsCountry = "NZL"
+	PrincipalsCountryOMN PrincipalsCountry = "OMN"
+	PrincipalsCountryPAK PrincipalsCountry = "PAK"
+	PrincipalsCountryPAN PrincipalsCountry = "PAN"
+	PrincipalsCountryPCN PrincipalsCountry = "PCN"
+	PrincipalsCountryPER PrincipalsCountry = "PER"
+	PrincipalsCountryPHL PrincipalsCountry = "PHL"
+	PrincipalsCountryPLW PrincipalsCountry = "PLW"
+	PrincipalsCountryPNG PrincipalsCountry = "PNG"
+	PrincipalsCountryPOL PrincipalsCountry = "POL"
+	PrincipalsCountryPRI PrincipalsCountry = "PRI"
+	PrincipalsCountryPRK PrincipalsCountry = "PRK"
+	PrincipalsCountryPRT PrincipalsCountry = "PRT"
+	PrincipalsCountryPRY PrincipalsCountry = "PRY"
+	PrincipalsCountryPSE PrincipalsCountry = "PSE"
+	PrincipalsCountryPYF PrincipalsCountry = "PYF"
+	PrincipalsCountryQAT PrincipalsCountry = "QAT"
+	PrincipalsCountryREU PrincipalsCountry = "REU"
+	PrincipalsCountryROU PrincipalsCountry = "ROU"
+	PrincipalsCountryRUS PrincipalsCountry = "RUS"
+	PrincipalsCountryRWA PrincipalsCountry = "RWA"
+	PrincipalsCountrySAU PrincipalsCountry = "SAU"
+	PrincipalsCountrySDN PrincipalsCountry = "SDN"
+	PrincipalsCountrySEN PrincipalsCountry = "SEN"
+	PrincipalsCountrySGP PrincipalsCountry = "SGP"
+	PrincipalsCountrySGS PrincipalsCountry = "SGS"
+	PrincipalsCountrySHN PrincipalsCountry = "SHN"
+	PrincipalsCountrySJM PrincipalsCountry = "SJM"
+	PrincipalsCountrySLB PrincipalsCountry = "SLB"
+	PrincipalsCountrySLE PrincipalsCountry = "SLE"
+	PrincipalsCountrySLV PrincipalsCountry = "SLV"
+	PrincipalsCountrySMR PrincipalsCountry = "SMR"
+	PrincipalsCountrySOM PrincipalsCountry = "SOM"
+	PrincipalsCountrySPM PrincipalsCountry = "SPM"
+	PrincipalsCountrySRB PrincipalsCountry = "SRB"
+	PrincipalsCountrySSD PrincipalsCountry = "SSD"
+	PrincipalsCountrySTP PrincipalsCountry = "STP"
+	PrincipalsCountrySUR PrincipalsCountry = "SUR"
+	PrincipalsCountrySVK PrincipalsCountry = "SVK"
+	PrincipalsCountrySVN PrincipalsCountry = "SVN"
+	PrincipalsCountrySWE PrincipalsCountry = "SWE"
+	PrincipalsCountrySWZ PrincipalsCountry = "SWZ"
+	PrincipalsCountrySXM PrincipalsCountry = "SXM"
+	PrincipalsCountrySYC PrincipalsCountry = "SYC"
+	PrincipalsCountrySYR PrincipalsCountry = "SYR"
+	PrincipalsCountryTCA PrincipalsCountry = "TCA"
+	PrincipalsCountryTCD PrincipalsCountry = "TCD"
+	PrincipalsCountryTGO PrincipalsCountry = "TGO"
+	PrincipalsCountryTHA PrincipalsCountry = "THA"
+	PrincipalsCountryTJK PrincipalsCountry = "TJK"
+	PrincipalsCountryTKL PrincipalsCountry = "TKL"
+	PrincipalsCountryTKM PrincipalsCountry = "TKM"
+	PrincipalsCountryTLS PrincipalsCountry = "TLS"
+	PrincipalsCountryTON PrincipalsCountry = "TON"
+	PrincipalsCountryTTO PrincipalsCountry = "TTO"
+	PrincipalsCountryTUN PrincipalsCountry = "TUN"
+	PrincipalsCountryTUR PrincipalsCountry = "TUR"
+	PrincipalsCountryTUV PrincipalsCountry = "TUV"
+	PrincipalsCountryTWN PrincipalsCountry = "TWN"
+	PrincipalsCountryTZA PrincipalsCountry = "TZA"
+	PrincipalsCountryUGA PrincipalsCountry = "UGA"
+	PrincipalsCountryUKR PrincipalsCountry = "UKR"
+	PrincipalsCountryUMI PrincipalsCountry = "UMI"
+	PrincipalsCountryURY PrincipalsCountry = "URY"
+	PrincipalsCountryUSA PrincipalsCountry = "USA"
+	PrincipalsCountryUZB PrincipalsCountry = "UZB"
+	PrincipalsCountryVAT PrincipalsCountry = "VAT"
+	PrincipalsCountryVCT PrincipalsCountry = "VCT"
+	PrincipalsCountryVEN PrincipalsCountry = "VEN"
+	PrincipalsCountryVGB PrincipalsCountry = "VGB"
+	PrincipalsCountryVIR PrincipalsCountry = "VIR"
+	PrincipalsCountryVNM PrincipalsCountry = "VNM"
+	PrincipalsCountryVUT PrincipalsCountry = "VUT"
+	PrincipalsCountryWLF PrincipalsCountry = "WLF"
+	PrincipalsCountryWSM PrincipalsCountry = "WSM"
+	PrincipalsCountryYEM PrincipalsCountry = "YEM"
+	PrincipalsCountryZAF PrincipalsCountry = "ZAF"
+	PrincipalsCountryZMB PrincipalsCountry = "ZMB"
+	PrincipalsCountryZWE PrincipalsCountry = "ZWE"
 )
 
 // Defines values for PrincipalsIdentificationType.
 const (
-	PrincipalsIdentificationTypeCNPJ   PrincipalsIdentificationType = "CNPJ"
-	PrincipalsIdentificationTypeCPF    PrincipalsIdentificationType = "CPF"
-	PrincipalsIdentificationTypeOUTROS PrincipalsIdentificationType = "OUTROS"
+	CNPJ   PrincipalsIdentificationType = "CNPJ"
+	CPF    PrincipalsIdentificationType = "CPF"
+	OUTROS PrincipalsIdentificationType = "OUTROS"
 )
 
 // Defines values for PrincipalsState.
@@ -2023,40 +1622,7 @@ const (
 )
 
 // AmountDetails Detalhes de valores/limites
-type AmountDetails struct {
-	// Amount Valor.
-	// Exemplos de preenchimento do campo:
-	//
-	// PORCENTAGEM: 90.85
-	//
-	// MONETARIO: 62500.67
-	//
-	// OUTROS: 1000 (Exemplo de outro tipo: horas)
-	Amount string `json:"amount"`
-
-	// Unit Preenchimento obrigatório em caso de valor "MONETARIO" ser informado no campo "unitType"
-	Unit *struct {
-		Code AmountDetailsUnitCode `json:"code"`
-
-		// Description Moeda da Parcela, de acordo com ISO-4217.
-		Description AmountDetailsUnitDescription `json:"description"`
-	} `json:"unit,omitempty"`
-
-	// UnitType Tipo da unidade referente ao valor inserido no campo Amount
-	UnitType AmountDetailsUnitType `json:"unitType"`
-
-	// UnitTypeOthers Caso o tipo do valor informado for "Outros", esse campo deve ser preenchido com o tipo do valor, obrigatoriamente.
-	UnitTypeOthers *string `json:"unitTypeOthers,omitempty"`
-}
-
-// AmountDetailsUnitCode defines model for AmountDetails.Unit.Code.
-type AmountDetailsUnitCode string
-
-// AmountDetailsUnitDescription Moeda da Parcela, de acordo com ISO-4217.
-type AmountDetailsUnitDescription string
-
-// AmountDetailsUnitType Tipo da unidade referente ao valor inserido no campo Amount
-type AmountDetailsUnitType string
+type AmountDetails = insurer.AmountDetails
 
 // BeneficiaryInfo defines model for BeneficiaryInfo.
 type BeneficiaryInfo struct {
@@ -4787,169 +4353,169 @@ var swaggerSpec = []string{
 	"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",
-	"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",
-	"mgYBAA==",
+	"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",
+	"+Jg6HH/+5n8FAAD//xO4wD8MBwEA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

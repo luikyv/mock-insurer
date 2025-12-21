@@ -31,7 +31,6 @@ func main() {
 
 	slog.Info("setting up db migration and seeding", "env", Env)
 
-	// Database.
 	slog.Info("connecting to database")
 	db, err := cmdutil.DB(ctx, DBCredentials)
 	if err != nil {
@@ -40,7 +39,6 @@ func main() {
 	}
 	slog.Info("successfully connected to database")
 
-	// Migrations.
 	slog.Info("running database migrations")
 	if err := runMigrations(db); err != nil {
 		slog.Error("failed to run migrations", "error", err)
@@ -48,7 +46,6 @@ func main() {
 	}
 	slog.Info("migrations completed successfully")
 
-	// Seed database.
 	slog.Info("seeding database")
 	if err := seedDatabase(ctx, db); err != nil {
 		slog.Error("failed to seed database", "error", err)
@@ -101,6 +98,7 @@ func seedDatabase(ctx context.Context, db *gorm.DB) error {
 }
 
 func seedOAuthClients(ctx context.Context, db *gorm.DB) error {
+	scopes := "openid consents consent resources insurance-auto quote-auto quote-auto-lead dynamic-fields"
 	testClientOne := &client.Client{
 		ID: "client_one",
 		Data: goidc.Client{
@@ -111,7 +109,7 @@ func seedOAuthClients(ctx context.Context, db *gorm.DB) error {
 				GrantTypes:           []goidc.GrantType{"authorization_code", "client_credentials", "implicit", "refresh_token"},
 				ResponseTypes:        []goidc.ResponseType{"code id_token"},
 				PublicJWKSURI:        "https://keystore.local/00000000-0000-0000-0000-000000000000/11111111-1111-1111-1111-111111111111/application.jwks",
-				ScopeIDs:             "openid consents consent resources insurance-auto",
+				ScopeIDs:             scopes,
 				IDTokenKeyEncAlg:     "RSA-OAEP",
 				IDTokenContentEncAlg: "A256GCM",
 				TokenAuthnMethod:     goidc.ClientAuthnPrivateKeyJWT,
@@ -139,7 +137,7 @@ func seedOAuthClients(ctx context.Context, db *gorm.DB) error {
 				GrantTypes:           []goidc.GrantType{"authorization_code", "client_credentials", "implicit", "refresh_token"},
 				ResponseTypes:        []goidc.ResponseType{"code id_token"},
 				PublicJWKSURI:        "https://keystore.local/00000000-0000-0000-0000-000000000000/22222222-2222-2222-2222-222222222222/application.jwks",
-				ScopeIDs:             "openid consents consent resources insurance-auto",
+				ScopeIDs:             scopes,
 				IDTokenKeyEncAlg:     "RSA-OAEP",
 				IDTokenContentEncAlg: "A256GCM",
 				TokenAuthnMethod:     goidc.ClientAuthnPrivateKeyJWT,

@@ -306,7 +306,29 @@ func main() {
 							"ApiFamilyType": "resources",
 							"ApiVersion": "3.0.0",
 							"Status": "Active"
-						}
+						},
+						{
+                        	"ApiFamilyType": "quote-auto",
+                        	"ApiVersion": "1.10.0",
+                        	"Status": "Active",
+                        	"ApiDiscoveryEndpoints": [
+                        	    {
+                        	        "ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/quote-auto/v1/lead/request"
+                        	    },
+                        	    {
+                        	        "ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/quote-auto/v1/lead/request/{consentId}"
+                        	    },
+                        	    {
+                        	        "ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/quote-auto/v1/request/{consentId}/quote-status"
+                        	    },
+                        	    {
+                        	        "ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/quote-auto/v1/request"
+                        	    },
+                        	    {
+                        	        "ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/quote-auto/v1/request/{consentId}"
+                        	    }
+                        	]
+                    	}
 					]
 				}
 				]

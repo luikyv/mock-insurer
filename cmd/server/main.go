@@ -16,10 +16,12 @@ import (
 	autoapi "github.com/luikyv/mock-insurer/internal/api/auto"
 	consentapi "github.com/luikyv/mock-insurer/internal/api/consent"
 	oidcapi "github.com/luikyv/mock-insurer/internal/api/oidc"
+	quoteautoapi "github.com/luikyv/mock-insurer/internal/api/quoteauto"
 	resourceapi "github.com/luikyv/mock-insurer/internal/api/resource"
 	"github.com/luikyv/mock-insurer/internal/auto"
 	"github.com/luikyv/mock-insurer/internal/client"
 	"github.com/luikyv/mock-insurer/internal/idempotency"
+	quoteauto "github.com/luikyv/mock-insurer/internal/quote/auto"
 	"github.com/luikyv/mock-insurer/internal/resource"
 	"github.com/luikyv/mock-insurer/internal/webhook"
 
@@ -83,6 +85,7 @@ func main() {
 	resourceService := resource.NewService(db)
 	consentService := consent.NewService(db, userService)
 	autoService := auto.NewService(db)
+	quoteAutoService := quoteauto.NewService(db)
 
 	op, err := openidProvider(db, clientService, userService, consentService, autoService)
 	if err != nil {
@@ -97,6 +100,7 @@ func main() {
 	consentapi.NewServer(APIMTLSHost, consentService, op, idempotencyService).RegisterRoutes(mux)
 	resourceapi.NewServer(APIMTLSHost, resourceService, consentService, op).RegisterRoutes(mux)
 	autoapi.NewServer(APIMTLSHost, autoService, consentService, op).RegisterRoutes(mux)
+	quoteautoapi.NewServer(APIMTLSHost, quoteAutoService, idempotencyService, op).RegisterRoutes(mux)
 
 	handler := middleware(mux)
 	slog.Info("starting mock insurer")
@@ -182,6 +186,9 @@ func openidProvider(
 		consent.Scope,
 		resource.Scope,
 		auto.Scope,
+		quoteauto.Scope,
+		quoteauto.ScopeLead,
+		goidc.NewScope("dynamic-fields"),
 	}
 
 	var jwks goidc.JSONWebKeySet

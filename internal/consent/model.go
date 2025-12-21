@@ -32,8 +32,9 @@ type Consent struct {
 	OwnerID                *uuid.UUID
 	BusinessIdentification *string
 	BusinessRel            *Relation
-	ClientID               string
-	Rejection              *Rejection `gorm:"serializer:json"`
+	// TODO: Do I need to store the client ID here?
+	ClientID  string
+	Rejection *Rejection `gorm:"serializer:json"`
 
 	OrgID     string
 	CreatedAt timeutil.DateTime

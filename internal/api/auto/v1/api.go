@@ -13,6 +13,7 @@ import (
 	"github.com/luikyv/mock-insurer/internal/auto"
 	"github.com/luikyv/mock-insurer/internal/consent"
 	"github.com/luikyv/mock-insurer/internal/errorutil"
+	"github.com/luikyv/mock-insurer/internal/insurer"
 	"github.com/luikyv/mock-insurer/internal/page"
 )
 
@@ -121,7 +122,7 @@ func (s Server) GetInsuranceAuto(ctx context.Context, req GetInsuranceAutoReques
 			} `json:"policies"`
 		} `json:"companies"`
 	}{
-		Brand: "Mock Insurer",
+		Brand: insurer.Brand,
 		Companies: []struct {
 			CnpjNumber  string `json:"cnpjNumber"`
 			CompanyName string `json:"companyName"`
@@ -130,8 +131,8 @@ func (s Server) GetInsuranceAuto(ctx context.Context, req GetInsuranceAutoReques
 				ProductName string `json:"productName"`
 			} `json:"policies"`
 		}{{
-			CnpjNumber:  "00000000000000",
-			CompanyName: "Mock Insurer",
+			CnpjNumber:  insurer.CNPJ,
+			CompanyName: insurer.Brand,
 			Policies:    respPolicies,
 		}},
 	})
@@ -148,19 +149,35 @@ func (s Server) GetInsuranceAutopolicyIDPolicyInfo(ctx context.Context, request 
 	}
 
 	policyInfo := InsuranceAutoPolicyInfo{
-		PolicyID:                      policy.ID,
-		DocumentType:                  InsuranceAutoPolicyInfoDocumentType(policy.Data.DocumentType),
-		IssuanceType:                  InsuranceAutoPolicyInfoIssuanceType(policy.Data.IssuanceType),
-		IssuanceDate:                  policy.Data.IssuanceDate,
-		TermStartDate:                 policy.Data.TermStartDate,
-		TermEndDate:                   policy.Data.TermEndDate,
-		ProposalID:                    policy.Data.ProposalID,
-		MaxLMG:                        convertAmountDetails(policy.Data.MaxLMG),
+		PolicyID:      policy.ID,
+		DocumentType:  InsuranceAutoPolicyInfoDocumentType(policy.Data.DocumentType),
+		IssuanceType:  InsuranceAutoPolicyInfoIssuanceType(policy.Data.IssuanceType),
+		IssuanceDate:  policy.Data.IssuanceDate,
+		TermStartDate: policy.Data.TermStartDate,
+		TermEndDate:   policy.Data.TermEndDate,
+		ProposalID:    policy.Data.ProposalID,
+		Beneficiaries: func() *[]BeneficiaryInfo {
+			if policy.Data.Beneficiaries == nil {
+				return nil
+			}
+			beneficiaries := make([]BeneficiaryInfo, len(*policy.Data.Beneficiaries))
+			for i, b := range *policy.Data.Beneficiaries {
+				beneficiaries[i] = BeneficiaryInfo{
+					Identification:           b.Identification,
+					IdentificationType:       BeneficiaryInfoIdentificationType(b.IdentificationType),
+					IdentificationTypeOthers: b.IdentificationTypeOthers,
+					Name:                     b.Name,
+				}
+			}
+			return &beneficiaries
+		}(),
+		MaxLMG:                        policy.Data.MaxLMG,
 		SusepProcessNumber:            policy.Data.SusepProcessNumber,
 		GroupCertificateID:            policy.Data.GroupCertificateID,
 		LeadInsurerCode:               policy.Data.LeadInsurerCode,
 		LeadInsurerPolicyID:           policy.Data.LeadInsurerPolicyID,
 		CoinsuranceRetainedPercentage: policy.Data.CoinsuranceRetainedPercentage,
+		RepairNetwork:                 InsuranceAutoPolicyInfoRepairNetwork(policy.Data.RepairNetwork),
 		RepairNetworkOthers:           policy.Data.RepairNetworkOthers,
 		RepairedPartsUsageType:        InsuranceAutoPolicyInfoRepairedPartsUsageType(policy.Data.RepairedPartsUsageType),
 		RepairedPartsClassification:   InsuranceAutoPolicyInfoRepairedPartsClassification(policy.Data.RepairedPartsClassification),
@@ -171,24 +188,6 @@ func (s Server) GetInsuranceAutopolicyIDPolicyInfo(ctx context.Context, request 
 		IsExpiredRiskPolicy:           policy.Data.IsExpiredRiskPolicy,
 		BonusDiscountRate:             policy.Data.BonusDiscountRate,
 		BonusClass:                    policy.Data.BonusClass,
-	}
-
-	if policy.Data.RepairNetwork != nil {
-		repairNetwork := InsuranceAutoPolicyInfoRepairNetwork(*policy.Data.RepairNetwork)
-		policyInfo.RepairNetwork = repairNetwork
-	}
-
-	if policy.Data.Beneficiaries != nil {
-		beneficiaries := make([]BeneficiaryInfo, len(*policy.Data.Beneficiaries))
-		for i, b := range *policy.Data.Beneficiaries {
-			beneficiaries[i] = BeneficiaryInfo{
-				Identification:           b.Identification,
-				IdentificationType:       BeneficiaryInfoIdentificationType(b.IdentificationType),
-				IdentificationTypeOthers: b.IdentificationTypeOthers,
-				Name:                     b.Name,
-			}
-		}
-		policyInfo.Beneficiaries = &beneficiaries
 	}
 
 	if policy.Data.Principals != nil {
@@ -302,17 +301,12 @@ func (s Server) GetInsuranceAutopolicyIDPolicyInfo(ctx context.Context, request 
 		coverages := make([]InsuranceAutoInsuredObjectCoverage, len(obj.Coverages))
 		for j, cov := range obj.Coverages {
 			coverages[j] = InsuranceAutoInsuredObjectCoverage{
-				Branch:             cov.Branch,
-				Code:               InsuranceAutoInsuredObjectCoverageCode(cov.Code),
-				Description:        cov.Description,
-				InternalCode:       cov.InternalCode,
-				SusepProcessNumber: cov.SusepProcessNumber,
-				LMI: func() AmountDetails {
-					if cov.LMI != nil {
-						return convertAmountDetails(*cov.LMI)
-					}
-					return AmountDetails{}
-				}(),
+				Branch:                        cov.Branch,
+				Code:                          InsuranceAutoInsuredObjectCoverageCode(cov.Code),
+				Description:                   cov.Description,
+				InternalCode:                  cov.InternalCode,
+				SusepProcessNumber:            cov.SusepProcessNumber,
+				LMI:                           cov.LMI,
 				TermStartDate:                 cov.TermStartDate,
 				TermEndDate:                   cov.TermEndDate,
 				IsMainCoverage:                cov.IsMainCoverage,
@@ -320,7 +314,7 @@ func (s Server) GetInsuranceAutopolicyIDPolicyInfo(ctx context.Context, request 
 				Type:                          InsuranceAutoInsuredObjectCoverageType(cov.Type),
 				GracePeriod:                   cov.GracePeriod,
 				AdjustmentRate:                cov.AdjustmentRate,
-				PremiumAmount:                 convertAmountDetails(cov.PremiumAmount),
+				PremiumAmount:                 cov.PremiumAmount,
 				CompensationTypeOthers:        cov.CompensationTypeOthers,
 				PartialCompensationPercentage: cov.PartialCompensationPercentage,
 				PercentageOverLMI:             cov.PercentageOverLMI,
@@ -374,7 +368,7 @@ func (s Server) GetInsuranceAutopolicyIDPolicyInfo(ctx context.Context, request 
 				deductible := InsuranceAutoDeductible{
 					Type:                               InsuranceAutoDeductibleType(cov.Deductible.Type),
 					TypeAdditionalInfo:                 cov.Deductible.TypeOthers,
-					Amount:                             convertAmountDetailsPointer(cov.Deductible.Amount),
+					Amount:                             cov.Deductible.Amount,
 					Period:                             cov.Deductible.Period,
 					Description:                        cov.Deductible.Description,
 					HasDeductibleOverTotalCompensation: cov.Deductible.HasDeductibleOverTotalCompensation,
@@ -395,10 +389,10 @@ func (s Server) GetInsuranceAutopolicyIDPolicyInfo(ctx context.Context, request 
 				pos := InsuranceAutoPOS{
 					ApplicationType: InsuranceAutoPOSApplicationType(cov.POS.ApplicationType),
 					Description:     cov.POS.Description,
-					MinValue:        convertAmountDetailsPointer(cov.POS.MinValue),
-					MaxValue:        convertAmountDetailsPointer(cov.POS.MaxValue),
-					Percentage:      convertAmountDetailsPointer(cov.POS.Percentage),
-					ValueOthers:     convertAmountDetailsPointer(cov.POS.ValueOthers),
+					MinValue:        cov.POS.MinValue,
+					MaxValue:        cov.POS.MaxValue,
+					Percentage:      cov.POS.Percentage,
+					ValueOthers:     cov.POS.ValueOthers,
 				}
 				coverage.POS = &pos
 			}
@@ -476,7 +470,7 @@ func (s Server) GetInsuranceAutopolicyIDPremium(ctx context.Context, request Get
 			Branch:        cov.Branch,
 			Code:          InsuranceAutoPremiumCoverageCode(cov.Code),
 			Description:   cov.Description,
-			PremiumAmount: convertAmountDetails(cov.PremiumAmount),
+			PremiumAmount: cov.PremiumAmount,
 		}
 		coverages = append(coverages, coverageResp)
 	}
@@ -488,7 +482,7 @@ func (s Server) GetInsuranceAutopolicyIDPremium(ctx context.Context, request Get
 			MovementDate:             pay.MovementDate,
 			MovementType:             PaymentMovementType(pay.MovementType),
 			MovementPaymentsNumber:   float32(pay.MovementPaymentsNumber),
-			Amount:                   convertAmountDetails(pay.Amount),
+			Amount:                   pay.Amount,
 			MaturityDate:             pay.MaturityDate,
 			TellerID:                 pay.TellerID,
 			TellerIDOthers:           pay.TellerIDOthers,
@@ -515,7 +509,7 @@ func (s Server) GetInsuranceAutopolicyIDPremium(ctx context.Context, request Get
 
 	resp.Data = InsuranceAutoPremium{
 		PaymentsQuantity: policy.Data.Premium.PaymentsQuantity,
-		Amount:           convertAmountDetails(policy.Data.Premium.Amount),
+		Amount:           policy.Data.Premium.Amount,
 		Coverages:        coverages,
 		Payments:         payments,
 	}
@@ -547,7 +541,7 @@ func (s Server) GetInsuranceAutopolicyIDClaims(ctx context.Context, request GetI
 			OccurrenceDate:                 claim.Data.OccurrenceDate,
 			WarningDate:                    claim.Data.WarningDate,
 			ThirdPartyClaimDate:            claim.Data.ThirdPartyClaimDate,
-			Amount:                         convertAmountDetails(claim.Data.Amount),
+			Amount:                         claim.Data.Amount,
 			DenialJustificationDescription: claim.Data.DenialJustificationDescription,
 			Coverages:                      make([]InsuranceAutoClaimCoverage, 0, len(claim.Data.Coverages)),
 		}
@@ -605,43 +599,4 @@ func writeResponseError(w http.ResponseWriter, r *http.Request, err error) {
 	}
 
 	api.WriteError(w, r, err)
-}
-
-func convertAmountDetails(ad auto.AmountDetails) AmountDetails {
-	result := AmountDetails{
-		Amount:         ad.Amount,
-		UnitType:       AmountDetailsUnitType(ad.UnitType),
-		UnitTypeOthers: ad.UnitTypeOthers,
-	}
-	if ad.Unit != nil {
-		result.Unit = &struct {
-			Code        AmountDetailsUnitCode        `json:"code"`
-			Description AmountDetailsUnitDescription `json:"description"`
-		}{
-			Code:        AmountDetailsUnitCode(ad.Unit.Code),
-			Description: AmountDetailsUnitDescription(ad.Unit.Description),
-		}
-	}
-	return result
-}
-
-func convertAmountDetailsPointer(ad *auto.AmountDetails) *AmountDetails {
-	if ad == nil {
-		return nil
-	}
-	result := AmountDetails{
-		Amount:         ad.Amount,
-		UnitType:       AmountDetailsUnitType(ad.UnitType),
-		UnitTypeOthers: ad.UnitTypeOthers,
-	}
-	if ad.Unit != nil {
-		result.Unit = &struct {
-			Code        AmountDetailsUnitCode        `json:"code"`
-			Description AmountDetailsUnitDescription `json:"description"`
-		}{
-			Code:        AmountDetailsUnitCode(ad.Unit.Code),
-			Description: AmountDetailsUnitDescription(ad.Unit.Description),
-		}
-	}
-	return &result
 }

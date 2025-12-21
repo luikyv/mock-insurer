@@ -46,6 +46,10 @@ actions:
   update:
     x-go-name: XVHeader
 
+- target: $.components.parameters.xIdempotencyKey.schema.pattern
+  description: Remove the pattern from the xIdempotencyKey parameter since it's being validated at the idempotency middleware.
+  remove: true
+
 - target: $.components.schemas.AmountDetails
   update:
     x-go-type: insurer.AmountDetails

@@ -3,6 +3,7 @@ package auto
 import (
 	"github.com/google/uuid"
 	"github.com/luikyv/go-oidc/pkg/goidc"
+	"github.com/luikyv/mock-insurer/internal/insurer"
 	"github.com/luikyv/mock-insurer/internal/resource"
 	"github.com/luikyv/mock-insurer/internal/strutil"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
@@ -60,7 +61,7 @@ type PolicyData struct {
 	TermEndDate                   timeutil.BrazilDate         `json:"termEndDate"`
 	LeadInsurerCode               *string                     `json:"leadInsurerCode,omitempty"`
 	LeadInsurerPolicyID           *string                     `json:"leadInsurerPolicyID,omitempty"`
-	MaxLMG                        AmountDetails               `json:"maxLMG"`
+	MaxLMG                        insurer.AmountDetails       `json:"maxLMG"`
 	ProposalID                    string                      `json:"proposalID"`
 	Insureds                      []Insured                   `json:"insureds"`
 	Beneficiaries                 *[]Beneficiary              `json:"beneficiaries,omitempty"`
@@ -70,12 +71,12 @@ type PolicyData struct {
 	Coverages                     []Coverage                  `json:"coverages"`
 	CoinsuranceRetainedPercentage *string                     `json:"coinsuranceRetainedPercentage,omitempty"`
 	Coinurers                     *[]Coinsurer                `json:"coinurers,omitempty"`
-	RepairNetwork                 *RepairNetwork              `json:"repairNetwork,omitempty"`
+	RepairNetwork                 RepairNetwork               `json:"repairNetwork,omitempty"`
 	RepairNetworkOthers           *string                     `json:"repairNetworkOthers,omitempty"`
 	RepairedPartsUsageType        RepairedPartsUsageType      `json:"repairedPartsUsageType"`
 	RepairedPartsClassification   RepairedPartsClassification `json:"repairedPartsClassification"`
 	RepairedPartsNationality      RepairedPartsNationality    `json:"repairedPartsNationality"`
-	ValidityType                  ValidityType                `json:"validityType"`
+	ValidityType                  insurer.ValidityType        `json:"validityType"`
 	ValidateTypeOthers            *string                     `json:"validateTypeOthers,omitempty"`
 	OtherCompensations            *string                     `json:"otherCompensations,omitempty"`
 	OtherBenefits                 *OtherBenefits              `json:"otherBenefits,omitempty"`
@@ -88,33 +89,33 @@ type PolicyData struct {
 }
 
 type PremiumData struct {
-	PaymentsQuantity string            `json:"paymentsQuantity"`
-	Amount           AmountDetails     `json:"amount"`
-	Coverages        []PremiumCoverage `json:"coverages"`
-	Payments         []Payment         `json:"payments"`
+	PaymentsQuantity string                `json:"paymentsQuantity"`
+	Amount           insurer.AmountDetails `json:"amount"`
+	Coverages        []PremiumCoverage     `json:"coverages"`
+	Payments         []Payment             `json:"payments"`
 }
 
 type PremiumCoverage struct {
-	Branch        string        `json:"branch"`
-	Code          CoverageCode  `json:"code"`
-	Description   *string       `json:"description,omitempty"`
-	PremiumAmount AmountDetails `json:"premiumAmount"`
+	Branch        string                `json:"branch"`
+	Code          CoverageCode          `json:"code"`
+	Description   *string               `json:"description,omitempty"`
+	PremiumAmount insurer.AmountDetails `json:"premiumAmount"`
 }
 
 type Payment struct {
-	MovementDate             timeutil.BrazilDate    `json:"movementDate"`
-	MovementType             PaymentMovementType    `json:"movementType"`
-	MovementOrigin           *PaymentMovementOrigin `json:"movementOrigin,omitempty"`
-	MovementPaymentsNumber   int                    `json:"movementPaymentsNumber"`
-	Amount                   AmountDetails          `json:"amount"`
-	MaturityDate             timeutil.BrazilDate    `json:"maturityDate"`
-	TellerID                 *string                `json:"tellerId,omitempty"`
-	TellerIDType             *IdentificationType    `json:"tellerIdType,omitempty"`
-	TellerIDOthers           *string                `json:"tellerIdOthers,omitempty"`
-	TellerName               *string                `json:"tellerName,omitempty"`
-	FinancialInstitutionCode *string                `json:"financialInstitutionCode,omitempty"`
-	PaymentType              *PaymentType           `json:"paymentType,omitempty"`
-	PaymentTypeOthers        *string                `json:"paymentTypeOthers,omitempty"`
+	MovementDate             timeutil.BrazilDate         `json:"movementDate"`
+	MovementType             PaymentMovementType         `json:"movementType"`
+	MovementOrigin           *PaymentMovementOrigin      `json:"movementOrigin,omitempty"`
+	MovementPaymentsNumber   int                         `json:"movementPaymentsNumber"`
+	Amount                   insurer.AmountDetails       `json:"amount"`
+	MaturityDate             timeutil.BrazilDate         `json:"maturityDate"`
+	TellerID                 *string                     `json:"tellerId,omitempty"`
+	TellerIDType             *insurer.IdentificationType `json:"tellerIdType,omitempty"`
+	TellerIDOthers           *string                     `json:"tellerIdOthers,omitempty"`
+	TellerName               *string                     `json:"tellerName,omitempty"`
+	FinancialInstitutionCode *string                     `json:"financialInstitutionCode,omitempty"`
+	PaymentType              *PaymentType                `json:"paymentType,omitempty"`
+	PaymentTypeOthers        *string                     `json:"paymentTypeOthers,omitempty"`
 }
 
 type PaymentMovementType string
@@ -181,18 +182,18 @@ func (c *Claim) BeforeCreate(tx *gorm.DB) error {
 }
 
 type ClaimData struct {
-	Identification                 string               `json:"identification"`
-	DocumentationDeliveryDate      *timeutil.BrazilDate `json:"documentationDeliveryDate,omitempty"`
-	Status                         ClaimStatus          `json:"status"`
-	StatusAlterationDate           timeutil.BrazilDate  `json:"statusAlterationDate"`
-	OccurrenceDate                 timeutil.BrazilDate  `json:"occurrenceDate"`
-	WarningDate                    timeutil.BrazilDate  `json:"warningDate"`
-	ThirdPartyClaimDate            *timeutil.BrazilDate `json:"thirdPartyClaimDate,omitempty"`
-	Amount                         AmountDetails        `json:"amount"`
-	DenialJustification            *DenialJustification `json:"denialJustification,omitempty"`
-	DenialJustificationDescription *string              `json:"denialJustificationDescription,omitempty"`
-	Coverages                      []ClaimCoverage      `json:"coverages"`
-	BranchInfo                     *CoverageBranchInfo  `json:"branchInfo,omitempty"`
+	Identification                 string                `json:"identification"`
+	DocumentationDeliveryDate      *timeutil.BrazilDate  `json:"documentationDeliveryDate,omitempty"`
+	Status                         ClaimStatus           `json:"status"`
+	StatusAlterationDate           timeutil.BrazilDate   `json:"statusAlterationDate"`
+	OccurrenceDate                 timeutil.BrazilDate   `json:"occurrenceDate"`
+	WarningDate                    timeutil.BrazilDate   `json:"warningDate"`
+	ThirdPartyClaimDate            *timeutil.BrazilDate  `json:"thirdPartyClaimDate,omitempty"`
+	Amount                         insurer.AmountDetails `json:"amount"`
+	DenialJustification            *DenialJustification  `json:"denialJustification,omitempty"`
+	DenialJustificationDescription *string               `json:"denialJustificationDescription,omitempty"`
+	Coverages                      []ClaimCoverage       `json:"coverages"`
+	BranchInfo                     *CoverageBranchInfo   `json:"branchInfo,omitempty"`
 }
 
 type DocumentType string
@@ -214,62 +215,54 @@ const (
 )
 
 type Insured struct {
-	Identification           string              `json:"identification"`
-	IdentificationType       IdentificationType  `json:"identificationType"`
-	IdentificationTypeOthers *string             `json:"identificationTypeOthers,omitempty"`
-	Name                     string              `json:"name"`
-	BirthDate                timeutil.BrazilDate `json:"birthDate"`
-	PostCode                 string              `json:"postCode"`
-	Email                    *string             `json:"email,omitempty"`
-	City                     string              `json:"city"`
-	State                    string              `json:"state"`
-	Country                  string              `json:"country"`
-	Address                  string              `json:"address"`
+	Identification           string                     `json:"identification"`
+	IdentificationType       insurer.IdentificationType `json:"identificationType"`
+	IdentificationTypeOthers *string                    `json:"identificationTypeOthers,omitempty"`
+	Name                     string                     `json:"name"`
+	BirthDate                timeutil.BrazilDate        `json:"birthDate"`
+	PostCode                 string                     `json:"postCode"`
+	Email                    *string                    `json:"email,omitempty"`
+	City                     string                     `json:"city"`
+	State                    string                     `json:"state"`
+	Country                  string                     `json:"country"`
+	Address                  string                     `json:"address"`
 }
 
 type Beneficiary struct {
-	Identification           string             `json:"identification"`
-	IdentificationType       IdentificationType `json:"identificationType"`
-	IdentificationTypeOthers *string            `json:"identificationTypeOthers,omitempty"`
-	Name                     string             `json:"name"`
+	Identification           string                     `json:"identification"`
+	IdentificationType       insurer.IdentificationType `json:"identificationType"`
+	IdentificationTypeOthers *string                    `json:"identificationTypeOthers,omitempty"`
+	Name                     string                     `json:"name"`
 }
 
 type Principal struct {
-	Identification           string             `json:"identification"`
-	IdentificationType       IdentificationType `json:"identificationType"`
-	IdentificationTypeOthers *string            `json:"identificationTypeOthers,omitempty"`
-	Name                     string             `json:"name"`
-	PostCode                 string             `json:"postCode,omitempty"`
-	Email                    *string            `json:"email,omitempty"`
-	City                     string             `json:"city"`
-	State                    string             `json:"state"`
-	Country                  string             `json:"country"`
-	Address                  string             `json:"address"`
-	AddressAdditionalInfo    *string            `json:"addressAdditionalInfo,omitempty"`
+	Identification           string                     `json:"identification"`
+	IdentificationType       insurer.IdentificationType `json:"identificationType"`
+	IdentificationTypeOthers *string                    `json:"identificationTypeOthers,omitempty"`
+	Name                     string                     `json:"name"`
+	PostCode                 string                     `json:"postCode,omitempty"`
+	Email                    *string                    `json:"email,omitempty"`
+	City                     string                     `json:"city"`
+	State                    string                     `json:"state"`
+	Country                  string                     `json:"country"`
+	Address                  string                     `json:"address"`
+	AddressAdditionalInfo    *string                    `json:"addressAdditionalInfo,omitempty"`
 }
 
 type Intermediary struct {
-	Type                     IntermediaryType    `json:"type"`
-	TypeOthers               *string             `json:"typeOthers,omitempty"`
-	Identification           *string             `json:"identification,omitempty"`
-	BrokerID                 *string             `json:"brokerId,omitempty"`
-	IdentificationType       *IdentificationType `json:"identificationType,omitempty"`
-	IdentificationTypeOthers *string             `json:"identificationTypeOthers,omitempty"`
-	Name                     string              `json:"name"`
-	PostCode                 *string             `json:"postCode,omitempty"`
-	City                     *string             `json:"city,omitempty"`
-	State                    *string             `json:"state,omitempty"`
-	Country                  *string             `json:"country,omitempty"`
-	Address                  *string             `json:"address,omitempty"`
+	Type                     IntermediaryType            `json:"type"`
+	TypeOthers               *string                     `json:"typeOthers,omitempty"`
+	Identification           *string                     `json:"identification,omitempty"`
+	BrokerID                 *string                     `json:"brokerId,omitempty"`
+	IdentificationType       *insurer.IdentificationType `json:"identificationType,omitempty"`
+	IdentificationTypeOthers *string                     `json:"identificationTypeOthers,omitempty"`
+	Name                     string                      `json:"name"`
+	PostCode                 *string                     `json:"postCode,omitempty"`
+	City                     *string                     `json:"city,omitempty"`
+	State                    *string                     `json:"state,omitempty"`
+	Country                  *string                     `json:"country,omitempty"`
+	Address                  *string                     `json:"address,omitempty"`
 }
-
-type IdentificationType string
-
-const (
-	IdentificationTypeCPF    IdentificationType = "CPF"
-	IdentificationTypeCNPJ   IdentificationType = "CNPJ"
-	IdentificationTypeOthers IdentificationType = "OUTROS"
-)
 
 type IntermediaryType string
 
@@ -405,7 +398,7 @@ type InsuredObjectCoverage struct {
 	Description                   *string                   `json:"description,omitempty"`
 	InternalCode                  *string                   `json:"internalCode,omitempty"`
 	SusepProcessNumber            string                    `json:"susepProcessNumber"`
-	LMI                           *AmountDetails            `json:"LMI,omitempty"`
+	LMI                           insurer.AmountDetails     `json:"LMI,omitempty"`
 	TermStartDate                 timeutil.BrazilDate       `json:"termStartDate"`
 	TermEndDate                   timeutil.BrazilDate       `json:"termEndDate"`
 	IsMainCoverage                bool                      `json:"isMainCoverage"`
@@ -417,7 +410,7 @@ type InsuredObjectCoverage struct {
 	GracePeriodStartDate          *timeutil.BrazilDate      `json:"gracePeriodStartDate,omitempty"`
 	GracePeriodEndDate            *timeutil.BrazilDate      `json:"gracePeriodEndDate,omitempty"`
 	AdjustmentRate                *string                   `json:"adjustmentRate,omitempty"`
-	PremiumAmount                 AmountDetails             `json:"premiumAmount"`
+	PremiumAmount                 insurer.AmountDetails     `json:"premiumAmount"`
 	PremiumPeriodicity            PremiumPeriodicity        `json:"premiumPeriodicity"`
 	PremiumPeriodicityOthers      *string                   `json:"premiumPeriodicityOthers,omitempty"`
 	CompensationType              *CoverageCompensationType `json:"compensationType,omitempty"`
@@ -427,18 +420,6 @@ type InsuredObjectCoverage struct {
 	DaysForTotalCompensation      *int                      `json:"daysForTotalCompensation,omitempty"`
 	BoundCoverage                 *BoundCoverage            `json:"boundCoverage,omitempty"`
 	BoundCoverageOthers           *string                   `json:"boundCoverageOthers,omitempty"`
-}
-
-type AmountDetails struct {
-	Amount         string             `json:"amount"`
-	UnitType       string             `json:"unitType"`
-	UnitTypeOthers *string            `json:"unitTypeOthers,omitempty"`
-	Unit           *AmountDetailsUnit `json:"unit,omitempty"`
-}
-
-type AmountDetailsUnit struct {
-	Code        string `json:"code"`
-	Description string `json:"description"`
 }
 
 type CoverageFeature string
@@ -540,7 +521,7 @@ const (
 type CoverageDeductible struct {
 	Type                               CoverageDeductibleType `json:"type"`
 	TypeOthers                         *string                `json:"typeOthers,omitempty"`
-	Amount                             *AmountDetails         `json:"amount,omitempty"`
+	Amount                             *insurer.AmountDetails `json:"amount,omitempty"`
 	Period                             *int                   `json:"period,omitempty"`
 	Periodicity                        *Periodicity           `json:"periodicity,omitempty"`
 	PeriodCountingMethod               *PeriodCountingMethod  `json:"periodCountingMethod,omitempty"`
@@ -564,10 +545,10 @@ const (
 type CoveragePOS struct {
 	ApplicationType CoveragePOSApplicationType `json:"applicationType"`
 	Description     *string                    `json:"description,omitempty"`
-	MinValue        *AmountDetails             `json:"minValue,omitempty"`
-	MaxValue        *AmountDetails             `json:"maxValue,omitempty"`
-	Percentage      *AmountDetails             `json:"percentage,omitempty"`
-	ValueOthers     *AmountDetails             `json:"valueOthers,omitempty"`
+	MinValue        *insurer.AmountDetails     `json:"minValue,omitempty"`
+	MaxValue        *insurer.AmountDetails     `json:"maxValue,omitempty"`
+	Percentage      *insurer.AmountDetails     `json:"percentage,omitempty"`
+	ValueOthers     *insurer.AmountDetails     `json:"valueOthers,omitempty"`
 }
 
 type CoveragePOSApplicationType string
@@ -614,22 +595,6 @@ const (
 	RepairedPartsNationalityNational            RepairedPartsNationality = "NACIONAL"
 	RepairedPartsNationalityImported            RepairedPartsNationality = "IMPORTADA"
 	RepairedPartsNationalityNationalAndImported RepairedPartsNationality = "NACIONAL_E_IMPORTADA"
-)
-
-type ValidityType string
-
-const (
-	ValidityTypeAnnual                 ValidityType = "ANUAL"
-	ValidityTypeAnnualIntermittent     ValidityType = "ANUAL_INTERMITENTE"
-	ValidityTypePlurianual             ValidityType = "PLURIANUAL"
-	ValidityTypePlurianualIntermittent ValidityType = "PLURIANUAL_INTERMITENTE"
-	ValidityTypeSemestral              ValidityType = "SEMESTRAL"
-	ValidityTypeSemestralIntermittent  ValidityType = "SEMESTRAL_INTERMITENTE"
-	ValidityTypeMonthly                ValidityType = "MENSAL"
-	ValidityTypeMonthlyIntermittent    ValidityType = "MENSAL_INTERMITENTE"
-	ValidityTypeDaily                  ValidityType = "DIARIO"
-	ValidityTypeDailyIntermittent      ValidityType = "DIARIO_INTERMITENTE"
-	ValidityTypeOthers                 ValidityType = "OUTROS"
 )
 
 type OtherBenefits string
