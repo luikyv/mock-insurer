@@ -433,7 +433,7 @@ func reverseProxyWithFallback(mainAddr, fallbackAddr string) http.HandlerFunc {
 				Bytes: clientCert.Raw,
 			})
 
-			r.Header.Set("X-Client-Cert", url.QueryEscape(string(pemBytes)))
+			r.Header.Set("X-Forwarded-Client-Cert", url.QueryEscape(string(pemBytes)))
 		}
 
 		if healthy.Load() {

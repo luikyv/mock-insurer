@@ -23,5 +23,6 @@ RUN apk add --no-cache tzdata
 WORKDIR /app
 
 COPY --from=builder /app/main ./main
+COPY ./db/migrations /app/db/migrations
 
 ENTRYPOINT [ "./main" ]

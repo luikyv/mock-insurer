@@ -97,14 +97,8 @@ To run Mock Insurer with the Open Finance Conformance Suite:
    ```
 
 ## TODO
-- Remove the hardcoded configs like branch, brand, etc.
-- Keep everything possible with Alice.
+- DB indexes.
 - Add doc.go's.
-- Finish accounts and loans.
-- Improve the html.
-- Update swaggers to undo modifications.
-- Improve loops that query the db.
 - Remove descriptions.
 - Improve error handling.
 - Add logs.
-- https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/246120449/EN+Open+Finance+Brasil+Financial-grade+API+Dynamic+Client+Registration+2.0+RC1+Implementers+Draft+3

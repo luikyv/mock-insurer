@@ -100,7 +100,7 @@ func (d DateTime) EndOfDay() DateTime {
 }
 
 func DateTimeNow() DateTime {
-	return NewDateTime(now())
+	return NewDateTime(Now())
 }
 
 func NewDateTime(t time.Time) DateTime {
@@ -232,7 +232,7 @@ func (d BrazilDate) IsZero() bool {
 }
 
 func BrazilDateNow() BrazilDate {
-	return NewBrazilDate(now())
+	return NewBrazilDate(Now())
 }
 
 func NewBrazilDate(t time.Time) BrazilDate {
@@ -251,13 +251,13 @@ func ParseBrazilDate(s string) (BrazilDate, error) {
 }
 
 // Now returns the current time in UTC.
-func now() time.Time {
+func Now() time.Time {
 	return time.Now().UTC()
 }
 
 // Timestamp returns the current Unix timestamp in seconds (UTC).
 func Timestamp() int {
-	return int(now().Unix())
+	return int(Now().Unix())
 }
 
 func ParseTimestamp(ts int) DateTime {

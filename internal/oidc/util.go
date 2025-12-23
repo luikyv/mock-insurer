@@ -9,7 +9,6 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
-	"slices"
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
 	"github.com/luikyv/go-oidc/pkg/provider"
@@ -17,7 +16,7 @@ import (
 )
 
 const (
-	HeaderClientCert = "X-Client-Cert"
+	HeaderClientCert = "X-Forwarded-Client-Cert"
 )
 
 func TokenOptionsFunc() goidc.TokenOptionsFunc {
@@ -68,13 +67,6 @@ func HandlePARSessionFunc() goidc.HandleSessionFunc {
 	}
 }
 
-func ShouldIssueRefreshTokenFunc() goidc.ShouldIssueRefreshTokenFunc {
-	return func(_ context.Context, client *goidc.Client, grantInfo goidc.GrantInfo) bool {
-		return slices.Contains(client.GrantTypes, goidc.GrantRefreshToken) &&
-			(grantInfo.GrantType == goidc.GrantAuthorizationCode || grantInfo.GrantType == goidc.GrantRefreshToken)
-	}
-}
-
 func ClientCert(r *http.Request) (*x509.Certificate, error) {
 	rawClientCert := r.Header.Get(HeaderClientCert)
 	if rawClientCert == "" {
@@ -92,12 +84,16 @@ func ClientCert(r *http.Request) (*x509.Certificate, error) {
 		return nil, errors.New("could not decode the client certificate")
 	}
 
-	clientCert, err := x509.ParseCertificate(clientCertPEM.Bytes)
+	clientCertChain, err := x509.ParseCertificates(clientCertPEM.Bytes)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse the client certificate: %w", err)
 	}
 
-	return clientCert, nil
+	if len(clientCertChain) == 0 {
+		return nil, errors.New("could not parse the client certificate")
+	}
+
+	return clientCertChain[0], nil
 }
 
 func LogError(ctx context.Context, err error) {

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -48,9 +49,10 @@ var (
 	SoftwareStatementIssuer = cmdutil.EnvValue("SS_ISSUER", "Open Banking Brasil sandbox SSA issuer")
 	Port                    = cmdutil.EnvValue("PORT", "80")
 	DBCredentials           = cmdutil.EnvValue("DB_CREDENTIALS", `{"username":"admin","password":"pass","host":"database.local","port":5432,"dbname":"mockinsurer","sslmode":"disable"}`)
-	// TransportCertPath and TransportKeyPath are the file paths used for mutual TLS connection with the webhook client.
+	// TransportCertPath and TransportKeyPath are the file paths used for mutual TLS connections.
 	TransportCertPath = cmdutil.EnvValue("TRANSPORT_CERT_PATH", "../../keys/server_transport.crt")
 	TransportKeyPath  = cmdutil.EnvValue("TRANSPORT_KEY_PATH", "../../keys/server_transport.key")
+	ClientCACertPath  = cmdutil.EnvValue("CLIENT_CA_CERT_PATH", "../../keys/client_ca.crt")
 )
 
 func main() {
@@ -74,6 +76,17 @@ func main() {
 	transportTLSCert, err := tls.LoadX509KeyPair(TransportCertPath, TransportKeyPath)
 	if err != nil {
 		slog.Error("could not load transport TLS certificate", "error", err)
+		os.Exit(1)
+	}
+
+	clientCACert, err := os.ReadFile(ClientCACertPath)
+	if err != nil {
+		slog.Error("could not load client CA certificate", "error", err)
+		os.Exit(1)
+	}
+	clientCACertPool := x509.NewCertPool()
+	if ok := clientCACertPool.AppendCertsFromPEM(clientCACert); !ok {
+		slog.Error("could not append client CA certificate to pool")
 		os.Exit(1)
 	}
 
@@ -242,7 +255,7 @@ func openidProvider(
 		provider.WithTokenOptions(oidc.TokenOptionsFunc()),
 		provider.WithAuthorizationCodeGrant(),
 		provider.WithImplicitGrant(),
-		provider.WithRefreshTokenGrant(oidc.ShouldIssueRefreshTokenFunc(), 3600),
+		provider.WithRefreshTokenGrant(func(_ context.Context, _ *goidc.Client, _ goidc.GrantInfo) bool { return true }, 3600),
 		provider.WithClientCredentialsGrant(),
 		provider.WithTokenAuthnMethods(goidc.ClientAuthnPrivateKeyJWT),
 		provider.WithPrivateKeyJWTSignatureAlgs(goidc.PS256),

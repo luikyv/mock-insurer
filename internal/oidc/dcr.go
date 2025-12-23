@@ -158,7 +158,7 @@ func fetchSoftwareStatementJWKS(keystoreHost string) (goidc.JSONWebKeySet, error
 		return *ssJWKSCache, nil
 	}
 
-	resp, err := http.Get(keystoreHost + "/openbanking.jwks")
+	resp, err := http.Get(keystoreHost + "/openinsurance.jwks")
 	if err != nil {
 		return goidc.JSONWebKeySet{}, err
 	}

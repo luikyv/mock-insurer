@@ -22,7 +22,7 @@ var (
 	Env              = cmdutil.EnvValue("ENV", cmdutil.LocalEnvironment)
 	OrgID            = cmdutil.EnvValue("ORG_ID", "00000000-0000-0000-0000-000000000000")
 	DBCredentials    = cmdutil.EnvValue("DB_CREDENTIALS", `{"username":"admin","password":"pass","host":"database.local","port":5432,"dbname":"mockinsurer","sslmode":"disable"}`)
-	DBMigrationsPath = cmdutil.EnvValue("DB_MIGRATIONS_PATH", "file://../../db/migrations")
+	DBMigrationsPath = cmdutil.EnvValue("DB_MIGRATIONS_PATH", "file://db/migrations")
 )
 
 func main() {

@@ -1,5 +1,6 @@
 services:
   insurer:
+    image: mockinsurer:latest
     build:
       context: .
       dockerfile: cmd/server/Dockerfile
@@ -7,9 +8,22 @@ services:
       - ENV=LOCAL
       - TRANSPORT_CERT_PATH=/app/keys/server_transport.crt
       - TRANSPORT_KEY_PATH=/app/keys/server_transport.key
+      - CLIENT_CA_CERT_PATH=/app/keys/client_ca_cert.crt
     volumes:
       - ./keys/server_transport.crt:/app/keys/server_transport.crt:ro
       - ./keys/server_transport.key:/app/keys/server_transport.key:ro
+      - ./keys/client_ca_cert.crt:/app/keys/client_ca_cert.crt:ro
+    depends_on:
+      psql:
+        condition: service_healthy
+
+  migrate:
+    image: mockinsurer-migrate:latest
+    build:
+      context: .
+      dockerfile: ./cmd/migration/Dockerfile
+    environment:
+      - ENV=LOCAL
     depends_on:
       psql:
         condition: service_healthy
@@ -80,19 +94,6 @@ services:
     # Make the host machine accessible from the container.
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-  migration:
-    build:
-      context: .
-      dockerfile: ./cmd/migration/Dockerfile
-    environment:
-      - ENV=LOCAL
-      - DB_MIGRATIONS_PATH=file://db/migrations
-    volumes:
-      - ./db/migrations:/app/db/migrations:ro
-    depends_on:
-      psql:
-        condition: service_healthy
 
   cs-httpd:
     profiles:
