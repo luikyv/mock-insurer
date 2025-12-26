@@ -107,6 +107,66 @@ CREATE TABLE consents (
     updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
+CREATE TABLE customer_personal_identifications (
+    id UUID PRIMARY KEY,
+    owner_id UUID REFERENCES mock_users(id) NOT NULL,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE customer_personal_qualifications (
+    id UUID PRIMARY KEY,
+    owner_id UUID REFERENCES mock_users(id) NOT NULL,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE customer_personal_complimentary_informations (
+    id UUID PRIMARY KEY,
+    owner_id UUID REFERENCES mock_users(id) NOT NULL,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE customer_business_identifications (
+    id UUID PRIMARY KEY,
+    owner_id UUID REFERENCES mock_users(id) NOT NULL,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE customer_business_qualifications (
+    id UUID PRIMARY KEY,
+    owner_id UUID REFERENCES mock_users(id) NOT NULL,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE customer_business_complimentary_informations (
+    id UUID PRIMARY KEY,
+    owner_id UUID REFERENCES mock_users(id) NOT NULL,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
 CREATE TABLE insurance_auto_policies (
     id TEXT PRIMARY KEY,
     owner_id UUID NOT NULL REFERENCES mock_users(id),

@@ -1,14 +1,15 @@
 package strutil
 
 import (
-	"crypto/rand"
-	"encoding/base64"
+	"math/rand"
 )
 
+const alphanumeric = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 func Random(length int) string {
-	bytes := make([]byte, length)
-	if _, err := rand.Read(bytes); err != nil {
-		panic(err)
+	result := make([]byte, length)
+	for i := range result {
+		result[i] = alphanumeric[rand.Intn(len(alphanumeric))]
 	}
-	return base64.URLEncoding.EncodeToString(bytes)
+	return string(result)
 }

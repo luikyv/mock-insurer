@@ -393,33 +393,33 @@ const (
 )
 
 type InsuredObjectCoverage struct {
-	Branch                        string                    `json:"branch"`
-	Code                          string                    `json:"code"`
-	Description                   *string                   `json:"description,omitempty"`
-	InternalCode                  *string                   `json:"internalCode,omitempty"`
-	SusepProcessNumber            string                    `json:"susepProcessNumber"`
-	LMI                           insurer.AmountDetails     `json:"LMI,omitempty"`
-	TermStartDate                 timeutil.BrazilDate       `json:"termStartDate"`
-	TermEndDate                   timeutil.BrazilDate       `json:"termEndDate"`
-	IsMainCoverage                bool                      `json:"isMainCoverage"`
-	Feature                       CoverageFeature           `json:"feature"`
-	Type                          CoverageType              `json:"type"`
-	GracePeriod                   *int                      `json:"gracePeriod,omitempty"`
-	GracePeriodicity              *Periodicity              `json:"gracePeriodicity,omitempty"`
-	GracePeriodCountingMethod     *PeriodCountingMethod     `json:"gracePeriodCountingMethod,omitempty"`
-	GracePeriodStartDate          *timeutil.BrazilDate      `json:"gracePeriodStartDate,omitempty"`
-	GracePeriodEndDate            *timeutil.BrazilDate      `json:"gracePeriodEndDate,omitempty"`
-	AdjustmentRate                *string                   `json:"adjustmentRate,omitempty"`
-	PremiumAmount                 insurer.AmountDetails     `json:"premiumAmount"`
-	PremiumPeriodicity            PremiumPeriodicity        `json:"premiumPeriodicity"`
-	PremiumPeriodicityOthers      *string                   `json:"premiumPeriodicityOthers,omitempty"`
-	CompensationType              *CoverageCompensationType `json:"compensationType,omitempty"`
-	CompensationTypeOthers        *string                   `json:"compensationTypeOthers,omitempty"`
-	PartialCompensationPercentage *string                   `json:"partialCompensationPercentage,omitempty"`
-	PercentageOverLMI             *string                   `json:"percentageOverLMI,omitempty"`
-	DaysForTotalCompensation      *int                      `json:"daysForTotalCompensation,omitempty"`
-	BoundCoverage                 *BoundCoverage            `json:"boundCoverage,omitempty"`
-	BoundCoverageOthers           *string                   `json:"boundCoverageOthers,omitempty"`
+	Branch                        string                        `json:"branch"`
+	Code                          string                        `json:"code"`
+	Description                   *string                       `json:"description,omitempty"`
+	InternalCode                  *string                       `json:"internalCode,omitempty"`
+	SusepProcessNumber            string                        `json:"susepProcessNumber"`
+	LMI                           insurer.AmountDetails         `json:"LMI,omitempty"`
+	TermStartDate                 timeutil.BrazilDate           `json:"termStartDate"`
+	TermEndDate                   timeutil.BrazilDate           `json:"termEndDate"`
+	IsMainCoverage                bool                          `json:"isMainCoverage"`
+	Feature                       CoverageFeature               `json:"feature"`
+	Type                          CoverageType                  `json:"type"`
+	GracePeriod                   *int                          `json:"gracePeriod,omitempty"`
+	GracePeriodicity              *insurer.Periodicity          `json:"gracePeriodicity,omitempty"`
+	GracePeriodCountingMethod     *insurer.PeriodCountingMethod `json:"gracePeriodCountingMethod,omitempty"`
+	GracePeriodStartDate          *timeutil.BrazilDate          `json:"gracePeriodStartDate,omitempty"`
+	GracePeriodEndDate            *timeutil.BrazilDate          `json:"gracePeriodEndDate,omitempty"`
+	AdjustmentRate                *string                       `json:"adjustmentRate,omitempty"`
+	PremiumAmount                 insurer.AmountDetails         `json:"premiumAmount"`
+	PremiumPeriodicity            PremiumPeriodicity            `json:"premiumPeriodicity"`
+	PremiumPeriodicityOthers      *string                       `json:"premiumPeriodicityOthers,omitempty"`
+	CompensationType              *CoverageCompensationType     `json:"compensationType,omitempty"`
+	CompensationTypeOthers        *string                       `json:"compensationTypeOthers,omitempty"`
+	PartialCompensationPercentage *string                       `json:"partialCompensationPercentage,omitempty"`
+	PercentageOverLMI             *string                       `json:"percentageOverLMI,omitempty"`
+	DaysForTotalCompensation      *int                          `json:"daysForTotalCompensation,omitempty"`
+	BoundCoverage                 *BoundCoverage                `json:"boundCoverage,omitempty"`
+	BoundCoverageOthers           *string                       `json:"boundCoverageOthers,omitempty"`
 }
 
 type CoverageFeature string
@@ -438,21 +438,6 @@ const (
 	CoverageTypeRegularCommon             CoverageType = "REGULAR_COMUM"
 	CoverageTypeCapitalGlobal             CoverageType = "CAPITAL_GLOBAL"
 	CoverageTypeParametricAndIntermittent CoverageType = "PARAMETRICO_E_INTERMITENTE"
-)
-
-type Periodicity string
-
-const (
-	PeriodicityDay   Periodicity = "DIA"
-	PeriodicityMonth Periodicity = "MES"
-	PeriodicityYear  Periodicity = "ANO"
-)
-
-type PeriodCountingMethod string
-
-const (
-	PeriodCountingMethodBusinessDays PeriodCountingMethod = "DIAS_UTEIS"
-	PeriodCountingMethodCalendarDays PeriodCountingMethod = "DIAS_CORRIDOS"
 )
 
 type PremiumPeriodicity string
@@ -519,16 +504,16 @@ const (
 )
 
 type CoverageDeductible struct {
-	Type                               CoverageDeductibleType `json:"type"`
-	TypeOthers                         *string                `json:"typeOthers,omitempty"`
-	Amount                             *insurer.AmountDetails `json:"amount,omitempty"`
-	Period                             *int                   `json:"period,omitempty"`
-	Periodicity                        *Periodicity           `json:"periodicity,omitempty"`
-	PeriodCountingMethod               *PeriodCountingMethod  `json:"periodCountingMethod,omitempty"`
-	PeriodStartDate                    *timeutil.BrazilDate   `json:"periodStartDate,omitempty"`
-	PeriodEndDate                      *timeutil.BrazilDate   `json:"periodEndDate,omitempty"`
-	Description                        *string                `json:"description,omitempty"`
-	HasDeductibleOverTotalCompensation *bool                  `json:"hasDeductibleOverTotalCompensation,omitempty"`
+	Type                               CoverageDeductibleType        `json:"type"`
+	TypeOthers                         *string                       `json:"typeOthers,omitempty"`
+	Amount                             *insurer.AmountDetails        `json:"amount,omitempty"`
+	Period                             *int                          `json:"period,omitempty"`
+	Periodicity                        *insurer.Periodicity          `json:"periodicity,omitempty"`
+	PeriodCountingMethod               *insurer.PeriodCountingMethod `json:"periodCountingMethod,omitempty"`
+	PeriodStartDate                    *timeutil.BrazilDate          `json:"periodStartDate,omitempty"`
+	PeriodEndDate                      *timeutil.BrazilDate          `json:"periodEndDate,omitempty"`
+	Description                        *string                       `json:"description,omitempty"`
+	HasDeductibleOverTotalCompensation *bool                         `json:"hasDeductibleOverTotalCompensation,omitempty"`
 }
 
 type CoverageDeductibleType string
@@ -543,21 +528,13 @@ const (
 )
 
 type CoveragePOS struct {
-	ApplicationType CoveragePOSApplicationType `json:"applicationType"`
-	Description     *string                    `json:"description,omitempty"`
-	MinValue        *insurer.AmountDetails     `json:"minValue,omitempty"`
-	MaxValue        *insurer.AmountDetails     `json:"maxValue,omitempty"`
-	Percentage      *insurer.AmountDetails     `json:"percentage,omitempty"`
-	ValueOthers     *insurer.AmountDetails     `json:"valueOthers,omitempty"`
+	ApplicationType insurer.ValueType      `json:"applicationType"`
+	Description     *string                `json:"description,omitempty"`
+	MinValue        *insurer.AmountDetails `json:"minValue,omitempty"`
+	MaxValue        *insurer.AmountDetails `json:"maxValue,omitempty"`
+	Percentage      *insurer.AmountDetails `json:"percentage,omitempty"`
+	ValueOthers     *insurer.AmountDetails `json:"valueOthers,omitempty"`
 }
-
-type CoveragePOSApplicationType string
-
-const (
-	CoveragePOSApplicationTypeValue      CoveragePOSApplicationType = "VALOR"
-	CoveragePOSApplicationTypePercentage CoveragePOSApplicationType = "PERCENTUAL"
-	CoveragePOSApplicationTypeOthers     CoveragePOSApplicationType = "OUTROS"
-)
 
 type Coinsurer struct {
 	Identification  string `json:"identification"`

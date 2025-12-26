@@ -32,6 +32,6 @@ playground/
 .vscode/
 coverage.*
 
-auth/node_modules/
+ui/node_modules/
 app/node_modules/
 app/dist/

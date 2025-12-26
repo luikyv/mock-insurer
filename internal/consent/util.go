@@ -23,6 +23,12 @@ func IDFromScopes(scopes string) (string, bool) {
 
 func validatePermissions(permissions []Permission) error {
 
+	for _, p := range permissions {
+		if !p.IsAllowed() {
+			return errorutil.Format("%w: permission %s is not allowed", ErrInvalidPermissions, p)
+		}
+	}
+
 	isPhase2 := containsAny(PermissionGroupPhase2, permissions...)
 	isPhase3 := containsAny(PermissionGroupPhase3, permissions...)
 	if isPhase2 && isPhase3 {
@@ -67,8 +73,8 @@ func validatePermissionsPhase3(permissions []Permission) error {
 	return nil
 }
 
-func permissionGroups(permissions []Permission) []PermissionGroup {
-	var groups []PermissionGroup
+func permissionGroups(permissions []Permission) []Permissions {
+	var groups []Permissions
 	for _, group := range PermissionGroups {
 		for _, p := range permissions {
 			if slices.Contains(group, p) {

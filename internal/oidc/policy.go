@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strings"
 
-	ui "github.com/luikyv/mock-insurer/auth"
+	"github.com/luikyv/mock-insurer/ui"
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
 	"github.com/luikyv/mock-insurer/internal/auto"
@@ -152,12 +152,14 @@ func grantConsentStep(
 	autoService auto.Service,
 ) goidc.AuthnFunc {
 	type Page struct {
-		BaseURL      string
-		CallbackID   string
-		UserCPF      string
-		BusinessCNPJ string
-		Nonce        string
-		AutoPolicies []*auto.Policy
+		BaseURL              string
+		CallbackID           string
+		UserCPF              string
+		BusinessCNPJ         string
+		Nonce                string
+		CustomerPersonalInfo bool
+		CustomerBusinessInfo bool
+		AutoPolicies         []*auto.Policy
 	}
 
 	renderConsentPage := func(w http.ResponseWriter, r *http.Request, as *goidc.AuthnSession, c *consent.Consent) (goidc.Status, error) {
@@ -178,6 +180,16 @@ func grantConsentStep(
 				return goidc.StatusFailure, fmt.Errorf("could not load the user accounts")
 			}
 			consentPage.AutoPolicies = policies.Records
+		}
+
+		if c.Permissions.HasCustomerPersonalPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with customer personal information")
+			consentPage.CustomerPersonalInfo = true
+		}
+
+		if c.Permissions.HasCustomerBusinessPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with customer business information")
+			consentPage.CustomerBusinessInfo = true
 		}
 
 		return renderPage(w, tmpl, "consent", consentPage)

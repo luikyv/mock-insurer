@@ -20,7 +20,7 @@ type Quote struct {
 	ConsentID       string
 	Status          quote.Status
 	StatusUpdatedAt timeutil.DateTime
-	Data            QuoteData `gorm:"serializer:json"`
+	Data            Data `gorm:"serializer:json"`
 	OrgID           string
 	CreatedAt       timeutil.DateTime
 	UpdatedAt       timeutil.DateTime
@@ -37,24 +37,31 @@ func (p *Quote) BeforeCreate(tx *gorm.DB) error {
 	return nil
 }
 
-type QuoteData struct {
-	ExpirationDateTime     timeutil.DateTime    `json:"expirationDateTime"`
-	Customer               quote.Customer       `json:"customer"`
-	IsCollectiveStipulated bool                 `json:"isCollectiveStipulated"`
-	HasAnIndividualItem    bool                 `json:"hasAnIndividualItem"`
-	TermStartDate          timeutil.BrazilDate  `json:"termStartDate"`
-	TermEndDate            timeutil.BrazilDate  `json:"termEndDate"`
-	TermType               insurer.ValidityType `json:"termType"`
-	InsuranceType          InsuranceType        `json:"insuranceType"`
-	PolicyID               *string              `json:"policyId,omitempty"`
-	InsurerID              *string              `json:"insurerId,omitempty"`
-	IdentifierCode         *string              `json:"identifierCode,omitempty"`
-	BonusClass             *string              `json:"bonusClass,omitempty"`
-	Currency               insurer.Currency     `json:"currency"`
-	InsuredObject          *InsuredObject       `json:"insuredObject,omitempty"`
-	Coverages              *[]Coverage          `json:"coverages,omitempty"`
-	CustomData             *quote.CustomData    `json:"customData,omitempty"`
-	HistoricalData         *HistoricalData      `json:"historicalData,omitempty"`
+type Data struct {
+	InsurerQuoteID             *string              `json:"insurerQuoteId,omitempty"`
+	ProtocolDateTime           *timeutil.DateTime   `json:"protocolDateTime,omitempty"`
+	ProtocolNumber             *string              `json:"protocolNumber,omitempty"`
+	RedirectLink               *string              `json:"redirectLink,omitempty"`
+	RejectionReason            *string              `json:"rejectionReason,omitempty"`
+	ExpirationDateTime         timeutil.DateTime    `json:"expirationDateTime"`
+	Customer                   quote.Customer       `json:"customer"`
+	IsCollectiveStipulated     bool                 `json:"isCollectiveStipulated"`
+	HasAnIndividualItem        bool                 `json:"hasAnIndividualItem"`
+	TermStartDate              timeutil.BrazilDate  `json:"termStartDate"`
+	TermEndDate                timeutil.BrazilDate  `json:"termEndDate"`
+	TermType                   insurer.ValidityType `json:"termType"`
+	InsuranceType              InsuranceType        `json:"insuranceType"`
+	PolicyID                   *string              `json:"policyId,omitempty"`
+	InsurerID                  *string              `json:"insurerId,omitempty"`
+	IdentifierCode             *string              `json:"identifierCode,omitempty"`
+	BonusClass                 *string              `json:"bonusClass,omitempty"`
+	Currency                   insurer.Currency     `json:"currency"`
+	IncludesAssistanceServices bool                 `json:"includesAssistanceServices"`
+	InsuredObject              *InsuredObject       `json:"insuredObject,omitempty"`
+	Coverages                  *[]Coverage          `json:"coverages,omitempty"`
+	CustomData                 *quote.CustomData    `json:"customData,omitempty"`
+	HistoricalData             *HistoricalData      `json:"historicalData,omitempty"`
+	Quotes                     *[]Offer             `json:"quotes,omitempty"`
 }
 
 type Lead struct {
@@ -110,26 +117,28 @@ type InsuredObject struct {
 	RiskManagementSystem               *[]RiskManagementSystem     `json:"riskManagementSystem,omitempty"`
 	IsTransportCargoInsurance          *bool                       `json:"isTransportCargoInsurance,omitempty"`
 	LoadsCarriedInsured                *[]LoadType                 `json:"loadsCarriedInsured,omitempty"`
-	IsEquipmentAttached                *bool                       `json:"isEquipmentAttached,omitempty"`
+	IsEquipmentAttached                bool                        `json:"isEquipmentAttached"`
 	EquipmentsAttached                 *EquipmentAttached          `json:"equipmentsAttached,omitempty"`
 	Chasis                             *string                     `json:"chasis,omitempty"`
 	IsAuctionChassisRescheduled        *bool                       `json:"isAuctionChassisRescheduled,omitempty"`
-	IsBrandNew                         *bool                       `json:"isBrandNew,omitempty"`
+	IsBrandNew                         bool                        `json:"isBrandNew"`
 	DepartureDateFromCarDealership     *timeutil.BrazilDate        `json:"departureDateFromCarDealership,omitempty"`
 	VehicleInvoice                     *VehicleInvoice             `json:"vehicleInvoice,omitempty"`
 	Fuel                               Fuel                        `json:"fuel"`
-	IsGasKit                           *bool                       `json:"isGasKit,omitempty"`
+	IsGasKit                           bool                        `json:"isGasKit"`
 	GasKit                             *GasKit                     `json:"gasKit,omitempty"`
-	IsArmouredVehicle                  *bool                       `json:"isArmouredVehicle,omitempty"`
+	IsArmouredVehicle                  bool                        `json:"isArmouredVehicle"`
+	ArmouredVehicle                    *ArmouredVehicle            `json:"armouredVehicle,omitempty"`
 	IsActiveTrackingVehicle            *bool                       `json:"isActiveTrackingVehicle,omitempty"`
 	FrequentTrafficArea                *TrafficArea                `json:"frequentTrafficArea,omitempty"`
-	OvernightPostCode                  *string                     `json:"overnightPostCode,omitempty"`
+	OvernightPostCode                  string                      `json:"overnightPostCode"`
 	RiskLocation                       *RiskLocation               `json:"riskLocation,omitempty"`
 	IsExtendCoverageAgedBetween18And25 *bool                       `json:"isExtendCoverageAgedBetween18And25,omitempty"`
 	DriverBetween18And25YearsOldGender *DriverGender               `json:"driverBetween18and25YearsOldGender,omitempty"`
 	WasThereAClaim                     *bool                       `json:"wasThereAClaim,omitempty"`
 	ClaimNotifications                 *[]ClaimNotification        `json:"claimNotifications,omitempty"`
-	Coverages                          *[]Coverage                 `json:"coverages,omitempty"`
+	LicensePlateType                   []LicensePlateType          `json:"licensePlateType"`
+	Tariff                             *Tariff                     `json:"tariff,omitempty"`
 }
 
 type InsuredObjectModel struct {
@@ -137,6 +146,11 @@ type InsuredObjectModel struct {
 	ModelName       string  `json:"modelName"`
 	ModelYear       *string `json:"modelYear,omitempty"`
 	ManufactureYear *string `json:"manufactureYear,omitempty"`
+}
+
+type ArmouredVehicle struct {
+	Amount           *insurer.AmountDetails `json:"amount,omitempty"`
+	IsDesireCoverage *bool                  `json:"isDesireCoverage,omitempty"`
 }
 
 type Tax struct {
@@ -324,7 +338,7 @@ type MainDriver struct {
 	Name               *string                     `json:"name,omitempty"`
 	BirthDate          *timeutil.BrazilDate        `json:"birthDate,omitempty"`
 	Sex                *Gender                     `json:"sex,omitempty"`
-	CivilStatus        *CivilStatus                `json:"civilStatus,omitempty"`
+	CivilStatus        *insurer.CivilStatus        `json:"civilStatus,omitempty"`
 	Gender             *Gender                     `json:"gender,omitempty"`
 	PostCode           *string                     `json:"postCode,omitempty"`
 	LicensedExperience *string                     `json:"licensedExperience,omitempty"`
@@ -336,15 +350,6 @@ type Gender string
 const (
 	GenderMale   Gender = "MASCULINO"
 	GenderFemale Gender = "FEMININO"
-)
-
-type CivilStatus string
-
-const (
-	CivilStatusSingle   CivilStatus = "SOLTEIRO"
-	CivilStatusMarried  CivilStatus = "CASADO"
-	CivilStatusDivorced CivilStatus = "DIVORCIADO"
-	CivilStatusWidowed  CivilStatus = "VIUVO"
 )
 
 type ClaimNotification struct {
@@ -375,6 +380,226 @@ type LeadCoverage struct {
 	Branch string            `json:"branch"`
 	Code   auto.CoverageCode `json:"code"`
 }
+
+type Offer struct {
+	InsurerQuoteID      string          `json:"insurerQuoteId"`
+	SusepProcessNumbers []string        `json:"susepProcessNumbers"`
+	Coverages           []OfferCoverage `json:"coverages"`
+	Assistances         []Assistance    `json:"assistances"`
+	Premium             Premium         `json:"premium"`
+}
+
+type OfferCoverage struct {
+	Branch                       string                        `json:"branch"`
+	Code                         auto.CoverageCode             `json:"code"`
+	Description                  *string                       `json:"description,omitempty"`
+	InternalCode                 *string                       `json:"internalCode,omitempty"`
+	IsSeparateContractingAllowed bool                          `json:"isSeparateContractingAllowed"`
+	GracePeriod                  *int                          `json:"gracePeriod,omitempty"`
+	GracePeriodicity             *insurer.Periodicity          `json:"gracePeriodicity,omitempty"`
+	GracePeriodCountingMethod    *insurer.PeriodCountingMethod `json:"gracePeriodCountingMethod,omitempty"`
+	GracePeriodStartDate         *timeutil.BrazilDate          `json:"gracePeriodStartDate,omitempty"`
+	GracePeriodEndDate           *timeutil.BrazilDate          `json:"gracePeriodEndDate,omitempty"`
+	Deductible                   *auto.CoverageDeductible      `json:"deductible,omitempty"`
+	POS                          auto.CoveragePOS              `json:"POS"`
+	FullIndemnity                insurer.ValueType             `json:"fullIndemnity"`
+}
+
+type Assistance struct {
+	Type          AssistanceType         `json:"type"`
+	Service       AssistanceService      `json:"service"`
+	Description   string                 `json:"description"`
+	PremiumAmount *insurer.AmountDetails `json:"premiumAmount,omitempty"`
+}
+
+type AssistanceType string
+
+const (
+	AssistanceTypeAuto                 AssistanceType = "ASSISTENCIA_AUTO"
+	AssistanceTypeRE                   AssistanceType = "ASSISTENCIA_RE"
+	AssistanceTypeLife                 AssistanceType = "ASSISTENCIA_VIDA"
+	AssistanceTypeBenefits             AssistanceType = "BENEFICIOS"
+	AssistanceTypeDispatcher           AssistanceType = "DESPACHANTE"
+	AssistanceTypeVehicleRental        AssistanceType = "LOCACAO_DE_VEICULOS"
+	AssistanceTypeAutomotiveRepairs    AssistanceType = "REPAROS_AUTOMOTIVOS"
+	AssistanceTypeEmergencyRepairs     AssistanceType = "REPAROS_EMERGENCIAIS"
+	AssistanceTypeMaintenanceService   AssistanceType = "SERVICO_DE_MANUTENCAO"
+	AssistanceTypeServiceInCaseOfClaim AssistanceType = "SERVICO_EM_CASO_DE_SINISTRO"
+	AssistanceTypeEmergencyTransport   AssistanceType = "TRANSPORTE_DO_EMERGENCIAL"
+	AssistanceTypeOthers               AssistanceType = "OUTROS"
+)
+
+type AssistanceService string
+
+const (
+	AssistanceServiceActivationAndOrSchedulingOfPickupAndDelivery             AssistanceService = "ACIONAMENTO_E_OU_AGENDAMENTO_DE_LEVA_E_TRAZ"
+	AssistanceServiceChildCare                                                AssistanceService = "AMPARO_DE_CRIANCAS"
+	AssistanceServiceHomeVaccination                                          AssistanceService = "APLICACAO_DE_VACINAS_EM_DOMICILIO"
+	AssistanceServiceHeaters                                                  AssistanceService = "AQUECEDORES"
+	AssistanceServiceApplianceAssistance                                      AssistanceService = "ASSISTENCIA_A_ELETRODOMESTICOS"
+	AssistanceServiceAutoAndOrMotorcycleAssistance                            AssistanceService = "ASSISTENCIA_AUTO_E_OU_MOTO"
+	AssistanceServiceBikeAssistance                                           AssistanceService = "ASSISTENCIA_BIKE"
+	AssistanceServiceTravelAssistance                                         AssistanceService = "ASSISTENCIA_EM_VIAGEM"
+	AssistanceServiceSchoolAssistance                                         AssistanceService = "ASSISTENCIA_ESCOLAR"
+	AssistanceServiceFuneralAssistance                                        AssistanceService = "ASSISTENCIA_FUNERAL"
+	AssistanceServicePetFuneralAssistance                                     AssistanceService = "ASSISTENCIA_FUNERAL_PET"
+	AssistanceServiceITAssistance                                             AssistanceService = "ASSISTENCIA_INFORMATICA"
+	AssistanceServiceNutritionalAssistance                                    AssistanceService = "ASSISTENCIA_NUTRICIONAL"
+	AssistanceServicePetAssistance                                            AssistanceService = "ASSISTENCIA_PET"
+	AssistanceServiceResidentialAssistance                                    AssistanceService = "ASSISTENCIA_RESIDENCIAL"
+	AssistanceServiceSustainableAssistance                                    AssistanceService = "ASSISTENCIA_SUSTENTAVEL"
+	AssistanceServiceEmergencyVeterinaryAssistance                            AssistanceService = "ASSISTENCIA_VETERINARIA_EMERGENCIAL"
+	AssistanceServiceHealthAndWellnessAssistance                              AssistanceService = "ASSISTENCIAS_SAUDE_E_BEM_ESTAR"
+	AssistanceServiceBabySitter                                               AssistanceService = "BABY_SITTER"
+	AssistanceServiceDumpster                                                 AssistanceService = "CACAMBA"
+	AssistanceServiceReserveCar                                               AssistanceService = "CARRO_RESERVA"
+	AssistanceServiceBasicBasket                                              AssistanceService = "CESTA_BASICA"
+	AssistanceServiceFoodBasket                                               AssistanceService = "CESTA_DE_ALIMENTOS"
+	AssistanceServiceBirthBasket                                              AssistanceService = "CESTA_NATALIDADE"
+	AssistanceServiceLocksmith                                                AssistanceService = "CHAVEIRO"
+	AssistanceServiceCheckUp                                                  AssistanceService = "CHECK_UP"
+	AssistanceServiceProvisionalRoofCoverage                                  AssistanceService = "COBERTURA_PROVISORIA_DE_TELHADO"
+	AssistanceServiceConcierge                                                AssistanceService = "CONCIERGE"
+	AssistanceServiceAirConditioningRepair                                    AssistanceService = "CONSERTO_DE_AR_CONDICIONADO"
+	AssistanceServiceWhiteGoodsRepair                                         AssistanceService = "CONSERTO_DE_ELETRODOMESTICOS_LINHA_BRANCA"
+	AssistanceServiceBrownGoodsRepair                                         AssistanceService = "CONSERTO_DE_ELETROELETRONICO_LINHA_MARROM"
+	AssistanceServiceCorrugatedDoorRepair                                     AssistanceService = "CONSERTO_DE_PORTA_ONDULADA"
+	AssistanceServiceVeterinaryConsultations                                  AssistanceService = "CONSULTAS_VETERINARIAS"
+	AssistanceServiceBudgetConsulting                                         AssistanceService = "CONSULTORIA_ORCAMENTARIA"
+	AssistanceServiceTravelConvenience                                        AssistanceService = "CONVENIENCIA_EM_VIAGEM"
+	AssistanceServicePestControl                                              AssistanceService = "DEDETIZACAO"
+	AssistanceServiceUnstuck                                                  AssistanceService = "DESATOLAMENTO"
+	AssistanceServiceResponsibleDisposal                                      AssistanceService = "DESCARTE_RESPONSAVEL"
+	AssistanceServiceDiscountsOnConsultationsAndExams                         AssistanceService = "DESCONTOS_EM_CONSULTAS_E_EXAMES"
+	AssistanceServiceDiscountsOnMedications                                   AssistanceService = "DESCONTOS_EM_MEDICAMENTOS"
+	AssistanceServiceUnclogging                                               AssistanceService = "DESENTUPIMENTO"
+	AssistanceServiceDisinsectizationAndDeratization                          AssistanceService = "DESINSETIZACAO_E_DESRATIZACAO"
+	AssistanceServiceDispatcher                                               AssistanceService = "DESPACHANTE"
+	AssistanceServicePharmaceuticalExpenses                                   AssistanceService = "DESPESAS_FARMACEUTICAS"
+	AssistanceServiceMedicalSurgicalAndHospitalizationExpenses                AssistanceService = "DESPESAS_MEDICAS_CIRURGICAS_E_DE_HOSPITALIZACAO"
+	AssistanceServiceDentalExpenses                                           AssistanceService = "DESPESAS_ODONTOLOGICAS"
+	AssistanceServiceElectrician                                              AssistanceService = "ELETRICISTA"
+	AssistanceServiceEmergencies                                              AssistanceService = "EMERGENCIAS"
+	AssistanceServicePlumber                                                  AssistanceService = "ENCANADOR"
+	AssistanceServiceSendingCompanionInCaseOfAccident                         AssistanceService = "ENVIO_DE_ACOMPANHANTE_EM_CASO_DE_ACIDENTE"
+	AssistanceServiceSendingFamilyMemberForAccompanimentOfMinorsUnderFourteen AssistanceService = "ENVIO_DE_FAMILIAR_PARA_ACOMPANHAMENTO_DE_MENORES_DE_CATORZE_ANOS"
+	AssistanceServicePetFoodDelivery                                          AssistanceService = "ENVIO_DE_RACAO"
+	AssistanceServiceVirtualOffice                                            AssistanceService = "ESCRITORIO_VIRTUAL"
+	AssistanceServicePetBoarding                                              AssistanceService = "GUARDA_DE_ANIMAIS"
+	AssistanceServiceVehicleStorage                                           AssistanceService = "GUARDA_DO_VEICULO"
+	AssistanceServiceTowTruck                                                 AssistanceService = "GUINCHO"
+	AssistanceServiceHelpDesk                                                 AssistanceService = "HELP_DESK"
+	AssistanceServiceHydraulics                                               AssistanceService = "HIDRAULICA"
+	AssistanceServiceAccommodation                                            AssistanceService = "HOSPEDAGEM"
+	AssistanceServicePetAccommodation                                         AssistanceService = "HOSPEDAGEM_DE_ANIMAIS"
+	AssistanceServiceBathAndGroomingReferral                                  AssistanceService = "INDICACAO_DE_BANHO_E_TOSA"
+	AssistanceServiceProfessionalReferral                                     AssistanceService = "INDICACAO_DE_PROFISSIONAIS"
+	AssistanceServiceDogBreedInformation                                      AssistanceService = "INFORMACAO_SOBRE_RACAS_DE_CAES"
+	AssistanceServicePuppySaleInformation                                     AssistanceService = "INFORMACAO_SOBRE_VENDA_DE_FILHOTES"
+	AssistanceServiceVaccineInformation                                       AssistanceService = "INFORMACOES_SOBRE_VACINAS"
+	AssistanceServiceUsefulVeterinaryInformation                              AssistanceService = "INFORMACOES_VETERINARIAS_UTEIS"
+	AssistanceServiceResidentialInstallation                                  AssistanceService = "INSTALACAO_RESIDENCIA"
+	AssistanceServiceElectricShowerInstallationAndOrResistanceReplacement     AssistanceService = "INSTALACAO_DE_CHUVEIRO_ELETRICO_E_OU_TROCA_DE_RESISTENCIA"
+	AssistanceServiceTVBracketInstallationUpToSeventy                         AssistanceService = "INSTALACAO_DE_SUPORTE_TV_ATE_SETENTA"
+	AssistanceServiceCleaning                                                 AssistanceService = "LIMPEZA"
+	AssistanceServiceAirConditioningCleaning                                  AssistanceService = "LIMPEZA_DE_AR_CONDICIONADO"
+	AssistanceServiceWaterTankCleaning                                        AssistanceService = "LIMPEZA_DE_CAIXA_D_AGUA"
+	AssistanceServiceGutterCleaning                                           AssistanceService = "LIMPEZA_DE_CALHAS"
+	AssistanceServiceDrainAndTrapCleaning                                     AssistanceService = "LIMPEZA_DE_RALOS_E_SIFOES"
+	AssistanceServiceApplianceRental                                          AssistanceService = "LOCACAO_DE_ELETRODOMESTICOS"
+	AssistanceServiceVehicleRental                                            AssistanceService = "LOCACAO_DE_VEICULOS"
+	AssistanceServiceBaggageLocation                                          AssistanceService = "LOCALIZACAO_DE_BAGAGEM"
+	AssistanceServiceMaintenance                                              AssistanceService = "MANUTENCAO"
+	AssistanceServiceDentRepairAndQuickRepair                                 AssistanceService = "MARTELINHO_E_REPARO_RAPIDO"
+	AssistanceServiceMechanic                                                 AssistanceService = "MECANICO"
+	AssistanceServiceTransport                                                AssistanceService = "MEIO_DE_TRANSPORTE"
+	AssistanceServiceMedicalMonitoring                                        AssistanceService = "MONITORACAO_MEDICA"
+	AssistanceServiceMotorcycle                                               AssistanceService = "MOTO"
+	AssistanceServiceFriendDriver                                             AssistanceService = "MOTORISTA_AMIGO"
+	AssistanceServiceSubstituteDriver                                         AssistanceService = "MOTORISTA_SUBSTITUTO"
+	AssistanceServiceMTAAlternativeTransport                                  AssistanceService = "MTA_MEIO_DE_TRANSPORTE_ALTERNATIVO"
+	AssistanceServiceMovingAndFurnitureStorage                                AssistanceService = "MUDANCA_E_GUARDA_DE_MOVEIS"
+	AssistanceServiceOrganization                                             AssistanceService = "ORGANIZACAO"
+	AssistanceServiceGuidanceInCaseOfDocumentLoss                             AssistanceService = "ORIENTACAO_EM_CASO_DE_PERDA_DE_DOCUMENTOS"
+	AssistanceServiceMedicalGuidance                                          AssistanceService = "ORIENTACAO_MEDICA"
+	AssistanceServicePsychologicalGuidance                                    AssistanceService = "ORIENTACAO_PSICOLOGICA"
+	AssistanceServicePersonalFitness                                          AssistanceService = "PERSONAL_FITNESS"
+	AssistanceServiceTowing                                                   AssistanceService = "REBOQUE"
+	AssistanceServiceBikeTowing                                               AssistanceService = "REBOQUE_BIKE"
+	AssistanceServiceVehicleRecovery                                          AssistanceService = "RECUPERACAO_DO_VEICULO"
+	AssistanceServiceEarlyReturnInCaseOfFamilyDeath                           AssistanceService = "REGRESSO_ANTECIPADO_EM_CASO_DE_FALECIMENTO_DE_PARENTES"
+	AssistanceServiceUserReturnAfterHospitalDischarge                         AssistanceService = "REGRESSO_DO_USUARIO_APOS_ALTA_HOSPITALAR"
+	AssistanceServiceCeilingFanReinstallationAndRepair                        AssistanceService = "REINSTALACAO_E_REPARO_DO_VENTILADOR_DE_TETO"
+	AssistanceServiceFurnitureRearrangement                                   AssistanceService = "REMANEJAMENTO_DE_MOVEIS"
+	AssistanceServiceHospitalRemoval                                          AssistanceService = "REMOCAO_HOSPITALAR"
+	AssistanceServiceMedicalRemoval                                           AssistanceService = "REMOCAO_MEDICA"
+	AssistanceServiceInterHospitalMedicalRemoval                              AssistanceService = "REMOCAO_MEDICA_INTER_HOSPITALAR"
+	AssistanceServiceAutomotiveRepair                                         AssistanceService = "REPARACAO_AUTOMOTIVA"
+	AssistanceServiceTelephonyRepair                                          AssistanceService = "REPARO_DE_TELEFONIA"
+	AssistanceServiceAutomaticGateRepair                                      AssistanceService = "REPARO_EM_PORTOES_AUTOMATICOS"
+	AssistanceServiceAntennaMountingRepair                                    AssistanceService = "REPARO_FIXACAO_DE_ANTENAS"
+	AssistanceServiceElectricalRepairs                                        AssistanceService = "REPAROS_ELETRICOS"
+	AssistanceServiceEarlyReturnToResidence                                   AssistanceService = "RETORNO_ANTECIPADO_AO_DOMICILIO"
+	AssistanceServiceStoveReversal                                            AssistanceService = "REVERSAO_DE_FOGAO"
+	AssistanceServiceElectricalInstallationReview                             AssistanceService = "REVISAO_DE_INSTALACAO_ELETRICA"
+	AssistanceServiceInternationalSecondMedicalOpinion                        AssistanceService = "SEGUNDA_OPINIAO_MEDICA_INTERNACIONAL"
+	AssistanceServiceSecurity                                                 AssistanceService = "SEGURANCA"
+	AssistanceServiceMetalworker                                              AssistanceService = "SERRALHEIRO"
+	AssistanceServiceMedicalReferralService                                   AssistanceService = "SERVICO_DE_INDICACAO_MEDICA"
+	AssistanceServiceCleaningService                                          AssistanceService = "SERVICO_DE_LIMPEZA"
+	AssistanceServiceAutoServices                                             AssistanceService = "SERVICOS_AUTO"
+	AssistanceServiceSpecialObjectMountingServices                            AssistanceService = "SERVICOS_ESPECIAIS_FIXACAO_DE_OBJETOS"
+	AssistanceServiceGeneralServices                                          AssistanceService = "SERVICOS_GERAIS"
+	AssistanceServiceTireReplacement                                          AssistanceService = "SUBSTITUICAO_DE_PNEUS"
+	AssistanceServiceRoofTileReplacement                                      AssistanceService = "SUBSTITUICAO_DE_TELHAS"
+	AssistanceServiceTaxi                                                     AssistanceService = "TAXI"
+	AssistanceServiceTelemedicine                                             AssistanceService = "TELEMEDICINA"
+	AssistanceServiceUrgentMessageTransmission                                AssistanceService = "TRANSMISSAO_DE_MENSAGENS_URGENTES"
+	AssistanceServiceFamilyTransportAndSending                                AssistanceService = "TRANSPORTE_E_ENVIO_DE_FAMILIAR"
+	AssistanceServiceFurnitureTransportAndStorage                             AssistanceService = "TRANSPORTE_E_GUARDA_MOVEIS"
+	AssistanceServiceSchoolPeopleTransport                                    AssistanceService = "TRANSPORTE_ESCOLAR_PESSOAS"
+	AssistanceServiceEmergencyVeterinaryTransport                             AssistanceService = "TRANSPORTE_VETERINARIO_EMERGENCIAL"
+	AssistanceServiceBodyTransfer                                             AssistanceService = "TRASLADO_DE_CORPO"
+	AssistanceServiceBatteryReplacement                                       AssistanceService = "TROCA_DE_BATERIA"
+	AssistanceServiceTireChange                                               AssistanceService = "TROCA_DE_PNEUS"
+	AssistanceServiceLeakDetection                                            AssistanceService = "VERIFICACAO_DE_POSSIVEIS_VAZAMENTOS"
+	AssistanceServiceGlassAndAccessories                                      AssistanceService = "VIDROS_E_ACESSORIOS"
+	AssistanceServiceSurveillanceAndSecurity                                  AssistanceService = "VIGILANCIA_E_SEGURANCA"
+	AssistanceServiceOthers                                                   AssistanceService = "OUTROS"
+)
+
+type Premium struct {
+	PaymentsQuantity         string                 `json:"paymentsQuantity"`
+	TotalAmount              insurer.AmountDetails  `json:"totalAmount"`
+	TotalNetAmount           insurer.AmountDetails  `json:"totalNetAmount"`
+	IOF                      insurer.AmountDetails  `json:"IOF"`
+	InterestRateOverPayments *float32               `json:"interestRateOverPayments,omitempty"`
+	Coverages                []auto.PremiumCoverage `json:"coverages"`
+	Payments                 []auto.Payment         `json:"payments"`
+}
+
+type LicensePlateType string
+
+const (
+	LicensePlateTypeIncendio           LicensePlateType = "INCENDIO"
+	LicensePlateTypeColisao            LicensePlateType = "COLISAO"
+	LicensePlateTypeRoubo              LicensePlateType = "ROUBO"
+	LicensePlateTypeFurto              LicensePlateType = "FURTO"
+	LicensePlateTypeAlagamentoEnchente LicensePlateType = "ALAGAMENTO_ENCHENTE"
+	LicensePlateTypeInundacoes         LicensePlateType = "INUNDACOES"
+)
+
+type Tariff string
+
+const (
+	TariffPassengerNational               Tariff = "PASSEIO_NACIONAL"
+	TariffPassengerImported               Tariff = "PASSEIO_IMPORTADO"
+	TariffPickupNationalAndImported       Tariff = "PICK_UP_NACIONAL_E_IMPORTADO"
+	TariffCargoVehicleNationalAndImported Tariff = "VEICULO_DE_CARGA_NACIONAL_E_IMPORTADO"
+	TariffMotorcycleNationalAndImported   Tariff = "MOTOCICLETA_NACIONAL_E_IMPORTADO"
+	TariffBusNationalAndImported          Tariff = "ONIBUS_NACIONAL_E_IMPORTADO"
+	TariffUtilityNationalAndImported      Tariff = "UTILITARIO_NACIONAL_E_IMPORTADO"
+)
 
 type LeadQuery struct {
 	ID        string

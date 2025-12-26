@@ -51,7 +51,8 @@ type CustomDataField struct {
 }
 
 type PatchData struct {
+	Status                     Status
+	InsurerQuoteID             *string
 	AuthorIdentificationType   insurer.IdentificationType
 	AuthorIdentificationNumber string
-	Status                     Status
 }

@@ -8,11 +8,9 @@ services:
       - ENV=LOCAL
       - TRANSPORT_CERT_PATH=/app/keys/server_transport.crt
       - TRANSPORT_KEY_PATH=/app/keys/server_transport.key
-      - CLIENT_CA_CERT_PATH=/app/keys/client_ca_cert.crt
     volumes:
       - ./keys/server_transport.crt:/app/keys/server_transport.crt:ro
       - ./keys/server_transport.key:/app/keys/server_transport.key:ro
-      - ./keys/client_ca_cert.crt:/app/keys/client_ca_cert.crt:ro
     depends_on:
       psql:
         condition: service_healthy
@@ -70,7 +68,7 @@ services:
       dockerfile: cmd/gateway/Dockerfile
     volumes:
       - ./keys/:/keys:ro
-      - ./auth/static:/auth/static:ro
+      - ./ui/static:/ui/static:ro
     ports:
       - 443:443
     depends_on:

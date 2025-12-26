@@ -55,3 +55,22 @@ actions:
     x-go-type: insurer.AmountDetails
     x-go-type-import:
       path: github.com/luikyv/mock-insurer/internal/insurer
+
+- target: $.components.schemas.QuoteRequestAutoLead.properties.data.properties.quoteCustomer.properties.complimentaryInformationData.oneOf
+  remove: true
+- target: $.components.schemas.QuoteRequestAutoLead.properties.data.properties.quoteCustomer.properties.complimentaryInformationData
+  description: PersonalComplimentaryInformationData and BusinessComplimentaryInformationData are the same schema.
+  update:
+    anyOf:
+      - $ref: '#/components/schemas/PersonalComplimentaryInformationData'
+      - $ref: '#/components/schemas/BusinessComplimentaryInformationData'
+
+- target: $.components.schemas.QuoteRequestAuto.properties.data.properties.quoteCustomer.properties.complimentaryInformationData.oneOf
+  remove: true
+- target: $.components.schemas.QuoteRequestAuto.properties.data.properties.quoteCustomer.properties.complimentaryInformationData
+  description: PersonalComplimentaryInformationData and BusinessComplimentaryInformationData are the same schema.
+  update:
+    anyOf:
+      - $ref: '#/components/schemas/PersonalComplimentaryInformationData'
+      - $ref: '#/components/schemas/BusinessComplimentaryInformationData'
+

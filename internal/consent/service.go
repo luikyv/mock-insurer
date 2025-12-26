@@ -6,10 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/luikyv/mock-insurer/internal/api"
 	"github.com/luikyv/mock-insurer/internal/errorutil"
-	"github.com/luikyv/mock-insurer/internal/page"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"github.com/luikyv/mock-insurer/internal/user"
 	"gorm.io/gorm"
@@ -74,22 +72,30 @@ func (s Service) Consent(ctx context.Context, id, orgID string) (*Consent, error
 		return nil, ErrAccessNotAllowed
 	}
 
-	return c, s.runAutomations(ctx, c)
-}
-
-func (s Service) Consents(ctx context.Context, ownerID uuid.UUID, orgID string, pag page.Pagination) (page.Page[*Consent], error) {
-	consents, err := s.storage.consents(ctx, orgID, &Filter{OwnerID: ownerID.String()}, pag)
-	if err != nil {
-		return page.Page[*Consent]{}, err
-	}
-
-	for _, c := range consents.Records {
-		if err := s.runAutomations(ctx, c); err != nil {
-			return page.Page[*Consent]{}, err
+	switch c.Status {
+	case StatusAwaitingAuthorization:
+		if timeutil.DateTimeNow().After(c.CreatedAt.Add(3600 * time.Second)) {
+			slog.DebugContext(ctx, "consent awaiting authorization for too long, moving to rejected")
+			reasonAdditionalInfo := "consent awaiting authorization for too long"
+			return c, s.reject(ctx, c, Rejection{
+				By:                   RejectedByUser,
+				ReasonCode:           RejectionReasonCodeConsentExpired,
+				ReasonAdditionalInfo: &reasonAdditionalInfo,
+			})
+		}
+	case StatusAuthorized:
+		if timeutil.DateTimeNow().After(c.ExpiresAt) {
+			slog.DebugContext(ctx, "consent reached expiration, moving to rejected")
+			reasonAdditionalInfo := "consent reached expiration"
+			return c, s.reject(ctx, c, Rejection{
+				By:                   RejectedByASPSP,
+				ReasonCode:           RejectionReasonCodeConsentMaxDateReached,
+				ReasonAdditionalInfo: &reasonAdditionalInfo,
+			})
 		}
 	}
 
-	return consents, nil
+	return c, nil
 }
 
 func (s Service) Reject(ctx context.Context, id, orgID string, rejection Rejection) error {
@@ -120,33 +126,6 @@ func (s Service) Delete(ctx context.Context, id, orgID string) error {
 		ReasonCode:           rejectionReason,
 		ReasonAdditionalInfo: &additionalInfo,
 	})
-}
-
-func (s Service) runAutomations(ctx context.Context, c *Consent) error {
-	switch c.Status {
-	case StatusAwaitingAuthorization:
-		if timeutil.DateTimeNow().After(c.CreatedAt.Add(3600 * time.Second)) {
-			slog.DebugContext(ctx, "consent awaiting authorization for too long, moving to rejected")
-			reasonAdditionalInfo := "consent awaiting authorization for too long"
-			return s.reject(ctx, c, Rejection{
-				By:                   RejectedByUser,
-				ReasonCode:           RejectionReasonCodeConsentExpired,
-				ReasonAdditionalInfo: &reasonAdditionalInfo,
-			})
-		}
-	case StatusAuthorized:
-		if timeutil.DateTimeNow().After(c.ExpiresAt) {
-			slog.DebugContext(ctx, "consent reached expiration, moving to rejected")
-			reasonAdditionalInfo := "consent reached expiration"
-			return s.reject(ctx, c, Rejection{
-				By:                   RejectedByASPSP,
-				ReasonCode:           RejectionReasonCodeConsentMaxDateReached,
-				ReasonAdditionalInfo: &reasonAdditionalInfo,
-			})
-		}
-	}
-
-	return nil
 }
 
 func (s Service) reject(ctx context.Context, c *Consent, rejection Rejection) error {

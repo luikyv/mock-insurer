@@ -5,14 +5,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/luikyv/mock-insurer/internal/page"
 	"gorm.io/gorm"
 )
 
 type Storage interface {
 	create(ctx context.Context, c *Consent) error
 	consent(ctx context.Context, id, orgID string) (*Consent, error)
-	consents(ctx context.Context, orgID string, opts *Filter, pag page.Pagination) (page.Page[*Consent], error)
 	update(ctx context.Context, c *Consent) error
 }
 
@@ -36,20 +34,6 @@ func (s storage) consent(ctx context.Context, id, orgID string) (*Consent, error
 		return nil, err
 	}
 	return c, nil
-}
-
-func (s storage) consents(ctx context.Context, orgID string, opts *Filter, pag page.Pagination) (page.Page[*Consent], error) {
-	query := s.db.WithContext(ctx).Model(&Consent{}).Where("org_id = ?", orgID).Order("created_at DESC")
-	if opts.OwnerID != "" {
-		query = query.Where("owner_id = ?", opts.OwnerID)
-	}
-
-	consents, err := page.Paginate[*Consent](query, pag)
-	if err != nil {
-		return page.Page[*Consent]{}, err
-	}
-
-	return consents, nil
 }
 
 func (s storage) update(ctx context.Context, c *Consent) error {

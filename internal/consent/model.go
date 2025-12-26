@@ -24,7 +24,7 @@ var (
 type Consent struct {
 	ID                     uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
 	Status                 Status
-	Permissions            PermissionGroup `gorm:"serializer:json"`
+	Permissions            Permissions `gorm:"serializer:json"`
 	StatusUpdatedAt        timeutil.DateTime
 	ExpiresAt              timeutil.DateTime
 	UserIdentification     string
@@ -76,6 +76,12 @@ const (
 )
 
 type Permission string
+
+func (p Permission) IsAllowed() bool {
+	return slices.Contains(PermissionGroupPhase2, p) || slices.Contains([]Permission{
+		PermissionEndorsementRequestCreate,
+	}, p)
+}
 
 const (
 	PermissionCapitalizationTitleEventsRead                             Permission = "CAPITALIZATION_TITLE_EVENTS_READ"
@@ -205,17 +211,29 @@ const (
 	PermissionResourcesRead                                             Permission = "RESOURCES_READ"
 )
 
-type PermissionGroup []Permission
+type Permissions []Permission
 
-func (p PermissionGroup) HasAutoPermissions() bool {
+func (p Permissions) HasAutoPermissions() bool {
 	return slices.ContainsFunc(p, func(permission Permission) bool {
-		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_AUTO")
+		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_AUTO_")
+	})
+}
+
+func (p Permissions) HasCustomerPersonalPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "CUSTOMERS_PERSONAL_")
+	})
+}
+
+func (p Permissions) HasCustomerBusinessPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "CUSTOMERS_BUSINESS_")
 	})
 }
 
 var (
 	// Fase 2: Cadastro Pessoa Física
-	PermissionGroupPersonalRegistrationData PermissionGroup = []Permission{
+	PermissionGroupPersonalRegistrationData Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionCustomersPersonalIdentificationsRead,
 		PermissionCustomersPersonalQualificationRead,
@@ -223,7 +241,7 @@ var (
 	}
 
 	// Fase 2: Cadastro Pessoa Jurídica
-	PermissionGroupBusinessRegistrationData PermissionGroup = []Permission{
+	PermissionGroupBusinessRegistrationData Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionCustomersBusinessIdentificationsRead,
 		PermissionCustomersBusinessQualificationRead,
@@ -231,7 +249,7 @@ var (
 	}
 
 	// Fase 2: Títulos de Capitalização
-	PermissionGroupCapitalizationTitle PermissionGroup = []Permission{
+	PermissionGroupCapitalizationTitle Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionCapitalizationTitleRead,
 		PermissionCapitalizationTitlePlanInfoRead,
@@ -240,7 +258,7 @@ var (
 	}
 
 	// Fase 2: Previdência Risco
-	PermissionGroupPensionPlan PermissionGroup = []Permission{
+	PermissionGroupPensionPlan Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionPensionPlanRead,
 		PermissionPensionPlanContractInfoRead,
@@ -251,7 +269,7 @@ var (
 	}
 
 	// Fase 2: Previdência e Pessoas Sobrevivência
-	PermissionGroupLifePension PermissionGroup = []Permission{
+	PermissionGroupLifePension Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionLifePensionRead,
 		PermissionLifePensionContractInfoRead,
@@ -262,7 +280,7 @@ var (
 	}
 
 	// Fase 2: Assistência Financeira
-	PermissionGroupFinancialAssistance PermissionGroup = []Permission{
+	PermissionGroupFinancialAssistance Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionFinancialAssistanceRead,
 		PermissionFinancialAssistanceContractInfoRead,
@@ -270,7 +288,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Patrimonial
-	PermissionGroupDamagesAndPeoplePatrimonial PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeoplePatrimonial Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeoplePatrimonialRead,
 		PermissionDamagesAndPeoplePatrimonialPolicyInfoRead,
@@ -279,7 +297,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Responsabilidade
-	PermissionGroupDamagesAndPeopleResponsibility PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleResponsibility Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleResponsibilityRead,
 		PermissionDamagesAndPeopleResponsibilityPolicyInfoRead,
@@ -288,7 +306,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Transportes
-	PermissionGroupDamagesAndPeopleTransport PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleTransport Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleTransportRead,
 		PermissionDamagesAndPeopleTransportPolicyInfoRead,
@@ -297,7 +315,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Riscos Financeiros
-	PermissionGroupDamagesAndPeopleFinancialRisks PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleFinancialRisks Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleFinancialRisksRead,
 		PermissionDamagesAndPeopleFinancialRisksPolicyInfoRead,
@@ -306,7 +324,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Rural
-	PermissionGroupDamagesAndPeopleRural PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleRural Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleRuralRead,
 		PermissionDamagesAndPeopleRuralPolicyInfoRead,
@@ -315,7 +333,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Automóveis
-	PermissionGroupDamagesAndPeopleAuto PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleAuto Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleAutoRead,
 		PermissionDamagesAndPeopleAutoPolicyInfoRead,
@@ -324,7 +342,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Habitacional
-	PermissionGroupDamagesAndPeopleHousing PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleHousing Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleHousingRead,
 		PermissionDamagesAndPeopleHousingPolicyInfoRead,
@@ -333,7 +351,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Aceitação e Sucursal no exterior
-	PermissionGroupDamagesAndPeopleAcceptanceAndBranchesAbroad PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeopleAcceptanceAndBranchesAbroad Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeopleAcceptanceAndBranchesAbroadRead,
 		PermissionDamagesAndPeopleAcceptanceAndBranchesAbroadPolicyInfoRead,
@@ -342,7 +360,7 @@ var (
 	}
 
 	// Fase 2: Danos e Pessoas - Pessoas
-	PermissionGroupDamagesAndPeoplePerson PermissionGroup = []Permission{
+	PermissionGroupDamagesAndPeoplePerson Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionDamagesAndPeoplePersonRead,
 		PermissionDamagesAndPeoplePersonPolicyInfoRead,
@@ -351,193 +369,193 @@ var (
 	}
 
 	// Fase 3: Aviso de Sinistro - Danos
-	PermissionGroupClaimNotificationRequestDamage PermissionGroup = []Permission{
+	PermissionGroupClaimNotificationRequestDamage Permissions = []Permission{
 		PermissionClaimNotificationRequestDamageCreate,
 	}
 
 	// Fase 3: Aviso de Sinistro - Pessoas
-	PermissionGroupClaimNotificationRequestPerson PermissionGroup = []Permission{
+	PermissionGroupClaimNotificationRequestPerson Permissions = []Permission{
 		PermissionClaimNotificationRequestPersonCreate,
 	}
 
 	// Fase 3: Endosso
-	PermissionGroupEndorsementRequest PermissionGroup = []Permission{
+	PermissionGroupEndorsementRequest Permissions = []Permission{
 		PermissionEndorsementRequestCreate,
 	}
 
 	// Fase 3: Cotação Patrimonial Lead
-	PermissionGroupQuotePatrimonialLead PermissionGroup = []Permission{
+	PermissionGroupQuotePatrimonialLead Permissions = []Permission{
 		PermissionQuotePatrimonialLeadCreate,
 		PermissionQuotePatrimonialLeadUpdate,
 	}
 
 	// Fase 3: Cotação Patrimonial Home
-	PermissionGroupQuotePatrimonialHome PermissionGroup = []Permission{
+	PermissionGroupQuotePatrimonialHome Permissions = []Permission{
 		PermissionQuotePatrimonialHomeRead,
 		PermissionQuotePatrimonialHomeCreate,
 		PermissionQuotePatrimonialHomeUpdate,
 	}
 
 	// Fase 3: Cotação Patrimonial Condominium
-	PermissionGroupQuotePatrimonialCondominium PermissionGroup = []Permission{
+	PermissionGroupQuotePatrimonialCondominium Permissions = []Permission{
 		PermissionQuotePatrimonialCondominiumRead,
 		PermissionQuotePatrimonialCondominiumCreate,
 		PermissionQuotePatrimonialCondominiumUpdate,
 	}
 
 	// Fase 3: Cotação Patrimonial Business
-	PermissionGroupQuotePatrimonialBusiness PermissionGroup = []Permission{
+	PermissionGroupQuotePatrimonialBusiness Permissions = []Permission{
 		PermissionQuotePatrimonialBusinessRead,
 		PermissionQuotePatrimonialBusinessCreate,
 		PermissionQuotePatrimonialBusinessUpdate,
 	}
 
 	// Fase 3: Cotação Patrimonial Diverse Risks
-	PermissionGroupQuotePatrimonialDiverseRisks PermissionGroup = []Permission{
+	PermissionGroupQuotePatrimonialDiverseRisks Permissions = []Permission{
 		PermissionQuotePatrimonialDiverseRisksRead,
 		PermissionQuotePatrimonialDiverseRisksCreate,
 		PermissionQuotePatrimonialDiverseRisksUpdate,
 	}
 
 	// Fase 3: Cotação Aceitação e Sucursal no exterior
-	PermissionGroupQuoteAcceptanceAndBranchesAbroadLead PermissionGroup = []Permission{
+	PermissionGroupQuoteAcceptanceAndBranchesAbroadLead Permissions = []Permission{
 		PermissionQuoteAcceptanceAndBranchesAbroadLeadCreate,
 		PermissionQuoteAcceptanceAndBranchesAbroadLeadUpdate,
 	}
 
 	// Fase 3: Cotação Auto Lead
-	PermissionGroupQuoteAutoLead PermissionGroup = []Permission{
+	PermissionGroupQuoteAutoLead Permissions = []Permission{
 		PermissionQuoteAutoLeadCreate,
 		PermissionQuoteAutoLeadUpdate,
 	}
 
 	// Fase 3: Cotação Auto
-	PermissionGroupQuoteAuto PermissionGroup = []Permission{
+	PermissionGroupQuoteAuto Permissions = []Permission{
 		PermissionQuoteAutoRead,
 		PermissionQuoteAutoCreate,
 		PermissionQuoteAutoUpdate,
 	}
 
 	// Fase 3: Cotação Riscos Financeiros Lead
-	PermissionGroupQuoteFinancialRiskLead PermissionGroup = []Permission{
+	PermissionGroupQuoteFinancialRiskLead Permissions = []Permission{
 		PermissionQuoteFinancialRiskLeadCreate,
 		PermissionQuoteFinancialRiskLeadUpdate,
 	}
 
 	// Fase 3: Cotação Habitacional Lead
-	PermissionGroupQuoteHousingLead PermissionGroup = []Permission{
+	PermissionGroupQuoteHousingLead Permissions = []Permission{
 		PermissionQuoteHousingLeadCreate,
 		PermissionQuoteHousingLeadUpdate,
 	}
 
 	// Fase 3: Cotação Responsabilidade Lead
-	PermissionGroupQuoteResponsibilityLead PermissionGroup = []Permission{
+	PermissionGroupQuoteResponsibilityLead Permissions = []Permission{
 		PermissionQuoteResponsibilityLeadCreate,
 		PermissionQuoteResponsibilityLeadUpdate,
 	}
 
 	// Fase 3: Cotação Rural Lead
-	PermissionGroupQuoteRuralLead PermissionGroup = []Permission{
+	PermissionGroupQuoteRuralLead Permissions = []Permission{
 		PermissionQuoteRuralLeadCreate,
 		PermissionQuoteRuralLeadUpdate,
 	}
 
 	// Fase 3: Cotação Transportes Lead
-	PermissionGroupQuoteTransportLead PermissionGroup = []Permission{
+	PermissionGroupQuoteTransportLead Permissions = []Permission{
 		PermissionQuoteTransportLeadCreate,
 		PermissionQuoteTransportLeadUpdate,
 	}
 
 	// Fase 3: Cotação Pessoas Lead
-	PermissionGroupQuotePersonLead PermissionGroup = []Permission{
+	PermissionGroupQuotePersonLead Permissions = []Permission{
 		PermissionQuotePersonLeadCreate,
 		PermissionQuotePersonLeadUpdate,
 	}
 
 	// Fase 3: Cotação Pessoas Life
-	PermissionGroupQuotePersonLife PermissionGroup = []Permission{
+	PermissionGroupQuotePersonLife Permissions = []Permission{
 		PermissionQuotePersonLifeRead,
 		PermissionQuotePersonLifeCreate,
 		PermissionQuotePersonLifeUpdate,
 	}
 
 	// Fase 3: Cotação Pessoas Travel
-	PermissionGroupQuotePersonTravel PermissionGroup = []Permission{
+	PermissionGroupQuotePersonTravel Permissions = []Permission{
 		PermissionQuotePersonTravelRead,
 		PermissionQuotePersonTravelCreate,
 		PermissionQuotePersonTravelUpdate,
 	}
 
 	// Fase 3: Cotação Títulos de Capitalização Lead
-	PermissionGroupQuoteCapitalizationTitleLead PermissionGroup = []Permission{
+	PermissionGroupQuoteCapitalizationTitleLead Permissions = []Permission{
 		PermissionQuoteCapitalizationTitleLeadCreate,
 		PermissionQuoteCapitalizationTitleLeadUpdate,
 	}
 
 	// Fase 3: Cotação Títulos de Capitalização
-	PermissionGroupQuoteCapitalizationTitle PermissionGroup = []Permission{
+	PermissionGroupQuoteCapitalizationTitle Permissions = []Permission{
 		PermissionQuoteCapitalizationTitleRead,
 		PermissionQuoteCapitalizationTitleCreate,
 		PermissionQuoteCapitalizationTitleUpdate,
 	}
 
 	// Fase 3: Sorteio Títulos de Capitalização
-	PermissionGroupQuoteCapitalizationTitleRaffle PermissionGroup = []Permission{
+	PermissionGroupQuoteCapitalizationTitleRaffle Permissions = []Permission{
 		PermissionQuoteCapitalizationTitleRaffleCreate,
 	}
 
 	// Fase 3: Contratação Previdência Risco Lead
-	PermissionGroupContractPensionPlanLead PermissionGroup = []Permission{
+	PermissionGroupContractPensionPlanLead Permissions = []Permission{
 		PermissionContractPensionPlanLeadCreate,
 		PermissionContractPensionPlanLeadUpdate,
 	}
 
 	// Fase 3: Portabilidade Previdência Risco
-	PermissionGroupContractPensionPlanLeadPortability PermissionGroup = []Permission{
+	PermissionGroupContractPensionPlanLeadPortability Permissions = []Permission{
 		PermissionContractPensionPlanLeadPortabilityCreate,
 		PermissionContractPensionPlanLeadPortabilityUpdate,
 	}
 
 	// Fase 3: Contratação Previdência Sobrevivência Lead
-	PermissionGroupContractLifePensionLead PermissionGroup = []Permission{
+	PermissionGroupContractLifePensionLead Permissions = []Permission{
 		PermissionContractLifePensionLeadCreate,
 		PermissionContractLifePensionLeadUpdate,
 	}
 
 	// Fase 3: Contratação Previdência Sobrevivência
-	PermissionGroupContractLifePension PermissionGroup = []Permission{
+	PermissionGroupContractLifePension Permissions = []Permission{
 		PermissionContractLifePensionCreate,
 		PermissionContractLifePensionUpdate,
 		PermissionContractLifePensionRead,
 	}
 
 	// Fase 3: Portabilidade Previdência Sobrevivência
-	PermissionGroupContractLifePensionLeadPortability PermissionGroup = []Permission{
+	PermissionGroupContractLifePensionLeadPortability Permissions = []Permission{
 		PermissionContractLifePensionLeadPortabilityCreate,
 		PermissionContractLifePensionLeadPortabilityUpdate,
 	}
 
 	// Fase 3: Resgate Previdência
-	PermissionGroupPensionWithdrawal PermissionGroup = []Permission{
+	PermissionGroupPensionWithdrawal Permissions = []Permission{
 		PermissionPensionWithdrawalCreate,
 	}
 
 	// Fase 3: Resgate Previdência Lead
-	PermissionGroupPensionWithdrawalLead PermissionGroup = []Permission{
+	PermissionGroupPensionWithdrawalLead Permissions = []Permission{
 		PermissionPensionWithdrawalLeadCreate,
 	}
 
 	// Fase 3: Resgate Capitalização
-	PermissionGroupCapitalizationTitleWithdrawal PermissionGroup = []Permission{
+	PermissionGroupCapitalizationTitleWithdrawal Permissions = []Permission{
 		PermissionCapitalizationTitleWithdrawalCreate,
 	}
 
 	// Fase 3: Resgate Pessoas
-	PermissionGroupPersonWithdrawal PermissionGroup = []Permission{
+	PermissionGroupPersonWithdrawal Permissions = []Permission{
 		PermissionPersonWithdrawalCreate,
 	}
 
-	PermissionGroupPhase2 PermissionGroup = []Permission{
+	PermissionGroupPhase2 Permissions = []Permission{
 		PermissionResourcesRead,
 		PermissionCustomersPersonalIdentificationsRead,
 		PermissionCustomersBusinessIdentificationsRead,
@@ -602,7 +620,7 @@ var (
 		PermissionDamagesAndPeoplePersonClaimRead,
 	}
 
-	PermissionGroupPhase3 PermissionGroup = []Permission{
+	PermissionGroupPhase3 Permissions = []Permission{
 		PermissionClaimNotificationRequestDamageCreate,
 		PermissionClaimNotificationRequestPersonCreate,
 		PermissionEndorsementRequestCreate,
@@ -669,7 +687,7 @@ var (
 	}
 )
 
-var PermissionGroups = []PermissionGroup{
+var PermissionGroups = []Permissions{
 	// Fase 2: Groups
 	PermissionGroupPersonalRegistrationData,
 	PermissionGroupBusinessRegistrationData,

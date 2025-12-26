@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,11 +15,13 @@ import (
 	"github.com/luikyv/mock-insurer/cmd/cmdutil"
 	autoapi "github.com/luikyv/mock-insurer/internal/api/auto"
 	consentapi "github.com/luikyv/mock-insurer/internal/api/consent"
+	customerapi "github.com/luikyv/mock-insurer/internal/api/customer"
 	oidcapi "github.com/luikyv/mock-insurer/internal/api/oidc"
 	quoteautoapi "github.com/luikyv/mock-insurer/internal/api/quoteauto"
 	resourceapi "github.com/luikyv/mock-insurer/internal/api/resource"
 	"github.com/luikyv/mock-insurer/internal/auto"
 	"github.com/luikyv/mock-insurer/internal/client"
+	"github.com/luikyv/mock-insurer/internal/customer"
 	"github.com/luikyv/mock-insurer/internal/idempotency"
 	quoteauto "github.com/luikyv/mock-insurer/internal/quote/auto"
 	"github.com/luikyv/mock-insurer/internal/resource"
@@ -52,7 +53,6 @@ var (
 	// TransportCertPath and TransportKeyPath are the file paths used for mutual TLS connections.
 	TransportCertPath = cmdutil.EnvValue("TRANSPORT_CERT_PATH", "../../keys/server_transport.crt")
 	TransportKeyPath  = cmdutil.EnvValue("TRANSPORT_KEY_PATH", "../../keys/server_transport.key")
-	ClientCACertPath  = cmdutil.EnvValue("CLIENT_CA_CERT_PATH", "../../keys/client_ca.crt")
 )
 
 func main() {
@@ -79,17 +79,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	clientCACert, err := os.ReadFile(ClientCACertPath)
-	if err != nil {
-		slog.Error("could not load client CA certificate", "error", err)
-		os.Exit(1)
-	}
-	clientCACertPool := x509.NewCertPool()
-	if ok := clientCACertPool.AppendCertsFromPEM(clientCACert); !ok {
-		slog.Error("could not append client CA certificate to pool")
-		os.Exit(1)
-	}
-
 	// Services.
 	clientService := client.NewService(db)
 	idempotencyService := idempotency.NewService(db)
@@ -97,6 +86,7 @@ func main() {
 	userService := user.NewService(db)
 	resourceService := resource.NewService(db)
 	consentService := consent.NewService(db, userService)
+	customerService := customer.NewService(db)
 	autoService := auto.NewService(db)
 	quoteAutoService := quoteauto.NewService(db)
 
@@ -112,6 +102,7 @@ func main() {
 	oidcapi.NewServer(AuthHost, op).RegisterRoutes(mux)
 	consentapi.NewServer(APIMTLSHost, consentService, op, idempotencyService).RegisterRoutes(mux)
 	resourceapi.NewServer(APIMTLSHost, resourceService, consentService, op).RegisterRoutes(mux)
+	customerapi.NewServer(APIMTLSHost, customerService, consentService, op).RegisterRoutes(mux)
 	autoapi.NewServer(APIMTLSHost, autoService, consentService, op).RegisterRoutes(mux)
 	quoteautoapi.NewServer(APIMTLSHost, quoteAutoService, idempotencyService, op).RegisterRoutes(mux)
 
@@ -198,6 +189,7 @@ func openidProvider(
 		consent.ScopeID,
 		consent.Scope,
 		resource.Scope,
+		customer.Scope,
 		auto.Scope,
 		quoteauto.Scope,
 		quoteauto.ScopeLead,

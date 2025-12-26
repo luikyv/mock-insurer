@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/luikyv/mock-insurer/internal/auto"
+	"github.com/luikyv/mock-insurer/internal/customer"
 	"github.com/luikyv/mock-insurer/internal/insurer"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"github.com/luikyv/mock-insurer/internal/user"
@@ -26,6 +28,145 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 	}
 	if err := db.WithContext(ctx).Omit("CreatedAt").Save(testUser).Error; err != nil {
 		return fmt.Errorf("failed to create test user: %w", err)
+	}
+
+	testCustomerPersonalIdentification := &customer.PersonalIdentification{
+		OwnerID: testUser.ID,
+		Data: customer.PersonalIdentificationData{
+			UpdateDateTime: mustParseDateTime("2021-05-21T08:30:00Z"),
+			PersonalID:     pointerOf("578-psd-71md6971kjh-2d414"),
+			BrandName:      "Organização A",
+			CivilName:      "Juan Kaique Cláudio Fernandes",
+			SocialName:     pointerOf("string"),
+			CPF:            "03320847094",
+			CompanyInfo: customer.CompanyInfo{
+				CNPJ: "01773247000563",
+				Name: "Empresa da Organização A",
+			},
+			Documents: &[]customer.PersonalDocument{
+				{
+					Type:           pointerOf(customer.PersonalDocumentTypeCNH),
+					Number:         pointerOf("15291908"),
+					ExpirationDate: pointerOf(mustParseBrazilDate("2023-05-21")),
+					IssueLocation:  pointerOf("string"),
+				},
+			},
+			HasBrazilianNationality: pointerOf(false),
+			OtherDocuments: &customer.OtherPersonalDocument{
+				Type:           pointerOf("SOCIAL SEC"),
+				Number:         pointerOf("15291908"),
+				Country:        pointerOf("string"),
+				ExpirationDate: pointerOf(mustParseBrazilDate("2023-05-21")),
+			},
+			Contact: customer.PersonalContact{
+				PostalAddresses: []customer.PersonalPostalAddress{
+					{
+						Address:            "Av Naburo Ykesaki, 1270",
+						AdditionalInfo:     pointerOf("Fundos"),
+						DistrictName:       pointerOf("Centro"),
+						TownName:           "Marília",
+						CountrySubDivision: insurer.CountrySubDivision("SP"),
+						PostCode:           "17500001",
+						Country:            insurer.CountryCode("AFG"),
+					},
+				},
+				Phones: &[]customer.Phone{
+					{
+						CountryCallingCode: pointerOf("55"),
+						AreaCode:           pointerOf(insurer.PhoneAreaCode("19")),
+						Number:             pointerOf("29875132"),
+						PhoneExtension:     pointerOf("932"),
+					},
+				},
+				Emails: &[]customer.Email{
+					{
+						Email: pointerOf("nome@br.net"),
+					},
+				},
+			},
+			CivilStatus:       pointerOf(insurer.CivilStatusSingle),
+			CivilStatusOthers: pointerOf("string"),
+			Sex:               pointerOf("FEMININO"),
+			BirthDate:         pointerOf(mustParseBrazilDate("2021-05-21")),
+			Filiation: &customer.Filiation{
+				Type:      pointerOf(customer.FiliationTypeFather),
+				CivilName: pointerOf("Marcelo Cláudio Fernandes"),
+			},
+			IdentificationDetails: &customer.IdentificationDetails{
+				CivilName: pointerOf("Juan Kaique Cláudio Fernandes"),
+				CpfNumber: pointerOf("44725754465"),
+			},
+		},
+		CrossOrg:  true,
+		OrgID:     OrgID,
+		UpdatedAt: timeutil.DateTimeNow(),
+	}
+	if err := db.WithContext(ctx).Omit("CreatedAt").Save(testCustomerPersonalIdentification).Error; err != nil {
+		return fmt.Errorf("failed to create test customer personal identification: %w", err)
+	}
+
+	testCustomerPersonalQualification := &customer.PersonalQualification{
+		OwnerID: testUser.ID,
+		Data: customer.PersonalQualificationData{
+			UpdateDateTime:    mustParseDateTime("2021-05-21T08:30:00Z"),
+			PEPIdentification: customer.PEPIdentificationNotExposed,
+			Occupations: &[]customer.Occupation{
+				{
+					Details:                  pointerOf("string"),
+					OccupationCode:           pointerOf("RECEITA_FEDERAL"),
+					OccupationCodeType:       pointerOf(customer.OccupationCodeTypeRFB),
+					OccupationCodeTypeOthers: pointerOf("string"),
+				},
+			},
+			LifePensionPlans: "SIM",
+			InformedRevenue: &customer.PersonalInformedRevenue{
+				IncomeFrequency: pointerOf(customer.IncomeFrequencyMonthly),
+				Currency:        pointerOf(insurer.CurrencyBRL),
+				Amount:          pointerOf("100000.04"),
+				Date:            pointerOf(mustParseBrazilDate("2012-05-21")),
+			},
+			InformedPatrimony: &customer.PersonalInformedPatrimony{
+				Currency: pointerOf(insurer.CurrencyBRL),
+				Amount:   pointerOf("100000.04"),
+				Year:     pointerOf("2010"),
+			},
+		},
+		CrossOrg:  true,
+		OrgID:     OrgID,
+		UpdatedAt: timeutil.DateTimeNow(),
+	}
+	if err := db.WithContext(ctx).Omit("CreatedAt").Save(testCustomerPersonalQualification).Error; err != nil {
+		return fmt.Errorf("failed to create test customer personal qualification: %w", err)
+	}
+
+	testCustomerPersonalComplimentaryInformation := &customer.PersonalComplimentaryInformation{
+		OwnerID: testUser.ID,
+		Data: customer.PersonalComplimentaryInformationData{
+			UpdateDateTime:        mustParseDateTime("2021-05-21T08:30:00Z"),
+			StartDate:             mustParseBrazilDate("2014-05-21"),
+			RelationshipBeginning: pointerOf(mustParseBrazilDate("2014-05-21")),
+			ProductsServices: []customer.ProductsAndServices{
+				{
+					Contract:          "string",
+					Type:              customer.ProductServiceTypeMicroinsurance,
+					InsuranceLineCode: pointerOf("6272"),
+					Procurators: &[]customer.Procurator{
+						{
+							Nature:     customer.ProcuratorNatureProcurator,
+							CpfNumber:  pointerOf("73677831148"),
+							CivilName:  pointerOf("Elza Milena Stefany Teixeira"),
+							SocialName: pointerOf("string"),
+						},
+					},
+				},
+			},
+		},
+		CrossOrg:  true,
+		OrgID:     OrgID,
+		UpdatedAt: timeutil.DateTimeNow(),
+	}
+	if err := db.WithContext(ctx).Omit("CreatedAt").Save(testCustomerPersonalComplimentaryInformation).Error; err != nil {
+		return fmt.Errorf("failed to create test customer personal complimentary information: %w", err)
 	}
 
 	testAutoPolicy := &auto.Policy{
@@ -146,8 +287,8 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 							Feature:                   auto.CoverageFeatureMass,
 							Type:                      auto.CoverageTypeParametric,
 							GracePeriod:               pointerOf(0),
-							GracePeriodicity:          pointerOf(auto.PeriodicityDay),
-							GracePeriodCountingMethod: pointerOf(auto.PeriodCountingMethodBusinessDays),
+							GracePeriodicity:          pointerOf(insurer.PeriodicityDay),
+							GracePeriodCountingMethod: pointerOf(insurer.PeriodCountingMethodBusinessDays),
 							GracePeriodStartDate:      pointerOf(mustParseBrazilDate("2022-12-31")),
 							GracePeriodEndDate:        pointerOf(mustParseBrazilDate("2022-12-31")),
 							AdjustmentRate:            pointerOf("10.00"),
@@ -191,15 +332,15 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 							},
 						},
 						Period:                             pointerOf(10),
-						Periodicity:                        pointerOf(auto.PeriodicityDay),
-						PeriodCountingMethod:               pointerOf(auto.PeriodCountingMethodBusinessDays),
+						Periodicity:                        pointerOf(insurer.PeriodicityDay),
+						PeriodCountingMethod:               pointerOf(insurer.PeriodCountingMethodBusinessDays),
 						PeriodStartDate:                    pointerOf(mustParseBrazilDate("2022-05-16")),
 						PeriodEndDate:                      pointerOf(mustParseBrazilDate("2022-05-17")),
 						Description:                        pointerOf("Franquia de exemplo"),
 						HasDeductibleOverTotalCompensation: pointerOf(true),
 					},
 					POS: &auto.CoveragePOS{
-						ApplicationType: auto.CoveragePOSApplicationTypeValue,
+						ApplicationType: insurer.ValueTypeValue,
 						Description:     pointerOf("string"),
 						MinValue: &insurer.AmountDetails{
 							Amount:         "7488583.06",
@@ -332,5 +473,14 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 		return fmt.Errorf("failed to create test auto policy: %w", err)
 	}
 
+	if err := db.WithContext(ctx).Omit("CreatedAt").Save(testCustomerPersonalIdentification).Error; err != nil {
+		return fmt.Errorf("failed to create test customer personal identification: %w", err)
+	}
+
 	return nil
+}
+
+func mustParseDateTime(s string) timeutil.DateTime {
+	t, _ := time.Parse("2006-01-02T15:04:05Z", s)
+	return timeutil.NewDateTime(t)
 }

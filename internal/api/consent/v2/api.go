@@ -277,7 +277,7 @@ func (s Server) ConsentsDeleteConsentsConsentID(ctx context.Context, req Consent
 
 func writeResponseError(w http.ResponseWriter, r *http.Request, err error) {
 	if errors.Is(err, consent.ErrAccessNotAllowed) {
-		api.WriteError(w, r, api.NewError("FORBIDDEN", http.StatusForbidden, consent.ErrAccessNotAllowed.Error()))
+		api.WriteError(w, r, api.NewError("FORBIDDEN", http.StatusForbidden, err.Error()))
 		return
 	}
 
@@ -287,32 +287,32 @@ func writeResponseError(w http.ResponseWriter, r *http.Request, err error) {
 	// }
 
 	if errors.Is(err, consent.ErrPersonalAndBusinessPermissionsTogether) {
-		api.WriteError(w, r, api.NewError("PERMISSAO_PF_PJ_EM_CONJUNTO", http.StatusUnprocessableEntity, consent.ErrPersonalAndBusinessPermissionsTogether.Error()))
+		api.WriteError(w, r, api.NewError("PERMISSAO_PF_PJ_EM_CONJUNTO", http.StatusUnprocessableEntity, err.Error()))
 		return
 	}
 
 	if errors.Is(err, consent.ErrInvalidExpiration) {
-		api.WriteError(w, r, api.NewError("DATA_EXPIRACAO_INVALIDA", http.StatusBadRequest, consent.ErrInvalidExpiration.Error()))
+		api.WriteError(w, r, api.NewError("DATA_EXPIRACAO_INVALIDA", http.StatusBadRequest, err.Error()))
 		return
 	}
 
 	if errors.Is(err, consent.ErrAlreadyRejected) {
-		api.WriteError(w, r, api.NewError("CONSENTIMENTO_EM_STATUS_REJEITADO", http.StatusUnprocessableEntity, consent.ErrAlreadyRejected.Error()))
+		api.WriteError(w, r, api.NewError("CONSENTIMENTO_EM_STATUS_REJEITADO", http.StatusUnprocessableEntity, err.Error()))
 		return
 	}
 
 	if errors.Is(err, consent.ErrInvalidPermissions) {
-		api.WriteError(w, r, api.NewError("INVALID_REQUEST", http.StatusBadRequest, consent.ErrInvalidPermissions.Error()))
+		api.WriteError(w, r, api.NewError("NAO_INFORMADO", http.StatusUnprocessableEntity, err.Error()))
 		return
 	}
 
 	if errors.Is(err, consent.ErrPermissionResourcesReadAlone) {
-		api.WriteError(w, r, api.NewError("INVALID_REQUEST", http.StatusBadRequest, consent.ErrPermissionResourcesReadAlone.Error()))
+		api.WriteError(w, r, api.NewError("INVALID_REQUEST", http.StatusBadRequest, err.Error()))
 		return
 	}
 
 	if errors.As(err, &errorutil.Error{}) {
-		api.WriteError(w, r, api.NewError("INVALID_REQUEST", http.StatusUnprocessableEntity, err.Error()))
+		api.WriteError(w, r, api.NewError("NAO_INFORMADO", http.StatusUnprocessableEntity, err.Error()))
 		return
 	}
 

@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	HeaderClientCert = "X-Forwarded-Client-Cert"
+	HeaderClientCert = "X-Client-Cert"
 )
 
 func TokenOptionsFunc() goidc.TokenOptionsFunc {
@@ -72,6 +72,8 @@ func ClientCert(r *http.Request) (*x509.Certificate, error) {
 	if rawClientCert == "" {
 		return nil, errors.New("the client certificate was not informed")
 	}
+
+	slog.DebugContext(r.Context(), "raw client certificate", "rawClientCert", rawClientCert)
 
 	// Apply URL decoding.
 	rawClientCert, err := url.QueryUnescape(rawClientCert)

@@ -1,4 +1,4 @@
-package consent
+package resource
 
 import (
 	"net/http"
@@ -29,7 +29,7 @@ func NewServer(host string, service resource.Service, consentService consent.Ser
 func (s Server) RegisterRoutes(mux *http.ServeMux) {
 	muxV2, versionV2 := v2.NewServer(s.host, s.service, s.consentService, s.op).Handler()
 
-	mux.Handle("/open-insurance/resources/", middleware.VersionRouting(map[string]http.Handler{
+	mux.Handle("/open-insurance/resources/v2/", middleware.VersionRouting(map[string]http.Handler{
 		versionV2: muxV2,
 	}))
 }

@@ -259,18 +259,13 @@ func main() {
 	mux.Handle("keystore.sandbox.directory.opinbrasil.com.br/", keystoreHandler())
 
 	// Serve static files for auth.mockinsurer.local/static.
-	mux.Handle("auth.mockinsurer.local/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("/auth/static"))))
+	mux.Handle("auth.mockinsurer.local/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("/ui/static"))))
 
 	// Mock Insurer backend can be accessed from the host machine for local development.
 	mbHandler := reverseProxyWithFallback("host.docker.internal:80", "insurer:80")
 	mux.HandleFunc("auth.mockinsurer.local/", mbHandler)
 	mux.HandleFunc("matls-auth.mockinsurer.local/", mbHandler)
 	mux.HandleFunc("matls-api.mockinsurer.local/", mbHandler)
-	mux.HandleFunc("app.mockinsurer.local/api/", mbHandler)
-
-	// Mock Insurer frontend can be accessed from the host machine for local development.
-	mbAppHandler := reverseProxyWithFallback("host.docker.internal:8080", "app:8080")
-	mux.Handle("app.mockinsurer.local/", mbAppHandler)
 
 	// Serve participant information over HTTP because the Conformance Suite
 	// does not accept self-signed certificates.
@@ -296,6 +291,50 @@ func main() {
 							"ApiFamilyType": "consents",
 							"ApiVersion": "3.2.0",
 							"Status": "Active"
+						},
+						{
+							"ApiFamilyType": "customers",
+							"ApiVersion": "1.6.0",
+							"Status": "Active",
+							"ApiDiscoveryEndpoints": [
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/customers/v1/personal/identifications"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/customers/v1/personal/qualifications"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/customers/v1/personal/complimentary-information"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/customers/v1/business/identifications"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/customers/v1/business/qualifications"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/customers/v1/business/complimentary-information"
+								}
+							]
+						},
+						{
+							"ApiFamilyType": "insurance-auto",
+							"ApiVersion": "1.4.0",
+							"Status": "Active",
+							"ApiDiscoveryEndpoints": [
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-auto/v1/insurance-auto"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-auto/v1/insurance-auto/{policyId}/policy-info"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-auto/v1/insurance-auto/{policyId}/premium"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-auto/v1/insurance-auto/{policyId}/claim"
+								}
+							]
 						},
 						{
 							"ApiDiscoveryEndpoints": [
@@ -433,7 +472,7 @@ func reverseProxyWithFallback(mainAddr, fallbackAddr string) http.HandlerFunc {
 				Bytes: clientCert.Raw,
 			})
 
-			r.Header.Set("X-Forwarded-Client-Cert", url.QueryEscape(string(pemBytes)))
+			r.Header.Set("X-Client-Cert", url.QueryEscape(string(pemBytes)))
 		}
 
 		if healthy.Load() {

@@ -5467,20 +5467,20 @@ const (
 // N422ResponseErrorCreateQuote defines model for 422ResponseErrorCreateQuote.
 type N422ResponseErrorCreateQuote struct {
 	Errors struct {
-		// Code CÃ³digo do erro 422 de Entidade nÃ£o processada.
+		// Code Código do erro 422 de Entidade não processada.
 		Code N422ResponseErrorCreateQuoteErrorsCode `json:"code"`
 
-		// Detail - ERRO_ IDEMPOTENCIA: Tentativa de alteraÃ§Ã£o de requisiÃ§Ã£o jÃ¡ processada
-		// - NÃƒO_INFORMADO: NÃ£o informada pelo servidor
+		// Detail - ERRO_ IDEMPOTENCIA: Tentativa de alteração de requisição já processada
+		// - NÃO_INFORMADO: Não informada pelo servidor
 		Detail string `json:"detail"`
 
-		// Title - ERRO_ IDEMPOTENCIA: Tentativa de alteraÃ§Ã£o de requisiÃ§Ã£o jÃ¡ processada
-		// - NÃƒO_INFORMADO: NÃ£o informada pelo servidor
+		// Title - ERRO_ IDEMPOTENCIA: Tentativa de alteração de requisição já processada
+		// - NÃO_INFORMADO: Não informada pelo servidor
 		Title string `json:"title"`
 	} `json:"errors"`
 }
 
-// N422ResponseErrorCreateQuoteErrorsCode CÃ³digo do erro 422 de Entidade nÃ£o processada.
+// N422ResponseErrorCreateQuoteErrorsCode Código do erro 422 de Entidade não processada.
 type N422ResponseErrorCreateQuoteErrorsCode string
 
 // AmountDetails Detalhes de valores/limites
@@ -5488,172 +5488,174 @@ type AmountDetails = insurer.AmountDetails
 
 // BeneficiaryInfo defines model for BeneficiaryInfo.
 type BeneficiaryInfo struct {
-	// Identification Documento de IdentificaÃ§Ã£o do beneficiÃ¡rio
+	// Identification Documento de Identificação do beneficiário
 	Identification string `json:"identification"`
 
-	// IdentificationType Tipo de Documento do beneficiÃ¡rio
+	// IdentificationType Tipo de Documento do beneficiário
 	IdentificationType BeneficiaryInfoIdentificationType `json:"identificationType"`
 
-	// IdentificationTypeOthers Campo de detalhamento para quando a opcao do tipo de documento do beneficiÃ¡rio for OUTROS
+	// IdentificationTypeOthers Campo de detalhamento para quando a opcao do tipo de documento do beneficiário for OUTROS
 	IdentificationTypeOthers *string `json:"identificationTypeOthers,omitempty"`
 
-	// Name Nome ou RazÃ£o Social do beneficiÃ¡rio
+	// Name Nome ou Razão Social do beneficiário
 	Name string `json:"name"`
 }
 
-// BeneficiaryInfoIdentificationType Tipo de Documento do beneficiÃ¡rio
+// BeneficiaryInfoIdentificationType Tipo de Documento do beneficiário
 type BeneficiaryInfoIdentificationType string
 
-// BusinessComplimentaryInformationData Objeto que reÃºne as informaÃ§Ãµes relativas ao relacionamento do cliente junto Ã  InstituiÃ§Ã£o. Considera-se relacionamento as informaÃ§Ãµes que permitam conhecer desde quando a pessoa consultada Ã© cliente da instituiÃ§Ã£o, bem como um indicador dos produtos e serviÃ§os que ela consome atualmente e seus representantes
+// BusinessComplimentaryInformationData Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes
 type BusinessComplimentaryInformationData struct {
 	ProductsServices []struct {
-		// Contract Campo deve conter todos os contratos do cliente nos Ãºltimos 12 meses (nÃºmero da apÃ³lice individual ou contrato ou certificado ou bilhete)
+		// Contract Campo deve conter todos os contratos do cliente nos últimos 12 meses (número da apólice individual ou contrato ou certificado ou bilhete)
 		Contract string `json:"contract"`
 
-		// InsuranceLineCode Indicar para cada contrato, caso aplicÃ¡vel, o cÃ³digo do ramo, conforme listagem de cÃ³digos definida em regulamentaÃ§Ã£o especÃfica sobre contabilizaÃ§Ã£o em ramos. - Caso tipo de produto do contrato for â€œSeguros de Danos.
+		// InsuranceLineCode Indicar para cada contrato, caso aplicável, o código do ramo, conforme listagem de códigos definida em regulamentação específica sobre contabilização em ramos. - Caso tipo de produto do contrato for “Seguros de Danos.
 		InsuranceLineCode *string `json:"insuranceLineCode,omitempty"`
 
-		// Procurators Lista dos representantes. De preenchimento obrigatÃ³rio se houver representante.
+		// Procurators Lista dos representantes. De preenchimento obrigatório se houver representante.
 		Procurators *[]BusinessProcurator `json:"procurators,omitempty"`
 
 		// Type Tipos de produtos.
 		Type EnumProductServiceType `json:"type"`
 	} `json:"productsServices"`
 
-	// RelationshipBeginning Campo deve ser preenchido com a data da apÃ³lice/contrato vigente mais antiga. (caso haja contrato vigente)
+	// RelationshipBeginning Campo deve ser preenchido com a data da apólice/contrato vigente mais antiga. (caso haja contrato vigente)
 	RelationshipBeginning *timeutil.BrazilDate `json:"relationshipBeginning,omitempty"`
 
-	// StartDate Data mais antiga de inÃcio de relacionamento, considerando todos os contratos (vigentes e nÃ£o vigentes). Os contratos nÃ£o vigentes considerados devem contemplar, no mÃnimo o perÃodo indicado na Tabela 4.1.
+	// StartDate Data mais antiga de início de relacionamento, considerando todos os contratos (vigentes e não vigentes). Os contratos não vigentes considerados devem contemplar, no mínimo o período indicado na Tabela 4.1.
 	StartDate timeutil.BrazilDate `json:"startDate"`
 
-	// UpdateDateTime Data e hora da atualizaÃ§Ã£o do bloco de Relacionamento, conforme especificaÃ§Ã£o RFC-3339, formato UTC.
+	// UpdateDateTime Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.
 	UpdateDateTime timeutil.DateTime `json:"updateDateTime"`
 }
 
-// BusinessContact Conjunto de informaÃ§Ãµes referentes Ã s formas para contatar o cliente.
+// BusinessContact Conjunto de informações referentes às formas para contatar o cliente.
 type BusinessContact struct {
 	// Emails Lista e-mails de contato
 	Emails *[]CustomerEmail `json:"emails,omitempty"`
 
-	// Phones Lista com telefones de contato da pessoa jurÃdica
+	// Phones Lista com telefones de contato da pessoa jurídica
 	Phones *[]CustomerPhone `json:"phones,omitempty"`
 
-	// PostalAddresses Lista de endereÃ§os da pessoa jurÃdica
+	// PostalAddresses Lista de endereços da pessoa jurídica
 	PostalAddresses []BusinessPostalAddress `json:"postalAddresses"`
 }
 
 // BusinessCustomerInfo defines model for BusinessCustomerInfo.
 type BusinessCustomerInfo struct {
-	// ComplimentaryInfo Objeto que reÃºne as informaÃ§Ãµes relativas ao relacionamento do cliente junto Ã  InstituiÃ§Ã£o. Considera-se relacionamento as informaÃ§Ãµes que permitam conhecer desde quando a pessoa consultada Ã© cliente da instituiÃ§Ã£o, bem como um indicador dos produtos e serviÃ§os que ela consome atualmente e seus representantes
+	// ComplimentaryInfo Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes
 	ComplimentaryInfo *BusinessComplimentaryInformationData `json:"complimentaryInfo,omitempty"`
 
-	// Identification Conjunto de informaÃ§Ãµes relativas a IdentificaÃ§Ã£o ou seja a aÃ§Ã£o e o efeito de identificar de forma Ãºnica a pessoa jurÃdica atravÃ©s de seus dados cadastrais
+	// Identification Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais
 	Identification *BusinessIdentificationData `json:"identification,omitempty"`
 
-	// Qualification Objeto que reÃºne as informaÃ§Ãµes relativas ao processo de qualificaÃ§Ã£o.
+	// Qualification Objeto que reúne as informações relativas ao processo de qualificação.
 	Qualification *BusinessQualificationData `json:"qualification,omitempty"`
 }
 
-// BusinessDocument Objeto agrupador de informaÃ§Ãµes relativas a Documentos da pessoa natural
+// BusinessDocument Objeto agrupador de informações relativas a Documentos da pessoa natural
 type BusinessDocument struct {
-	// BusinessRegisterNumberOriginCountry AplicÃ¡vel somente as pessoas jurÃdicas com domicÃlio ou sede no exterior desobrigadas de inscriÃ§Ã£o no CNPJ.
+	// BusinessRegisterNumberOriginCountry Aplicável somente as pessoas jurídicas com domicílio ou sede no exterior desobrigadas de inscrição no CNPJ.
 	BusinessRegisterNumberOriginCountry *string `json:"businessRegisterNumberOriginCountry,omitempty"`
 
-	// BusinesscnpjNumber NÃºmero completo do CNPJ da Empresa consultada  - o CNPJ corresponde ao nÃºmero de inscriÃ§Ã£o no Cadastro de Pessoa JurÃdica. Deve-se ter apenas os nÃºmeros do CNPJ, sem mÃ¡scara
-	// Condicional ao Brasil no (BRA) campo PaÃs de emissÃ£o do documento de registro
-	BusinesscnpjNumber string                   `json:"businesscnpjNumber"`
-	Country            *BusinessDocumentCountry `json:"country,omitempty"`
+	// BusinesscnpjNumber Número completo do CNPJ da Empresa consultada  - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica. Deve-se ter apenas os números do CNPJ, sem máscara
+	// Condicional ao Brasil no (BRA) campo País de emissão do documento de registro
+	BusinesscnpjNumber string `json:"businesscnpjNumber"`
 
-	// ExpirationDate Data de vigÃªncia do documento de registro - conforme especificaÃ§Ã£o RFC-3339.
+	// Country Código do pais de acordo com o código “alpha3” do ISO-3166.
+	Country *BusinessDocumentCountry `json:"country,omitempty"`
+
+	// ExpirationDate Data de vigência do documento de registro - conforme especificação RFC-3339.
 	ExpirationDate *timeutil.BrazilDate `json:"expirationDate,omitempty"`
 }
 
-// BusinessDocumentCountry defines model for BusinessDocument.Country.
+// BusinessDocumentCountry Código do pais de acordo com o código “alpha3” do ISO-3166.
 type BusinessDocumentCountry string
 
-// BusinessIdentificationData Conjunto de informaÃ§Ãµes relativas a IdentificaÃ§Ã£o ou seja a aÃ§Ã£o e o efeito de identificar de forma Ãºnica a pessoa jurÃdica atravÃ©s de seus dados cadastrais
+// BusinessIdentificationData Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais
 type BusinessIdentificationData struct {
-	// BrandName Nome da Marca reportada pelo participante do Open Insurance. O conceito a que se refere a 'marca' Ã© em essÃªncia uma promessa da empresa em fornecer uma sÃ©rie especÃfica de atributos, benefÃcios e serviÃ§os uniformes aos clientes
+	// BrandName Nome da Marca reportada pelo participante do Open Insurance. O conceito a que se refere a 'marca' é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
 	BrandName string `json:"brandName"`
 
-	// BusinessID Um identificador Ãºnico e imutÃ¡vel usado para identificar o recurso cliente pessoa jurÃdica dentro da transmissora. Este identificador nÃ£o tem significado para o cliente que deu o consentimento
+	// BusinessID Um identificador único e imutável usado para identificar o recurso cliente pessoa jurídica dentro da transmissora. Este identificador não tem significado para o cliente que deu o consentimento
 	BusinessID *string `json:"businessId,omitempty"`
 
-	// BusinessName RazÃ£o social da empresa consultada Ã© o termo registrado sob o qual uma pessoa jurÃdica (PJ) se individualiza e exerce suas atividades. TambÃ©m pode ser chamada por denominaÃ§Ã£o social ou firma empresarial
+	// BusinessName Razão social da empresa consultada é o termo registrado sob o qual uma pessoa jurídica (PJ) se individualiza e exerce suas atividades. Também pode ser chamada por denominação social ou firma empresarial
 	BusinessName string `json:"businessName"`
 
-	// BusinessTradeName Nome fantasia - Se AplicÃ¡vel
+	// BusinessTradeName Nome fantasia - Se Aplicável
 	BusinessTradeName *string `json:"businessTradeName,omitempty"`
 
-	// CompanyInfo InformaÃ§Ãµes referente a sociedade a qual a marca pertence.
+	// CompanyInfo Informações referente a sociedade a qual a marca pertence.
 	CompanyInfo struct {
-		// CnpjNumber NÃºmero completo do CNPJ da instituiÃ§Ã£o responsÃ¡vel pelo Cadastro - o CNPJ corresponde ao nÃºmero de inscriÃ§Ã£o no Cadastro de Pessoa JurÃdica.
-		// Deve-se ter apenas os nÃºmeros do CNPJ, sem mÃ¡scara
+		// CnpjNumber Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
+		// Deve-se ter apenas os números do CNPJ, sem máscara
 		CnpjNumber string `json:"cnpjNumber"`
 
-		// Name Nome da InstituiÃ§Ã£o, pertencente Ã  Marca, responsÃ¡vel pela DependÃªncia
+		// Name Nome da Instituição, pertencente à Marca, responsável pela Dependência
 		Name string `json:"name"`
 	} `json:"companyInfo"`
 
-	// Contact Conjunto de informaÃ§Ãµes referentes Ã s formas para contatar o cliente.
+	// Contact Conjunto de informações referentes às formas para contatar o cliente.
 	Contact BusinessContact `json:"contact"`
 
-	// Document Objeto agrupador de informaÃ§Ãµes relativas a Documentos da pessoa natural
+	// Document Objeto agrupador de informações relativas a Documentos da pessoa natural
 	Document BusinessDocument `json:"document"`
 
-	// IncorporationDate Data de constituiÃ§Ã£o, conforme especificaÃ§Ã£o RFC-3339
+	// IncorporationDate Data de constituição, conforme especificação RFC-3339
 	IncorporationDate *timeutil.BrazilDate `json:"incorporationDate,omitempty"`
 
-	// Parties Conjunto de informaÃ§Ãµes referentes ao vÃnculo com uma pessoa.
+	// Parties Conjunto de informações referentes ao vínculo com uma pessoa.
 	Parties *BusinessParties `json:"parties,omitempty"`
 
-	// Type Campo deve ser preenchido com o Tipo Pessoa JurÃdica
+	// Type Campo deve ser preenchido com o Tipo Pessoa Jurídica
 	Type *BusinessIdentificationDataType `json:"type,omitempty"`
 
-	// UpdateDateTime Data e hora da atualizaÃ§Ã£o do bloco, conforme especificaÃ§Ã£o RFC-3339
+	// UpdateDateTime Data e hora da atualização do bloco, conforme especificação RFC-3339
 	UpdateDateTime timeutil.DateTime `json:"updateDateTime"`
 }
 
-// BusinessIdentificationDataType Campo deve ser preenchido com o Tipo Pessoa JurÃdica
+// BusinessIdentificationDataType Campo deve ser preenchido com o Tipo Pessoa Jurídica
 type BusinessIdentificationDataType string
 
-// BusinessParties Conjunto de informaÃ§Ãµes referentes ao vÃnculo com uma pessoa.
+// BusinessParties Conjunto de informações referentes ao vínculo com uma pessoa.
 type BusinessParties = []struct {
-	// CivilName Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil Ã© aquele atribuÃdo Ã  pessoa natural desde o registro de seu nascimento, com o qual serÃ¡ identificada por toda a sua vida, bem como apÃ³s a sua morte)
+	// CivilName Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)
 	CivilName *string `json:"civilName,omitempty"`
 
-	// DocumentCountry PaÃs de emissÃ£o do documento. CÃ³digo do pais de acordo com o cÃ³digo alpha3 do ISO-3166.
+	// DocumentCountry País de emissão do documento. Código do pais de acordo com o código alpha3 do ISO-3166.
 	DocumentCountry *BusinessPartiesDocumentCountry `json:"documentCountry,omitempty"`
 
-	// DocumentExpirationDate Data de validade do documento informado, conforme especificaÃ§Ã£o RFC-3339.
+	// DocumentExpirationDate Data de validade do documento informado, conforme especificação RFC-3339.
 	DocumentExpirationDate *timeutil.BrazilDate `json:"documentExpirationDate,omitempty"`
 
-	// DocumentNumber NÃºmero do documento informado. Campo Texto Livre para preencher nÃºmero e dÃgito do documento se houver
+	// DocumentNumber Número do documento informado. Campo Texto Livre para preencher número e dígito do documento se houver
 	DocumentNumber *string `json:"documentNumber,omitempty"`
 
-	// DocumentType Tipo de documento de identificaÃ§Ã£o do sÃ³cio ou administrador
+	// DocumentType Tipo de documento de identificação do sócio ou administrador
 	DocumentType *string `json:"documentType,omitempty"`
 
-	// Shareholding Percentual de participaÃ§Ã£o societÃ¡ria (informar com 6 casas decimais).
-	// O SÃ³cio sÃ³ deve ser informado se sua participaÃ§Ã£o societÃ¡ria for igual ou superior a 25%.
+	// Shareholding Percentual de participação societária (informar com 6 casas decimais).
+	// O Sócio só deve ser informado se sua participação societária for igual ou superior a 25%.
 	Shareholding *string `json:"shareholding,omitempty"`
 
 	// SocialName Nome social da pessoa natural, se houver.
 	// (aquele pelo qual travestis e transexuais se reconhecem,
-	// bem como sÃ£o identificados por sua comunidade e em seu meio social, conforme Decreto Local).
+	// bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local).
 	SocialName *string `json:"socialName,omitempty"`
 
-	// StartDate Data de inÃcio da participaÃ§Ã£o, conforme especificaÃ§Ã£o RFC-3339.
+	// StartDate Data de início da participação, conforme especificação RFC-3339.
 	StartDate *timeutil.BrazilDate `json:"startDate,omitempty"`
 
-	// Type Tipo de vÃnculo com a pessoa jurÃdica
+	// Type Tipo de vínculo com a pessoa jurídica
 	Type *BusinessPartiesType `json:"type,omitempty"`
 }
 
-// BusinessPartiesDocumentCountry PaÃs de emissÃ£o do documento. CÃ³digo do pais de acordo com o cÃ³digo alpha3 do ISO-3166.
+// BusinessPartiesDocumentCountry País de emissão do documento. Código do pais de acordo com o código alpha3 do ISO-3166.
 type BusinessPartiesDocumentCountry string
 
-// BusinessPartiesType Tipo de vÃnculo com a pessoa jurÃdica
+// BusinessPartiesType Tipo de vínculo com a pessoa jurídica
 type BusinessPartiesType string
 
 // BusinessPostalAddress defines model for BusinessPostalAddress.
@@ -5661,59 +5663,61 @@ type BusinessPostalAddress struct {
 	// AdditionalInfo Alguns logradouros ainda necessitam ser especificados por meio de complemento.
 	AdditionalInfo *string `json:"additionalInfo,omitempty"`
 
-	// Address Corresponde ao endereÃ§o residencial do cliente.
-	Address     string                            `json:"address"`
-	Country     string                            `json:"country"`
+	// Address Corresponde ao endereço residencial do cliente.
+	Address string `json:"address"`
+	Country string `json:"country"`
+
+	// CountryCode Código do pais de acordo com o código “alpha3” do ISO-3166.
 	CountryCode *BusinessPostalAddressCountryCode `json:"countryCode,omitempty"`
 
-	// CountrySubDivision EnumeraÃ§Ã£o referente a cada sigla da unidade da federaÃ§Ã£o que identifica o estado ou o distrito federal, no qual o endereÃ§o estÃ¡ localizado. p.ex. 'AC'. SÃ£o consideradas apenas as siglas para os estados brasileiros
+	// CountrySubDivision Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros
 	CountrySubDivision EnumCountrySubDivision `json:"countrySubDivision"`
 
-	// DistrictName Bairro Ã© uma comunidade ou regiÃ£o localizada em uma cidade ou municÃpio de acordo com as suas subdivisÃµes geogrÃ¡ficas.
+	// DistrictName Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
 	DistrictName *string `json:"districtName,omitempty"`
 
-	// GeographicCoordinates Conjunto de informaÃ§Ãµes, que correspondem aos valores das coordenadas geogrÃ¡ficas em graus decimais, no Sistema de referÃªncia WGS84
+	// GeographicCoordinates Conjunto de informações, que correspondem aos valores das coordenadas geográficas em graus decimais, no Sistema de referência WGS84
 	GeographicCoordinates *GeographicCoordinates `json:"geographicCoordinates,omitempty"`
 
-	// IbgeTownCode CÃ³digo IBGE do municÃpio
+	// IbgeTownCode Código IBGE do município
 	IbgeTownCode *string `json:"ibgeTownCode,omitempty"`
 
-	// PostCode CÃ³digo de EndereÃ§amento Postal: Composto por um conjunto numÃ©rico de oito dÃgitos, o objetivo principal do CEP Ã© orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuiÃ§Ã£o a localidades, logradouros, unidades dos Correios, serviÃ§os, Ã³rgÃ£os pÃºblicos, empresas e edifÃcios. p.ex. '01311000'.
+	// PostCode Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'.
 	PostCode string `json:"postCode"`
 
-	// TownName Localidade: O nome da localidade corresponde Ã  designaÃ§Ã£o da cidade ou municÃpio no qual o endereÃ§o estÃ¡ localizado.
+	// TownName Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
 	TownName string `json:"townName"`
 }
 
-// BusinessPostalAddressCountryCode defines model for BusinessPostalAddress.CountryCode.
+// BusinessPostalAddressCountryCode Código do pais de acordo com o código “alpha3” do ISO-3166.
 type BusinessPostalAddressCountryCode string
 
 // BusinessProcurator defines model for BusinessProcurator.
 type BusinessProcurator struct {
-	// CivilName (Caso Natureza dos poderes vigentes de representante for â€œRepresentante legalâ€ ou â€œProcuradorâ€) Nome ou razÃ£o social do representante
+	// CivilName (Caso Natureza dos poderes vigentes de representante for “Representante legal” ou “Procurador”) Nome ou razão social do representante
 	CivilName *string `json:"civilName,omitempty"`
 
-	// CnpjCpfNumber (Caso Natureza dos poderes vigentes de representante for â€œRepresentante legalâ€ ou â€œProcuradorâ€) CPF ou CNPJ do representante
+	// CnpjCpfNumber (Caso Natureza dos poderes vigentes de representante for “Representante legal” ou “Procurador”) CPF ou CNPJ do representante
 	CnpjCpfNumber *string `json:"cnpjCpfNumber,omitempty"`
 
 	// Nature Natureza dos poderes vigentes de representante
 	Nature EnumProcuratorsNatureBusiness `json:"nature"`
 
-	// SocialName (Caso Natureza dos poderes vigentes de representante for â€œRepresentante legalâ€ ou â€œProcuradorâ€) Nome social do representante
+	// SocialName (Caso Natureza dos poderes vigentes de representante for “Representante legal” ou “Procurador”) Nome social do representante
 	SocialName *string `json:"socialName,omitempty"`
 }
 
-// BusinessQualificationData Objeto que reÃºne as informaÃ§Ãµes relativas ao processo de qualificaÃ§Ã£o.
+// BusinessQualificationData Objeto que reúne as informações relativas ao processo de qualificação.
 type BusinessQualificationData struct {
-	// InformedPatrimony Objeto que agrupa dados de informaÃ§Ãµes de patrimÃ´nio.
+	// InformedPatrimony Objeto que agrupa dados de informações de patrimônio.
 	InformedPatrimony *struct {
-		// Amount Valor do patrimÃ´nio
+		// Amount Valor do patrimônio
 		Amount *string `json:"amount"`
 
-		// Currency Moeda referente ao valor do patrimÃ´nio, segundo modelo ISO-4217.
+		// Currency Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.
 		Currency *BusinessQualificationDataInformedPatrimonyCurrency `json:"currency,omitempty"`
 
-		// Date Data de referÃªncia do patrimÃ´nio, conforme especificaÃ§Ã£o RFC-3339.
+		// Date Data de referência do patrimônio, conforme especificação RFC-3339.
 		Date *timeutil.BrazilDate `json:"date,omitempty"`
 	} `json:"informedPatrimony,omitempty"`
 
@@ -5725,114 +5729,114 @@ type BusinessQualificationData struct {
 		// Currency Moeda referente ao valor do faturamento, segundo modelo ISO-4217.
 		Currency *BusinessQualificationDataInformedRevenueCurrency `json:"currency,omitempty"`
 
-		// IncomeFrequency FrequÃªncia da renda informada.
+		// IncomeFrequency Frequência da renda informada.
 		IncomeFrequency *EnumIncomeFrequency `json:"incomeFrequency,omitempty"`
 
-		// Year Ano de referÃªncia do faturamento, conforme especificaÃ§Ã£o RFC-3339.
+		// Year Ano de referência do faturamento, conforme especificação RFC-3339.
 		Year *string `json:"year,omitempty"`
 	} `json:"informedRevenue,omitempty"`
 
-	// MainBranch CÃ³digo do ramo da atividade da empresa consultada, segundo padrÃ£o CNAE (ClassificaÃ§Ã£o Nacional de Atividades EconÃ´micas).
+	// MainBranch Código do ramo da atividade da empresa consultada, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas).
 	MainBranch *string `json:"mainBranch,omitempty"`
 
-	// SecondaryBranch CÃ³digos relativos Ã s demais atividades econÃ´micas da empresa, segundo padrÃ£o CNAE (ClassificaÃ§Ã£o Nacional de Atividades EconÃ´micas). Se disponÃvel.
+	// SecondaryBranch Códigos relativos às demais atividades econômicas da empresa, segundo padrão CNAE (Classificação Nacional de Atividades Econômicas). Se disponível.
 	SecondaryBranch *string `json:"secondaryBranch,omitempty"`
 
-	// UpdateDateTime Data e hora da atualizaÃ§Ã£o do bloco, conforme especificaÃ§Ã£o RFC-3339
+	// UpdateDateTime Data e hora da atualização do bloco, conforme especificação RFC-3339
 	UpdateDateTime timeutil.DateTime `json:"updateDateTime"`
 }
 
-// BusinessQualificationDataInformedPatrimonyCurrency Moeda referente ao valor do patrimÃ´nio, segundo modelo ISO-4217.
+// BusinessQualificationDataInformedPatrimonyCurrency Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.
 type BusinessQualificationDataInformedPatrimonyCurrency string
 
 // BusinessQualificationDataInformedRevenueCurrency Moeda referente ao valor do faturamento, segundo modelo ISO-4217.
 type BusinessQualificationDataInformedRevenueCurrency string
 
-// ClaimNotification Valores de sinistros (nos Ãºltimos 12 meses)
+// ClaimNotification Valores de sinistros (nos últimos 12 meses)
 type ClaimNotification struct {
 	// ClaimAmount Valor do sinistro De acordo com ISO-4217.
 	ClaimAmount AmountDetails `json:"claimAmount"`
 
-	// ClaimDescription DescriÃ§Ã£o do sinistro
+	// ClaimDescription Descrição do sinistro
 	ClaimDescription string `json:"claimDescription"`
 }
 
 // Coinsurer defines model for Coinsurer.
 type Coinsurer struct {
-	// CededPercentage Percentual cedido para a congÃªnere para contratos de cosseguro cedido. Obs: ObrigatÃ³rio quando hÃ¡ cosseguro
+	// CededPercentage Percentual cedido para a congênere para contratos de cosseguro cedido. Obs: Obrigatório quando há cosseguro
 	CededPercentage string `json:"cededPercentage"`
 
-	// Identification IdentificaÃ§Ã£o da congÃªnere, cessionÃ¡rio do cosseguro. Obs: ObrigatÃ³rio quando hÃ¡ cosseguro
+	// Identification Identificação da congênere, cessionário do cosseguro. Obs: Obrigatório quando há cosseguro
 	Identification string `json:"identification"`
 }
 
-// CustomInfoData Objeto para identificaÃ§Ã£o dos campos e valores de dados customizÃ¡veis.
+// CustomInfoData Objeto para identificação dos campos e valores de dados customizáveis.
 type CustomInfoData struct {
-	// FieldID Um identificador Ãºnico usado para identificar o valor transmitido.
+	// FieldID Um identificador único usado para identificar o valor transmitido.
 	FieldID string `json:"fieldId"`
 
-	// Value Valor do campo identificado acima, esse campo pode ser implementado como qualquer tipo de dado (objeto, texto, nÃºmero, booleano, etc.)
+	// Value Valor do campo identificado acima, esse campo pode ser implementado como qualquer tipo de dado (objeto, texto, número, booleano, etc.)
 	Value interface{} `json:"value"`
 }
 
 // CustomerEmail defines model for CustomerEmail.
 type CustomerEmail struct {
-	// Email EndereÃ§o de email
+	// Email Endereço de email
 	Email *string `json:"email,omitempty"`
 }
 
 // CustomerPhone defines model for CustomerPhone.
 type CustomerPhone struct {
-	// AreaCode NÃºmero de DDD (Discagem Direta Ã  DistÃ¢ncia) do telefone do cliente - se houver
+	// AreaCode Número de DDD (Discagem Direta à Distância) do telefone do cliente - se houver
 	AreaCode *EnumAreaCode `json:"areaCode,omitempty"`
 
-	// CountryCallingCode NÃºmero de DDI (Discagem Direta Internacional) para telefone de acesso ao Cliente - se aplicÃ¡vel
+	// CountryCallingCode Número de DDI (Discagem Direta Internacional) para telefone de acesso ao Cliente - se aplicável
 	CountryCallingCode *string `json:"countryCallingCode,omitempty"`
 
-	// Number NÃºmero de telefone do cliente
+	// Number Número de telefone do cliente
 	Number *string `json:"number,omitempty"`
 
-	// PhoneExtension NÃºmero do ramal. De preenchimento obrigatÃ³rio se fizer parte da identificaÃ§Ã£o do nÃºmero do telefone informado
+	// PhoneExtension Número do ramal. De preenchimento obrigatório se fizer parte da identificação do número do telefone informado
 	PhoneExtension *string `json:"phoneExtension,omitempty"`
 }
 
 // Driver Condutores (Caso tipo de objeto for AUTOMOVEL ou CONDUTOR)
 type Driver struct {
-	// BirthDate Data de nascimento do condutor (caso aplicÃ¡vel)
+	// BirthDate Data de nascimento do condutor (caso aplicável)
 	BirthDate *timeutil.BrazilDate `json:"birthDate,omitempty"`
 
-	// Identification Documento de IdentificaÃ§Ã£o do Condutor
+	// Identification Documento de Identificação do Condutor
 	Identification *string `json:"identification,omitempty"`
 
-	// LicensedExperience Tempo de habilitaÃ§Ã£o do condutor utilizado para taxaÃ§Ã£o (caso aplicÃ¡vel)
+	// LicensedExperience Tempo de habilitação do condutor utilizado para taxação (caso aplicável)
 	LicensedExperience *int `json:"licensedExperience,omitempty"`
 
-	// Sex Sexo do condutor utilizado para a taxaÃ§Ã£o (caso aplicÃ¡vel)
+	// Sex Sexo do condutor utilizado para a taxação (caso aplicável)
 	Sex *DriverSex `json:"sex,omitempty"`
 
 	// SexOthers Campo de detalhamento para quando a opcao do sexo do condutor for OUTROS
 	SexOthers *string `json:"sexOthers,omitempty"`
 }
 
-// DriverSex Sexo do condutor utilizado para a taxaÃ§Ã£o (caso aplicÃ¡vel)
+// DriverSex Sexo do condutor utilizado para a taxação (caso aplicável)
 type DriverSex string
 
-// EnumAreaCode NÃºmero de DDD (Discagem Direta Ã  DistÃ¢ncia) do telefone do cliente - se houver
+// EnumAreaCode Número de DDD (Discagem Direta à Distância) do telefone do cliente - se houver
 type EnumAreaCode string
 
 // EnumCivilStatusCode Estado civil do cliente.
 type EnumCivilStatusCode string
 
-// EnumCountrySubDivision EnumeraÃ§Ã£o referente a cada sigla da unidade da federaÃ§Ã£o que identifica o estado ou o distrito federal, no qual o endereÃ§o estÃ¡ localizado. p.ex. 'AC'. SÃ£o consideradas apenas as siglas para os estados brasileiros
+// EnumCountrySubDivision Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros
 type EnumCountrySubDivision string
 
-// EnumFiliationType Tipo de filiaÃ§Ã£o.
+// EnumFiliationType Tipo de filiação.
 type EnumFiliationType string
 
-// EnumIncomeFrequency FrequÃªncia da renda informada.
+// EnumIncomeFrequency Frequência da renda informada.
 type EnumIncomeFrequency string
 
-// EnumPersonalDocumentType Tipo do(s) documento(s) de identificaÃ§Ã£o.
+// EnumPersonalDocumentType Tipo do(s) documento(s) de identificação.
 type EnumPersonalDocumentType string
 
 // EnumProcuratorsNatureBusiness Natureza dos poderes vigentes de representante
@@ -5844,31 +5848,31 @@ type EnumProcuratorsNaturePersonal string
 // EnumProductServiceType Tipos de produtos.
 type EnumProductServiceType string
 
-// GeographicCoordinates Conjunto de informaÃ§Ãµes, que correspondem aos valores das coordenadas geogrÃ¡ficas em graus decimais, no Sistema de referÃªncia WGS84
+// GeographicCoordinates Conjunto de informações, que correspondem aos valores das coordenadas geográficas em graus decimais, no Sistema de referência WGS84
 type GeographicCoordinates struct {
-	// Latitude InformaÃ§Ã£o da Latitude referente a geolocalizaÃ§Ã£o informada. Entre -90 e 90.p.ex. '-23.5475000'. (2 casas antes da vÃrgula, 11 posiÃ§Ãµes)
+	// Latitude Informação da Latitude referente a geolocalização informada. Entre -90 e 90.p.ex. '-23.5475000'. (2 casas antes da vírgula, 11 posições)
 	Latitude *string `json:"latitude,omitempty"`
 
-	// Longitude InformaÃ§Ã£o da Longitude referente a geolocalizaÃ§Ã£o informada. Entre -180 e 180. p.ex '-46.6361100'. (3 casas antes da vÃrgula, 11 posiÃ§Ãµes)
+	// Longitude Informação da Longitude referente a geolocalização informada. Entre -180 e 180. p.ex '-46.6361100'. (3 casas antes da vírgula, 11 posições)
 	Longitude *string `json:"longitude,omitempty"`
 }
 
-// HistoricalBusinessComplimentaryInformationData Objeto que reÃºne as informaÃ§Ãµes relativas ao relacionamento do cliente junto Ã  InstituiÃ§Ã£o. Considera-se relacionamento as informaÃ§Ãµes que permitam conhecer desde quando a pessoa consultada Ã© cliente da instituiÃ§Ã£o, bem como um indicador dos produtos e serviÃ§os que ela consome atualmente e seus representantes
+// HistoricalBusinessComplimentaryInformationData Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes
 type HistoricalBusinessComplimentaryInformationData = BusinessComplimentaryInformationData
 
-// HistoricalBusinessIdentificationData Conjunto de informaÃ§Ãµes relativas a IdentificaÃ§Ã£o ou seja a aÃ§Ã£o e o efeito de identificar de forma Ãºnica a pessoa jurÃdica atravÃ©s de seus dados cadastrais
+// HistoricalBusinessIdentificationData Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa jurídica através de seus dados cadastrais
 type HistoricalBusinessIdentificationData = BusinessIdentificationData
 
-// HistoricalBusinessQualificationData Objeto que reÃºne as informaÃ§Ãµes relativas ao processo de qualificaÃ§Ã£o.
+// HistoricalBusinessQualificationData Objeto que reúne as informações relativas ao processo de qualificação.
 type HistoricalBusinessQualificationData = BusinessQualificationData
 
-// HistoricalPersonalComplimentaryInformationData Objeto que reÃºne as informaÃ§Ãµes relativas ao relacionamento do cliente junto Ã  InstituiÃ§Ã£o. Considera-se relacionamento as informaÃ§Ãµes que permitam conhecer desde quando a pessoa consultada Ã© cliente da instituiÃ§Ã£o, bem como um indicador dos produtos e serviÃ§os que ela consome atualmente e seus representantes
+// HistoricalPersonalComplimentaryInformationData Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes
 type HistoricalPersonalComplimentaryInformationData = PersonalComplimentaryInformationData
 
-// HistoricalPersonalIdentificationData Conjunto de informaÃ§Ãµes relativas a IdentificaÃ§Ã£o ou seja a aÃ§Ã£o e o efeito de identificar de forma Ãºnica a pessoa natural atravÃ©s de seus dados cadastrais.
+// HistoricalPersonalIdentificationData Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
 type HistoricalPersonalIdentificationData = PersonalIdentificationData
 
-// HistoricalPersonalQualificationData Conjunto de informaÃ§Ãµes relativas ao processo de qualificaÃ§Ã£o.
+// HistoricalPersonalQualificationData Conjunto de informações relativas ao processo de qualificação.
 type HistoricalPersonalQualificationData = PersonalQualificationData
 
 // InsuranceAutoClaim defines model for InsuranceAutoClaim.
@@ -5876,7 +5880,7 @@ type InsuranceAutoClaim struct {
 	// Amount Detalhes de valores/limites
 	Amount AmountDetails `json:"amount"`
 
-	// BranchInfo InformaÃ§Ãµes do Anexo EspecÃfico
+	// BranchInfo Informações do Anexo Específico
 	BranchInfo *InsuranceAutoSpecificClaim `json:"branchInfo,omitempty"`
 
 	// Coverages Lista que agrupa os dados de coberturas.
@@ -5885,25 +5889,25 @@ type InsuranceAutoClaim struct {
 	// DenialJustification Justificativa da Negativa(Caso Status do Sinistro for 'ENCERRADO_SEM_INDENIZACAO')
 	DenialJustification *InsuranceAutoClaimDenialJustification `json:"denialJustification,omitempty"`
 
-	// DenialJustificationDescription DescriÃ§Ã£o da Justificativa da Negativa(Caso Justificativa da Negativa for 'OUTROS')
+	// DenialJustificationDescription Descrição da Justificativa da Negativa(Caso Justificativa da Negativa for 'OUTROS')
 	DenialJustificationDescription *string `json:"denialJustificationDescription,omitempty"`
 
-	// DocumentationDeliveryDate Data de entrega da documentaÃ§Ã£o completa
+	// DocumentationDeliveryDate Data de entrega da documentação completa
 	DocumentationDeliveryDate *timeutil.BrazilDate `json:"documentationDeliveryDate,omitempty"`
 
 	// Identification Identificador do processo de sinistro
 	Identification string `json:"identification"`
 
-	// OccurrenceDate Data de ocorrÃªncia do sinistro
+	// OccurrenceDate Data de ocorrência do sinistro
 	OccurrenceDate timeutil.BrazilDate `json:"occurrenceDate"`
 
 	// Status Status do sinistro
 	Status InsuranceAutoClaimStatus `json:"status"`
 
-	// StatusAlterationDate Data de alteraÃ§Ã£o do status do sinistro
+	// StatusAlterationDate Data de alteração do status do sinistro
 	StatusAlterationDate timeutil.BrazilDate `json:"statusAlterationDate"`
 
-	// ThirdPartyClaimDate Data de reclamaÃ§Ã£o do terceiro
+	// ThirdPartyClaimDate Data de reclamação do terceiro
 	ThirdPartyClaimDate *timeutil.BrazilDate `json:"thirdPartyClaimDate,omitempty"`
 
 	// WarningDate Data de aviso do sinistro
@@ -5921,83 +5925,83 @@ type InsuranceAutoClaimCoverage struct {
 	// Branch Grupo e ramo da cobertura
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code InsuranceAutoClaimCoverageCode `json:"code"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (Caso CÃ³digo da Cobertura for "OUTRAS")
+	// Description Descrição / Nome da Cobertura (Caso Código da Cobertura for "OUTRAS")
 	Description *string `json:"description,omitempty"`
 
-	// InsuredObjectID Identificador do Objeto Segurado (Caso aplicÃ¡vel)
+	// InsuredObjectID Identificador do Objeto Segurado (Caso aplicável)
 	InsuredObjectID *string `json:"insuredObjectId,omitempty"`
 
-	// ThirdPartyClaimDate Data de ReclamaÃ§Ã£o do Terceiro por Cobertura (Caso aplicÃ¡vel)
+	// ThirdPartyClaimDate Data de Reclamação do Terceiro por Cobertura (Caso aplicável)
 	ThirdPartyClaimDate *timeutil.BrazilDate `json:"thirdPartyClaimDate,omitempty"`
 
-	// WarningDate Data de Aviso do Sinistro por Cobertura (Caso aplicÃ¡vel)
+	// WarningDate Data de Aviso do Sinistro por Cobertura (Caso aplicável)
 	WarningDate *timeutil.BrazilDate `json:"warningDate,omitempty"`
 }
 
-// InsuranceAutoClaimCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// InsuranceAutoClaimCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type InsuranceAutoClaimCoverageCode string
 
 // InsuranceAutoCoverage defines model for InsuranceAutoCoverage.
 type InsuranceAutoCoverage struct {
-	// POS InformaÃ§Ãµes de franquia
+	// POS Informações de franquia
 	POS *InsuranceAutoPOS `json:"POS,omitempty"`
 
 	// Branch Grupo e ramo da cobertura
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code InsuranceAutoCoverageCode `json:"code"`
 
-	// Deductible InformaÃ§Ãµes de franquia
+	// Deductible Informações de franquia
 	Deductible *InsuranceAutoDeductible `json:"deductible,omitempty"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (Caso CÃ³digo da Cobertura for "OUTRAS")
+	// Description Descrição / Nome da Cobertura (Caso Código da Cobertura for "OUTRAS")
 	Description *string `json:"description,omitempty"`
 }
 
-// InsuranceAutoCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// InsuranceAutoCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type InsuranceAutoCoverageCode string
 
-// InsuranceAutoDeductible InformaÃ§Ãµes de franquia
+// InsuranceAutoDeductible Informações de franquia
 type InsuranceAutoDeductible struct {
 	// Amount Detalhes de valores/limites
 	Amount *AmountDetails `json:"amount,omitempty"`
 
-	// Description DescriÃ§Ã£o da Franquia (caso aplicÃ¡vel)
+	// Description Descrição da Franquia (caso aplicável)
 	Description *string `json:"description,omitempty"`
 
-	// HasDeductibleOverTotalCompensation Indicador de Franquia sobre indenizaÃ§Ã£o integral (caso aplicÃ¡vel)
+	// HasDeductibleOverTotalCompensation Indicador de Franquia sobre indenização integral (caso aplicável)
 	HasDeductibleOverTotalCompensation *bool `json:"hasDeductibleOverTotalCompensation,omitempty"`
 
-	// Period Prazo da Franquia (caso aplicÃ¡vel)
+	// Period Prazo da Franquia (caso aplicável)
 	Period *int `json:"period,omitempty"`
 
-	// PeriodCountingMethod Indicador de Dias Ãšteis ou Corridos (caso aplicÃ¡vel)
+	// PeriodCountingMethod Indicador de Dias Úteis ou Corridos (caso aplicável)
 	PeriodCountingMethod *InsuranceAutoDeductiblePeriodCountingMethod `json:"periodCountingMethod,omitempty"`
 
-	// PeriodEndDate Data de Fim da Franquia (caso aplicÃ¡vel)
+	// PeriodEndDate Data de Fim da Franquia (caso aplicável)
 	PeriodEndDate *timeutil.BrazilDate `json:"periodEndDate,omitempty"`
 
-	// PeriodStartDate Data de InÃcio da Franquia (caso aplicÃ¡vel)
+	// PeriodStartDate Data de Início da Franquia (caso aplicável)
 	PeriodStartDate *timeutil.BrazilDate `json:"periodStartDate,omitempty"`
 
-	// Periodicity Periodicidade da Franquia (caso aplicÃ¡vel)
+	// Periodicity Periodicidade da Franquia (caso aplicável)
 	Periodicity *InsuranceAutoDeductiblePeriodicity `json:"periodicity,omitempty"`
 
 	// Type Tipo de Franquia
 	Type InsuranceAutoDeductibleType `json:"type"`
 
-	// TypeAdditionalInfo DescriÃ§ao do Tipo de Franquia (Caso Tipo de Franquia for "OUTROS")
+	// TypeAdditionalInfo Descriçao do Tipo de Franquia (Caso Tipo de Franquia for "OUTROS")
 	TypeAdditionalInfo *string `json:"typeAdditionalInfo,omitempty"`
 }
 
-// InsuranceAutoDeductiblePeriodCountingMethod Indicador de Dias Ãšteis ou Corridos (caso aplicÃ¡vel)
+// InsuranceAutoDeductiblePeriodCountingMethod Indicador de Dias Úteis ou Corridos (caso aplicável)
 type InsuranceAutoDeductiblePeriodCountingMethod string
 
-// InsuranceAutoDeductiblePeriodicity Periodicidade da Franquia (caso aplicÃ¡vel)
+// InsuranceAutoDeductiblePeriodicity Periodicidade da Franquia (caso aplicável)
 type InsuranceAutoDeductiblePeriodicity string
 
 // InsuranceAutoDeductibleType Tipo de Franquia
@@ -6005,7 +6009,7 @@ type InsuranceAutoDeductibleType string
 
 // InsuranceAutoInsuredObject defines model for InsuranceAutoInsuredObject.
 type InsuranceAutoInsuredObject struct {
-	// AmountReferenceTable Tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// AmountReferenceTable Tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	AmountReferenceTable *InsuranceAutoInsuredObjectAmountReferenceTable `json:"amountReferenceTable,omitempty"`
 
 	// AmountReferenceTableOthers Campo de detalhamento para quando a opcao da Tabela de referencia adotada no plano for OUTRAS
@@ -6014,16 +6018,16 @@ type InsuranceAutoInsuredObject struct {
 	// Coverages Lista que agrupa os dados de coberturas.
 	Coverages []InsuranceAutoInsuredObjectCoverage `json:"coverages"`
 
-	// Description DescriÃ§Ã£o do objeto segurado
+	// Description Descrição do objeto segurado
 	Description string `json:"description"`
 
-	// FareCategory Categoria tarifÃ¡ria (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel) - Conforme definido na tabela 9.9 do Manual de  OrientaÃ§Ã£o para Envio de Dados, Circular Susep nÂº 522
+	// FareCategory Categoria tarifária (Casco, RCF-A, APP, Assistência e Outras Coberturas; caso aplicável) - Conforme definido na tabela 9.9 do Manual de  Orientação para Envio de Dados, Circular Susep nº 522
 	FareCategory *InsuranceAutoInsuredObjectFareCategory `json:"fareCategory,omitempty"`
 
-	// FrequentDestinationPostCode CEP da localidade de destino frequente do veÃculo (caso aplicÃ¡vel)
+	// FrequentDestinationPostCode CEP da localidade de destino frequente do veículo (caso aplicável)
 	FrequentDestinationPostCode *string `json:"frequentDestinationPostCode,omitempty"`
 
-	// HasExactVehicleIdentification IdentificaÃ§Ã£o exata do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// HasExactVehicleIdentification Identificação exata do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	HasExactVehicleIdentification *bool `json:"hasExactVehicleIdentification,omitempty"`
 
 	// Identification Identificador do objeto segurado
@@ -6035,35 +6039,35 @@ type InsuranceAutoInsuredObject struct {
 	// ModalityOthers Campo de detalhamento para quando a opcao da Modalidade de cobertura for OUTROS
 	ModalityOthers *string `json:"modalityOthers,omitempty"`
 
-	// Model CÃ³digo do modelo (caso aplicÃ¡vel)
+	// Model Código do modelo (caso aplicável)
 	Model *string `json:"model,omitempty"`
 
-	// OvernightPostCode CEP da localidade de pernoite do veÃculo (caso aplicÃ¡vel)
+	// OvernightPostCode CEP da localidade de pernoite do veículo (caso aplicável)
 	OvernightPostCode *string `json:"overnightPostCode,omitempty"`
 
-	// RiskPostCode CEP de risco (caso aplicÃ¡vel)
+	// RiskPostCode CEP de risco (caso aplicável)
 	RiskPostCode *string `json:"riskPostCode,omitempty"`
 
 	// Type Tipo do objeto segurado
 	Type InsuranceAutoInsuredObjectType `json:"type"`
 
-	// TypeAdditionalInfo DescriÃ§Ã£o do tipo do objeto segurado(caso tipo de objeto segurado for outros).
+	// TypeAdditionalInfo Descrição do tipo do objeto segurado(caso tipo de objeto segurado for outros).
 	TypeAdditionalInfo *string `json:"typeAdditionalInfo,omitempty"`
 
-	// VehicleUsage CÃ³digo de utilizaÃ§Ã£o do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel)
+	// VehicleUsage Código de utilização do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas; caso aplicável)
 	VehicleUsage *InsuranceAutoInsuredObjectVehicleUsage `json:"vehicleUsage,omitempty"`
 
 	// VehicleUsageOthers Campo de detalhamento para quando a opcao do Codigo de utilizacao do veiculo for OUTROS
 	VehicleUsageOthers *string `json:"vehicleUsageOthers,omitempty"`
 
-	// Year Ano do modelo (caso aplicÃ¡vel)
+	// Year Ano do modelo (caso aplicável)
 	Year *string `json:"year,omitempty"`
 }
 
-// InsuranceAutoInsuredObjectAmountReferenceTable Tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+// InsuranceAutoInsuredObjectAmountReferenceTable Tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 type InsuranceAutoInsuredObjectAmountReferenceTable string
 
-// InsuranceAutoInsuredObjectFareCategory Categoria tarifÃ¡ria (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel) - Conforme definido na tabela 9.9 do Manual de  OrientaÃ§Ã£o para Envio de Dados, Circular Susep nÂº 522
+// InsuranceAutoInsuredObjectFareCategory Categoria tarifária (Casco, RCF-A, APP, Assistência e Outras Coberturas; caso aplicável) - Conforme definido na tabela 9.9 do Manual de  Orientação para Envio de Dados, Circular Susep nº 522
 type InsuranceAutoInsuredObjectFareCategory string
 
 // InsuranceAutoInsuredObjectModality Modalidade de cobertura (para cobertura Casco)
@@ -6072,7 +6076,7 @@ type InsuranceAutoInsuredObjectModality string
 // InsuranceAutoInsuredObjectType Tipo do objeto segurado
 type InsuranceAutoInsuredObjectType string
 
-// InsuranceAutoInsuredObjectVehicleUsage CÃ³digo de utilizaÃ§Ã£o do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel)
+// InsuranceAutoInsuredObjectVehicleUsage Código de utilização do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas; caso aplicável)
 type InsuranceAutoInsuredObjectVehicleUsage string
 
 // InsuranceAutoInsuredObjectCoverage defines model for InsuranceAutoInsuredObjectCoverage.
@@ -6080,61 +6084,61 @@ type InsuranceAutoInsuredObjectCoverage struct {
 	// LMI Detalhes de valores/limites
 	LMI AmountDetails `json:"LMI"`
 
-	// AdjustmentRate Percentual de ajuste aplicado Ã  tabela de referÃªncia (caso aplicÃ¡vel)
+	// AdjustmentRate Percentual de ajuste aplicado à tabela de referência (caso aplicável)
 	AdjustmentRate *string `json:"adjustmentRate,omitempty"`
 
-	// BoundCoverage Cobertura vinculada (RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel)
+	// BoundCoverage Cobertura vinculada (RCF-A, APP, Assistência e Outras Coberturas; caso aplicável)
 	BoundCoverage *InsuranceAutoInsuredObjectCoverageBoundCoverage `json:"boundCoverage,omitempty"`
 
 	// BoundCoverageOthers Campo de detalhamento para quando a opcao da Cobertura vinculada for OUTROS
 	BoundCoverageOthers *string `json:"boundCoverageOthers,omitempty"`
 
-	// Branch Grupo e Ramo da Cobertura (Conforme regulamentaÃ§Ã£o Susep vigente)
+	// Branch Grupo e Ramo da Cobertura (Conforme regulamentação Susep vigente)
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code InsuranceAutoInsuredObjectCoverageCode `json:"code"`
 
-	// CompensationType Tipo de indenizaÃ§Ã£o por cobertura contratada (caso aplicÃ¡vel)
+	// CompensationType Tipo de indenização por cobertura contratada (caso aplicável)
 	CompensationType *InsuranceAutoInsuredObjectCoverageCompensationType `json:"compensationType,omitempty"`
 
 	// CompensationTypeOthers Campo de detalhamento para quando a opcao do tipo de indenizacao por cobertura contratada for OUTROS
 	CompensationTypeOthers *string `json:"compensationTypeOthers,omitempty"`
 
-	// DaysForTotalCompensation NÃºmero de dias de cobertura para direito Ã  indenizaÃ§Ã£o (caso aplicÃ¡vel)
+	// DaysForTotalCompensation Número de dias de cobertura para direito à indenização (caso aplicável)
 	DaysForTotalCompensation *int `json:"daysForTotalCompensation,omitempty"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (ObrigatÃ³rio quando o campo 'Codigo' for preenchido com 'Outras')
+	// Description Descrição / Nome da Cobertura (Obrigatório quando o campo 'Codigo' for preenchido com 'Outras')
 	Description *string `json:"description,omitempty"`
 
-	// Feature CaracterÃstica da cobertura
+	// Feature Característica da cobertura
 	Feature InsuranceAutoInsuredObjectCoverageFeature `json:"feature"`
 
-	// GracePeriod PerÃodo de carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriod Período de carência. OBS: Obrigatório, se houver
 	GracePeriod *int `json:"gracePeriod,omitempty"`
 
-	// GracePeriodCountingMethod Indicador de dias Ãºteis ou corridos da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodCountingMethod Indicador de dias úteis ou corridos da carência. OBS: Obrigatório, se houver
 	GracePeriodCountingMethod *InsuranceAutoInsuredObjectCoverageGracePeriodCountingMethod `json:"gracePeriodCountingMethod,omitempty"`
 
-	// GracePeriodEndDate Data de fim da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodEndDate Data de fim da carência. OBS: Obrigatório, se houver
 	GracePeriodEndDate *timeutil.BrazilDate `json:"gracePeriodEndDate,omitempty"`
 
-	// GracePeriodStartDate Data de inÃcio da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodStartDate Data de início da carência. OBS: Obrigatório, se houver
 	GracePeriodStartDate *timeutil.BrazilDate `json:"gracePeriodStartDate,omitempty"`
 
-	// GracePeriodicity Periodicidade da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodicity Periodicidade da carência. OBS: Obrigatório, se houver
 	GracePeriodicity *InsuranceAutoInsuredObjectCoverageGracePeriodicity `json:"gracePeriodicity,omitempty"`
 
-	// InternalCode CÃ³digo interno da cobertura da seguradora(obrigatÃ³rio se houver)
+	// InternalCode Código interno da cobertura da seguradora(obrigatório se houver)
 	InternalCode *string `json:"internalCode,omitempty"`
 
 	// IsMainCoverage Cobertura Principal
 	IsMainCoverage bool `json:"isMainCoverage"`
 
-	// PartialCompensationPercentage Percentual por indenizaÃ§Ã£o parcial (caso aplicÃ¡vel)
+	// PartialCompensationPercentage Percentual por indenização parcial (caso aplicável)
 	PartialCompensationPercentage *string `json:"partialCompensationPercentage,omitempty"`
 
-	// PercentageOverLMI Percentual aplicado sobre o limite mÃ¡ximo de indenizaÃ§Ã£o (caso aplicÃ¡vel)
+	// PercentageOverLMI Percentual aplicado sobre o limite máximo de indenização (caso aplicável)
 	PercentageOverLMI *string `json:"percentageOverLMI,omitempty"`
 
 	// PremiumAmount Detalhes de valores/limites
@@ -6147,32 +6151,32 @@ type InsuranceAutoInsuredObjectCoverage struct {
 	PremiumPeriodicityOthers *string `json:"premiumPeriodicityOthers,omitempty"`
 	SusepProcessNumber       string  `json:"susepProcessNumber"`
 
-	// TermEndDate Data de fim de vigÃªncia da cobertura
+	// TermEndDate Data de fim de vigência da cobertura
 	TermEndDate timeutil.BrazilDate `json:"termEndDate"`
 
-	// TermStartDate Data de inÃcio de vigÃªncia da cobertura
+	// TermStartDate Data de início de vigência da cobertura
 	TermStartDate timeutil.BrazilDate `json:"termStartDate"`
 
 	// Type Tipo de cobertura
 	Type InsuranceAutoInsuredObjectCoverageType `json:"type"`
 }
 
-// InsuranceAutoInsuredObjectCoverageBoundCoverage Cobertura vinculada (RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel)
+// InsuranceAutoInsuredObjectCoverageBoundCoverage Cobertura vinculada (RCF-A, APP, Assistência e Outras Coberturas; caso aplicável)
 type InsuranceAutoInsuredObjectCoverageBoundCoverage string
 
-// InsuranceAutoInsuredObjectCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// InsuranceAutoInsuredObjectCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type InsuranceAutoInsuredObjectCoverageCode string
 
-// InsuranceAutoInsuredObjectCoverageCompensationType Tipo de indenizaÃ§Ã£o por cobertura contratada (caso aplicÃ¡vel)
+// InsuranceAutoInsuredObjectCoverageCompensationType Tipo de indenização por cobertura contratada (caso aplicável)
 type InsuranceAutoInsuredObjectCoverageCompensationType string
 
-// InsuranceAutoInsuredObjectCoverageFeature CaracterÃstica da cobertura
+// InsuranceAutoInsuredObjectCoverageFeature Característica da cobertura
 type InsuranceAutoInsuredObjectCoverageFeature string
 
-// InsuranceAutoInsuredObjectCoverageGracePeriodCountingMethod Indicador de dias Ãºteis ou corridos da carÃªncia. OBS: ObrigatÃ³rio, se houver
+// InsuranceAutoInsuredObjectCoverageGracePeriodCountingMethod Indicador de dias úteis ou corridos da carência. OBS: Obrigatório, se houver
 type InsuranceAutoInsuredObjectCoverageGracePeriodCountingMethod string
 
-// InsuranceAutoInsuredObjectCoverageGracePeriodicity Periodicidade da carÃªncia. OBS: ObrigatÃ³rio, se houver
+// InsuranceAutoInsuredObjectCoverageGracePeriodicity Periodicidade da carência. OBS: Obrigatório, se houver
 type InsuranceAutoInsuredObjectCoverageGracePeriodicity string
 
 // InsuranceAutoInsuredObjectCoveragePremiumPeriodicity Periodicidade de pagamento do premio
@@ -6181,12 +6185,12 @@ type InsuranceAutoInsuredObjectCoveragePremiumPeriodicity string
 // InsuranceAutoInsuredObjectCoverageType Tipo de cobertura
 type InsuranceAutoInsuredObjectCoverageType string
 
-// InsuranceAutoPOS InformaÃ§Ãµes de franquia
+// InsuranceAutoPOS Informações de franquia
 type InsuranceAutoPOS struct {
-	// ApplicationType Forma de AplicaÃ§Ã£o do POS
+	// ApplicationType Forma de Aplicação do POS
 	ApplicationType InsuranceAutoPOSApplicationType `json:"applicationType"`
 
-	// Description DescriÃ§Ã£o do POS (caso Forma de aplicaÃ§Ã£o do POS for Outros)
+	// Description Descrição do POS (caso Forma de aplicação do POS for Outros)
 	Description *string `json:"description,omitempty"`
 
 	// MaxValue Detalhes de valores/limites
@@ -6202,24 +6206,24 @@ type InsuranceAutoPOS struct {
 	ValueOthers *AmountDetails `json:"valueOthers,omitempty"`
 }
 
-// InsuranceAutoPOSApplicationType Forma de AplicaÃ§Ã£o do POS
+// InsuranceAutoPOSApplicationType Forma de Aplicação do POS
 type InsuranceAutoPOSApplicationType string
 
 // InsuranceAutoPolicyInfo defines model for InsuranceAutoPolicyInfo.
 type InsuranceAutoPolicyInfo struct {
-	// AssistancePackages Pacotes de AssistÃªncia (Caso aplicÃ¡vel)
+	// AssistancePackages Pacotes de Assistência (Caso aplicável)
 	AssistancePackages *InsuranceAutoPolicyInfoAssistancePackages `json:"assistancePackages,omitempty"`
 
-	// Beneficiaries Lista que agrupa os dados dos beneficiÃ¡rios.
+	// Beneficiaries Lista que agrupa os dados dos beneficiários.
 	Beneficiaries *[]BeneficiaryInfo `json:"beneficiaries,omitempty"`
 
-	// BonusClass Classe de bÃ´nus (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas; caso aplicÃ¡vel)
+	// BonusClass Classe de bônus (Casco, RCF-A, APP, Assistência e Outras Coberturas; caso aplicável)
 	BonusClass *string `json:"bonusClass,omitempty"`
 
-	// BonusDiscountRate Percentual de desconto por bÃ´nus (Casco, RCF-A, APP, AssistÃªncia; caso aplicÃ¡vel)
+	// BonusDiscountRate Percentual de desconto por bônus (Casco, RCF-A, APP, Assistência; caso aplicável)
 	BonusDiscountRate *string `json:"bonusDiscountRate,omitempty"`
 
-	// CoinsuranceRetainedPercentage Percentual Retido em Cosseguro (Quando hÃ¡ cosseguro)
+	// CoinsuranceRetainedPercentage Percentual Retido em Cosseguro (Quando há cosseguro)
 	CoinsuranceRetainedPercentage *string `json:"coinsuranceRetainedPercentage,omitempty"`
 
 	// Coinsurers Lista que agrupa os dados dos cosseguros.
@@ -6241,34 +6245,34 @@ type InsuranceAutoPolicyInfo struct {
 	// Insureds Lista que agrupa os dados dos segurados.
 	Insureds []PersonalInfo `json:"insureds"`
 
-	// Intermediaries Lista que agrupa os dados de intermediÃ¡rios.
+	// Intermediaries Lista que agrupa os dados de intermediários.
 	Intermediaries *[]Intermediary `json:"intermediaries,omitempty"`
 
-	// IsExpiredRiskPolicy ApÃ³lice de Risco Decorrido (Caso aplicÃ¡vel)
+	// IsExpiredRiskPolicy Apólice de Risco Decorrido (Caso aplicável)
 	IsExpiredRiskPolicy *bool `json:"isExpiredRiskPolicy,omitempty"`
 
-	// IssuanceDate Data de emissÃ£o do documento
+	// IssuanceDate Data de emissão do documento
 	IssuanceDate timeutil.BrazilDate `json:"issuanceDate"`
 
-	// IssuanceType Tipo de EmissÃ£o
+	// IssuanceType Tipo de Emissão
 	IssuanceType InsuranceAutoPolicyInfoIssuanceType `json:"issuanceType"`
 
-	// LeadInsurerCode CÃ³digo da seguradora lÃder para contratos com arranjo de cosseguro
+	// LeadInsurerCode Código da seguradora líder para contratos com arranjo de cosseguro
 	LeadInsurerCode *string `json:"leadInsurerCode,omitempty"`
 
-	// LeadInsurerPolicyID Identificador da apÃ³lice seguradora lÃder para apÃ³lice de cosseguro aceito
+	// LeadInsurerPolicyID Identificador da apólice seguradora líder para apólice de cosseguro aceito
 	LeadInsurerPolicyID *string `json:"leadInsurerPolicyId,omitempty"`
 
-	// MaxLMG Valor Limite mÃ¡ximo de garantia (LMG)
+	// MaxLMG Valor Limite máximo de garantia (LMG)
 	MaxLMG AmountDetails `json:"maxLMG"`
 
-	// OtherBenefits BenefÃcios Adicionais (Caso aplicÃ¡vel)
+	// OtherBenefits Benefícios Adicionais (Caso aplicável)
 	OtherBenefits *InsuranceAutoPolicyInfoOtherBenefits `json:"otherBenefits,omitempty"`
 
-	// OtherCompensations Outras formas de recompensa (Caso aplicÃ¡vel)
+	// OtherCompensations Outras formas de recompensa (Caso aplicável)
 	OtherCompensations *string `json:"otherCompensations,omitempty"`
 
-	// PolicyID Identificador da apÃ³lice ou bilhete
+	// PolicyID Identificador da apólice ou bilhete
 	PolicyID string `json:"policyId"`
 
 	// Principals Lista que agrupa os dados dos tomadores/garantidos.
@@ -6277,65 +6281,65 @@ type InsuranceAutoPolicyInfo struct {
 	// ProposalID Identificador da Proposta
 	ProposalID string `json:"proposalId"`
 
-	// RepairNetwork Rede de reparaÃ§Ã£o dos veÃculos
+	// RepairNetwork Rede de reparação dos veículos
 	RepairNetwork InsuranceAutoPolicyInfoRepairNetwork `json:"repairNetwork"`
 
 	// RepairNetworkOthers Campo de detalhamento para quando a opcao de rede de reparacao dos veiculos for OUTROS
 	RepairNetworkOthers *string `json:"repairNetworkOthers,omitempty"`
 
-	// RepairedPartsClassification ClassificaÃ§Ã£o das peÃ§as passÃveis de uso em reparos (Casco)
+	// RepairedPartsClassification Classificação das peças passíveis de uso em reparos (Casco)
 	RepairedPartsClassification InsuranceAutoPolicyInfoRepairedPartsClassification `json:"repairedPartsClassification"`
 
-	// RepairedPartsNationality Nacionalidade das peÃ§as passÃveis de uso em reparos (Casco)
+	// RepairedPartsNationality Nacionalidade das peças passíveis de uso em reparos (Casco)
 	RepairedPartsNationality InsuranceAutoPolicyInfoRepairedPartsNationality `json:"repairedPartsNationality"`
 
-	// RepairedPartsUsageType Tipos de peÃ§as passÃveis de uso em reparos (Casco)
+	// RepairedPartsUsageType Tipos de peças passíveis de uso em reparos (Casco)
 	RepairedPartsUsageType InsuranceAutoPolicyInfoRepairedPartsUsageType `json:"repairedPartsUsageType"`
 
-	// SusepProcessNumber NÃºmero SUSEP da apÃ³lice, conforme regulamentaÃ§Ã£o vigente (ObrigatÃ³rio caso apÃ³lice com coberturas do ramo Garantia)
+	// SusepProcessNumber Número SUSEP da apólice, conforme regulamentação vigente (Obrigatório caso apólice com coberturas do ramo Garantia)
 	SusepProcessNumber *string `json:"susepProcessNumber,omitempty"`
 
-	// TermEndDate Data de fim de vigÃªncia do documento
+	// TermEndDate Data de fim de vigência do documento
 	TermEndDate timeutil.BrazilDate `json:"termEndDate"`
 
-	// TermStartDate Data de inÃcio de vigÃªncia do documento
+	// TermStartDate Data de início de vigência do documento
 	TermStartDate timeutil.BrazilDate `json:"termStartDate"`
 
-	// ValidityType Tipo de vigÃªncia (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// ValidityType Tipo de vigência (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	ValidityType InsuranceAutoPolicyInfoValidityType `json:"validityType"`
 
 	// ValidityTypeOthers Campo de detalhamento para quando a opcao do tipo de vigencia for OUTROS
 	ValidityTypeOthers *string `json:"validityTypeOthers,omitempty"`
 }
 
-// InsuranceAutoPolicyInfoAssistancePackages Pacotes de AssistÃªncia (Caso aplicÃ¡vel)
+// InsuranceAutoPolicyInfoAssistancePackages Pacotes de Assistência (Caso aplicável)
 type InsuranceAutoPolicyInfoAssistancePackages string
 
 // InsuranceAutoPolicyInfoDocumentType Tipo de Documento Emitido
 type InsuranceAutoPolicyInfoDocumentType string
 
-// InsuranceAutoPolicyInfoIssuanceType Tipo de EmissÃ£o
+// InsuranceAutoPolicyInfoIssuanceType Tipo de Emissão
 type InsuranceAutoPolicyInfoIssuanceType string
 
-// InsuranceAutoPolicyInfoOtherBenefits BenefÃcios Adicionais (Caso aplicÃ¡vel)
+// InsuranceAutoPolicyInfoOtherBenefits Benefícios Adicionais (Caso aplicável)
 type InsuranceAutoPolicyInfoOtherBenefits string
 
-// InsuranceAutoPolicyInfoRepairNetwork Rede de reparaÃ§Ã£o dos veÃculos
+// InsuranceAutoPolicyInfoRepairNetwork Rede de reparação dos veículos
 type InsuranceAutoPolicyInfoRepairNetwork string
 
-// InsuranceAutoPolicyInfoRepairedPartsClassification ClassificaÃ§Ã£o das peÃ§as passÃveis de uso em reparos (Casco)
+// InsuranceAutoPolicyInfoRepairedPartsClassification Classificação das peças passíveis de uso em reparos (Casco)
 type InsuranceAutoPolicyInfoRepairedPartsClassification string
 
-// InsuranceAutoPolicyInfoRepairedPartsNationality Nacionalidade das peÃ§as passÃveis de uso em reparos (Casco)
+// InsuranceAutoPolicyInfoRepairedPartsNationality Nacionalidade das peças passíveis de uso em reparos (Casco)
 type InsuranceAutoPolicyInfoRepairedPartsNationality string
 
-// InsuranceAutoPolicyInfoRepairedPartsUsageType Tipos de peÃ§as passÃveis de uso em reparos (Casco)
+// InsuranceAutoPolicyInfoRepairedPartsUsageType Tipos de peças passíveis de uso em reparos (Casco)
 type InsuranceAutoPolicyInfoRepairedPartsUsageType string
 
-// InsuranceAutoPolicyInfoValidityType Tipo de vigÃªncia (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+// InsuranceAutoPolicyInfoValidityType Tipo de vigência (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 type InsuranceAutoPolicyInfoValidityType string
 
-// InsuranceAutoPremium Objeto que agrupa dados de prÃªmio.
+// InsuranceAutoPremium Objeto que agrupa dados de prêmio.
 type InsuranceAutoPremium struct {
 	// Amount Valor total do premio do contrato
 	Amount AmountDetails `json:"amount"`
@@ -6344,7 +6348,7 @@ type InsuranceAutoPremium struct {
 	Coverages []InsuranceAutoPremiumCoverage `json:"coverages"`
 	Payments  []Payment                      `json:"payments"`
 
-	// PaymentsQuantity Quantidade de parcelas do prÃªmio do contrato
+	// PaymentsQuantity Quantidade de parcelas do prêmio do contrato
 	PaymentsQuantity string `json:"paymentsQuantity"`
 }
 
@@ -6353,82 +6357,82 @@ type InsuranceAutoPremiumCoverage struct {
 	// Branch Grupo e ramo da cobertura
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code InsuranceAutoPremiumCoverageCode `json:"code"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (Caso CÃ³digo da Cobertura for "OUTRAS")
+	// Description Descrição / Nome da Cobertura (Caso Código da Cobertura for "OUTRAS")
 	Description *string `json:"description,omitempty"`
 
 	// PremiumAmount Valor de premio da cobertura
 	PremiumAmount AmountDetails `json:"premiumAmount"`
 }
 
-// InsuranceAutoPremiumCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// InsuranceAutoPremiumCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type InsuranceAutoPremiumCoverageCode string
 
-// InsuranceAutoSpecificClaim InformaÃ§Ãµes do Anexo EspecÃfico
+// InsuranceAutoSpecificClaim Informações do Anexo Específico
 type InsuranceAutoSpecificClaim struct {
-	// CovenantNumber NÃºmero do convÃªnio (Caso Responsabilidade Civil - Carta Verde)
+	// CovenantNumber Número do convênio (Caso Responsabilidade Civil - Carta Verde)
 	CovenantNumber *string `json:"covenantNumber,omitempty"`
 
-	// DriverAtOccurrenceBirthDate Data de nascimento do condutor do veÃculo no momento do sinistro (Caso aplicÃ¡vel)
+	// DriverAtOccurrenceBirthDate Data de nascimento do condutor do veículo no momento do sinistro (Caso aplicável)
 	DriverAtOccurrenceBirthDate *timeutil.BrazilDate `json:"driverAtOccurrenceBirthDate,omitempty"`
 
-	// DriverAtOccurrenceSex Sexo do condutor do veÃculo no momento do sinistro (Caso aplicÃ¡vel)
+	// DriverAtOccurrenceSex Sexo do condutor do veículo no momento do sinistro (Caso aplicável)
 	DriverAtOccurrenceSex *InsuranceAutoSpecificClaimDriverAtOccurrenceSex `json:"driverAtOccurrenceSex,omitempty"`
 
 	// DriverAtOccurrenceSexOthers Campo de detalhamento para quando a opcao do sexo do condutor for OUTROS
 	DriverAtOccurrenceSexOthers *string `json:"driverAtOccurrenceSexOthers,omitempty"`
 
-	// OccurrenceCause Causa do Sinistro (Caso aplicÃ¡vel)
+	// OccurrenceCause Causa do Sinistro (Caso aplicável)
 	OccurrenceCause *InsuranceAutoSpecificClaimOccurrenceCause `json:"occurrenceCause,omitempty"`
 
 	// OccurrenceCauseOthers Campo de detalhamento para quando a opcao da causa do sinistro for OUTROS
 	OccurrenceCauseOthers *string `json:"occurrenceCauseOthers,omitempty"`
 
-	// OccurrenceCountry PaÃs de ocorrÃªncia do sinistro (Caso Responsabilidade Civil - Carta Verde)
+	// OccurrenceCountry País de ocorrência do sinistro (Caso Responsabilidade Civil - Carta Verde)
 	OccurrenceCountry *InsuranceAutoSpecificClaimOccurrenceCountry `json:"occurrenceCountry,omitempty"`
 
-	// OccurrencePostCode CEP da localidade de ocorrÃªncia do sinistro (Caso aplicÃ¡vel)
+	// OccurrencePostCode CEP da localidade de ocorrência do sinistro (Caso aplicável)
 	OccurrencePostCode *string `json:"occurrencePostCode,omitempty"`
 }
 
-// InsuranceAutoSpecificClaimDriverAtOccurrenceSex Sexo do condutor do veÃculo no momento do sinistro (Caso aplicÃ¡vel)
+// InsuranceAutoSpecificClaimDriverAtOccurrenceSex Sexo do condutor do veículo no momento do sinistro (Caso aplicável)
 type InsuranceAutoSpecificClaimDriverAtOccurrenceSex string
 
-// InsuranceAutoSpecificClaimOccurrenceCause Causa do Sinistro (Caso aplicÃ¡vel)
+// InsuranceAutoSpecificClaimOccurrenceCause Causa do Sinistro (Caso aplicável)
 type InsuranceAutoSpecificClaimOccurrenceCause string
 
-// InsuranceAutoSpecificClaimOccurrenceCountry PaÃs de ocorrÃªncia do sinistro (Caso Responsabilidade Civil - Carta Verde)
+// InsuranceAutoSpecificClaimOccurrenceCountry País de ocorrência do sinistro (Caso Responsabilidade Civil - Carta Verde)
 type InsuranceAutoSpecificClaimOccurrenceCountry string
 
 // Intermediary defines model for Intermediary.
 type Intermediary struct {
-	// Address EndereÃ§o da Intermediador (restante do do endereÃ§o, excluindo cidade, estado e paÃs; Caso Tipo de Intermediador for ESTIPULANTE)
+	// Address Endereço da Intermediador (restante do do endereço, excluindo cidade, estado e país; Caso Tipo de Intermediador for ESTIPULANTE)
 	Address *string `json:"address,omitempty"`
 
-	// BrokerID Identificador do intermediador da apÃ³lice - cÃ³digo Susep do corretor(a) (Caso Tipo de Intermediador for CORRETOR)
+	// BrokerID Identificador do intermediador da apólice - código Susep do corretor(a) (Caso Tipo de Intermediador for CORRETOR)
 	BrokerID *string `json:"brokerId,omitempty"`
 
 	// City Cidade da Intermediador (por extenso; Caso Tipo de Intermediador for ESTIPULANTE)
 	City *string `json:"city,omitempty"`
 
-	// Country PaÃs da Intermediador (de acordo com o cÃ³digo "alpha3" do ISO-3166; Caso Tipo de Intermediador for ESTIPULANTE)
+	// Country País da Intermediador (de acordo com o código "alpha3" do ISO-3166; Caso Tipo de Intermediador for ESTIPULANTE)
 	Country *IntermediaryCountry `json:"country,omitempty"`
 
-	// Identification Documento de IdentificaÃ§Ã£o do Intermediador(a) (Caso Tipo de Intermediador nÃ£o seja CORRETOR ou quando for CORRETOR, porÃ©m o identificador do intermediador nÃ£o seja informado)
+	// Identification Documento de Identificação do Intermediador(a) (Caso Tipo de Intermediador não seja CORRETOR ou quando for CORRETOR, porém o identificador do intermediador não seja informado)
 	Identification *string `json:"identification,omitempty"`
 
-	// IdentificationType Tipo de Documento do Intermediador(a) (Caso Tipo de Intermediador nÃ£o seja CORRETOR ou quando for CORRETOR, porÃ©m o identificador do intermediador nÃ£o seja informado)
+	// IdentificationType Tipo de Documento do Intermediador(a) (Caso Tipo de Intermediador não seja CORRETOR ou quando for CORRETOR, porém o identificador do intermediador não seja informado)
 	IdentificationType *IntermediaryIdentificationType `json:"identificationType,omitempty"`
 
 	// IdentificationTypeOthers Campo de detalhamento para quando a opcao do tipo de documento do intermediador(a) for OUTROS
 	IdentificationTypeOthers *string `json:"identificationTypeOthers,omitempty"`
 
-	// Name Nome ou RazÃ£o Social da Intermediador
+	// Name Nome ou Razão Social da Intermediador
 	Name string `json:"name"`
 
-	// PostCode CÃ³digo Postal da Intermediador (Caso Tipo de Intermediador for ESTIPULANTE)
+	// PostCode Código Postal da Intermediador (Caso Tipo de Intermediador for ESTIPULANTE)
 	PostCode *string `json:"postCode,omitempty"`
 
 	// State Estado da Intermediador (por extenso; Caso Tipo de Intermediador for ESTIPULANTE)
@@ -6441,10 +6445,10 @@ type Intermediary struct {
 	TypeOthers *string `json:"typeOthers,omitempty"`
 }
 
-// IntermediaryCountry PaÃs da Intermediador (de acordo com o cÃ³digo "alpha3" do ISO-3166; Caso Tipo de Intermediador for ESTIPULANTE)
+// IntermediaryCountry País da Intermediador (de acordo com o código "alpha3" do ISO-3166; Caso Tipo de Intermediador for ESTIPULANTE)
 type IntermediaryCountry string
 
-// IntermediaryIdentificationType Tipo de Documento do Intermediador(a) (Caso Tipo de Intermediador nÃ£o seja CORRETOR ou quando for CORRETOR, porÃ©m o identificador do intermediador nÃ£o seja informado)
+// IntermediaryIdentificationType Tipo de Documento do Intermediador(a) (Caso Tipo de Intermediador não seja CORRETOR ou quando for CORRETOR, porém o identificador do intermediador não seja informado)
 type IntermediaryIdentificationType string
 
 // IntermediaryState Estado da Intermediador (por extenso; Caso Tipo de Intermediador for ESTIPULANTE)
@@ -6455,31 +6459,31 @@ type IntermediaryType string
 
 // OtherPersonalDocuments Objeto que agrupa dados de outros documentos.
 type OtherPersonalDocuments struct {
-	// Country PaÃs do(s) documento(s) estrangeiro(s) de identificaÃ§Ã£o.
+	// Country País do(s) documento(s) estrangeiro(s) de identificação.
 	Country *string `json:"country,omitempty"`
 
-	// ExpirationDate Data de vigÃªncia do documento de registro - conforme especificaÃ§Ã£o RFC-3339.
+	// ExpirationDate Data de vigência do documento de registro - conforme especificação RFC-3339.
 	ExpirationDate *timeutil.BrazilDate `json:"expirationDate,omitempty"`
 
-	// Number NÃºmero/cÃ³digo do(s) documento(s) de identificaÃ§Ã£o.
+	// Number Número/código do(s) documento(s) de identificação.
 	Number *string `json:"number,omitempty"`
 
-	// Type Tipo do(s) documento(s) estrangeiro(s) de identificaÃ§Ã£o
+	// Type Tipo do(s) documento(s) estrangeiro(s) de identificação
 	Type *string `json:"type,omitempty"`
 }
 
 // POS defines model for POS.
 type POS struct {
-	// ApplicationType Forma de AplicaÃ§Ã£o do POS
+	// ApplicationType Forma de Aplicação do POS
 	ApplicationType POSApplicationType `json:"applicationType"`
 
-	// Description DescriÃ§Ã£o do POS
+	// Description Descrição do POS
 	Description string `json:"description"`
 
-	// MaxValue Valor MÃ¡ximo do POS
+	// MaxValue Valor Máximo do POS
 	MaxValue *AmountDetails `json:"maxValue,omitempty"`
 
-	// MinValue Valor MÃnimo do POS
+	// MinValue Valor Mínimo do POS
 	MinValue *AmountDetails `json:"minValue,omitempty"`
 
 	// Percentage Valor Percentual do POS
@@ -6489,34 +6493,34 @@ type POS struct {
 	ValueOthers *AmountDetails `json:"valueOthers,omitempty"`
 }
 
-// POSApplicationType Forma de AplicaÃ§Ã£o do POS
+// POSApplicationType Forma de Aplicação do POS
 type POSApplicationType string
 
 // PatchPayload defines model for PatchPayload.
 type PatchPayload struct {
 	Data struct {
 		Author struct {
-			// IdentificationNumber NÃºmero de identificaÃ§Ã£o (CPF ou CNPJ) do solicitante do cancelamento/revogaÃ§Ã£o.
+			// IdentificationNumber Número de identificação (CPF ou CNPJ) do solicitante do cancelamento/revogação.
 			IdentificationNumber string `json:"identificationNumber"`
 
-			// IdentificationType Tipo identificaÃ§Ã£o (CPF ou CNPJ) do solicitante do cancelamento/revogaÃ§Ã£o.
+			// IdentificationType Tipo identificação (CPF ou CNPJ) do solicitante do cancelamento/revogação.
 			IdentificationType PatchPayloadDataAuthorIdentificationType `json:"identificationType"`
 		} `json:"author"`
 
 		// InsurerQuoteID Id da proposta da segurada
-		// Esse ID Ã© utilizado em jornadas de cotaÃ§Ã£o completa/firme e leva o nÃºmero identificador da proposta aceita (ACKN) pelo cliente.
+		// Esse ID é utilizado em jornadas de cotação completa/firme e leva o número identificador da proposta aceita (ACKN) pelo cliente.
 		// Condicional ao status de ACKN.
 		InsurerQuoteID *string `json:"insurerQuoteId,omitempty"`
 
-		// Status Status da cotaÃ§Ã£o.
+		// Status Status da cotação.
 		Status PatchPayloadDataStatus `json:"status"`
 	} `json:"data"`
 }
 
-// PatchPayloadDataAuthorIdentificationType Tipo identificaÃ§Ã£o (CPF ou CNPJ) do solicitante do cancelamento/revogaÃ§Ã£o.
+// PatchPayloadDataAuthorIdentificationType Tipo identificação (CPF ou CNPJ) do solicitante do cancelamento/revogação.
 type PatchPayloadDataAuthorIdentificationType string
 
-// PatchPayloadDataStatus Status da cotaÃ§Ã£o.
+// PatchPayloadDataStatus Status da cotação.
 type PatchPayloadDataStatus string
 
 // Payment defines model for Payment.
@@ -6524,16 +6528,16 @@ type Payment struct {
 	// Amount Detalhes de valores/limites
 	Amount AmountDetails `json:"amount"`
 
-	// FinancialInstitutionCode CÃ³digo da InstituiÃ§Ã£o Financeiro do Pagamento Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+	// FinancialInstitutionCode Código da Instituição Financeiro do Pagamento Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 	FinancialInstitutionCode *string `json:"financialInstitutionCode,omitempty"`
 
 	// MaturityDate Data de Vencimento da Parcela
 	MaturityDate timeutil.BrazilDate `json:"maturityDate"`
 
-	// MovementDate Data do movimento de prÃªmio
+	// MovementDate Data do movimento de prêmio
 	MovementDate timeutil.BrazilDate `json:"movementDate"`
 
-	// MovementOrigin Origem do Movimento. Obs: ObrigatÃ³rio caso Tipo de Movimento for LIQUIDACAO_DE_PREMIO e ESTORNO_DE_PREMIO
+	// MovementOrigin Origem do Movimento. Obs: Obrigatório caso Tipo de Movimento for LIQUIDACAO_DE_PREMIO e ESTORNO_DE_PREMIO
 	MovementOrigin *PaymentMovementOrigin `json:"movementOrigin,omitempty"`
 
 	// MovementPaymentsNumber Identificador da parcela do movimento
@@ -6542,62 +6546,64 @@ type Payment struct {
 	// MovementType Tipo do Movimento
 	MovementType PaymentMovementType `json:"movementType"`
 
-	// PaymentType Meio de Pagamento Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+	// PaymentType Meio de Pagamento Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 	PaymentType *PaymentPaymentType `json:"paymentType,omitempty"`
 
 	// PaymentTypeOthers Campo de detalhamento para quando a opcao do meio de pagamento for OUTROS
 	PaymentTypeOthers *string `json:"paymentTypeOthers,omitempty"`
 
-	// TellerID Documento do Pagador/Recebedor Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+	// TellerID Documento do Pagador/Recebedor Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 	TellerID *string `json:"tellerId,omitempty"`
 
 	// TellerIDOthers Descricao do campo de tipo do documento do pagador/recebedor quando a opcao escolhida for OUTROS
 	TellerIDOthers *string `json:"tellerIdOthers,omitempty"`
 
-	// TellerIDType Tipo do Documento do Pagador/Recebedor Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+	// TellerIDType Tipo do Documento do Pagador/Recebedor Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 	TellerIDType *PaymentTellerIDType `json:"tellerIdType,omitempty"`
 
-	// TellerName Nome ou RazÃ£o Social do Pagador/Recebedor Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+	// TellerName Nome ou Razão Social do Pagador/Recebedor Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 	TellerName *string `json:"tellerName,omitempty"`
 }
 
-// PaymentMovementOrigin Origem do Movimento. Obs: ObrigatÃ³rio caso Tipo de Movimento for LIQUIDACAO_DE_PREMIO e ESTORNO_DE_PREMIO
+// PaymentMovementOrigin Origem do Movimento. Obs: Obrigatório caso Tipo de Movimento for LIQUIDACAO_DE_PREMIO e ESTORNO_DE_PREMIO
 type PaymentMovementOrigin string
 
 // PaymentMovementType Tipo do Movimento
 type PaymentMovementType string
 
-// PaymentPaymentType Meio de Pagamento Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+// PaymentPaymentType Meio de Pagamento Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 type PaymentPaymentType string
 
-// PaymentTellerIDType Tipo do Documento do Pagador/Recebedor Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+// PaymentTellerIDType Tipo do Documento do Pagador/Recebedor Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 type PaymentTellerIDType string
 
-// PersonalComplimentaryInformationData Objeto que reÃºne as informaÃ§Ãµes relativas ao relacionamento do cliente junto Ã  InstituiÃ§Ã£o. Considera-se relacionamento as informaÃ§Ãµes que permitam conhecer desde quando a pessoa consultada Ã© cliente da instituiÃ§Ã£o, bem como um indicador dos produtos e serviÃ§os que ela consome atualmente e seus representantes
+// PersonalComplimentaryInformationData Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes
 type PersonalComplimentaryInformationData struct {
 	ProductsServices []struct {
-		// Contract Campo deve conter todos os contratos do cliente nos Ãºltimos 12 meses (nÃºmero da apÃ³lice individual ou contrato ou certificado ou bilhete)
-		Contract          string  `json:"contract"`
+		// Contract Campo deve conter todos os contratos do cliente nos últimos 12 meses (número da apólice individual ou contrato ou certificado ou bilhete)
+		Contract string `json:"contract"`
+
+		// InsuranceLineCode Indicar para cada contrato, caso aplicável, o código do ramo, conforme listagem de códigos definida em regulamentação específica sobre contabilização em ramos. Obs - Caso tipo de produto do contrato for “Seguros de Danos”
 		InsuranceLineCode *string `json:"insuranceLineCode,omitempty"`
 
-		// Procurators Lista dos representantes. De preenchimento obrigatÃ³rio se houver representante.
+		// Procurators Lista dos representantes. De preenchimento obrigatório se houver representante.
 		Procurators *[]PersonalProcurator `json:"procurators,omitempty"`
 
 		// Type Tipos de produtos.
 		Type EnumProductServiceType `json:"type"`
 	} `json:"productsServices"`
 
-	// RelationshipBeginning Campo deve ser preenchido com a data da apÃ³lice/contrato vigente mais antiga (caso haja contrato vigente)
+	// RelationshipBeginning Campo deve ser preenchido com a data da apólice/contrato vigente mais antiga (caso haja contrato vigente)
 	RelationshipBeginning *timeutil.BrazilDate `json:"relationshipBeginning,omitempty"`
 
-	// StartDate Data mais antiga de inÃcio de relacionamento, considerando todos os contratos (vigentes e nÃ£o vigentes). Os contratos nÃ£o vigentes considerados devem contemplar, no mÃnimo o perÃodo indicado na Tabela 4.1.
+	// StartDate Data mais antiga de início de relacionamento, considerando todos os contratos (vigentes e não vigentes). Os contratos não vigentes considerados devem contemplar, no mínimo o período indicado na Tabela 4.1.
 	StartDate timeutil.BrazilDate `json:"startDate"`
 
-	// UpdateDateTime Data e hora da atualizaÃ§Ã£o do bloco de Relacionamento, conforme especificaÃ§Ã£o RFC-3339, formato UTC.
+	// UpdateDateTime Data e hora da atualização do bloco de Relacionamento, conforme especificação RFC-3339, formato UTC.
 	UpdateDateTime timeutil.DateTime `json:"updateDateTime"`
 }
 
-// PersonalContact Conjunto de informaÃ§Ãµes referentes Ã s formas para contatar o cliente.
+// PersonalContact Conjunto de informações referentes às formas para contatar o cliente.
 type PersonalContact struct {
 	// Emails Lista e-mails de contato
 	Emails *[]CustomerEmail `json:"emails,omitempty"`
@@ -6605,113 +6611,115 @@ type PersonalContact struct {
 	// Phones Lista com telefones de contato da pessoa natural
 	Phones *[]CustomerPhone `json:"phones,omitempty"`
 
-	// PostalAddresses Lista de endereÃ§os da pessoa natural
+	// PostalAddresses Lista de endereços da pessoa natural
 	PostalAddresses []PersonalPostalAddress `json:"postalAddresses"`
 }
 
 // PersonalCustomerInfo defines model for PersonalCustomerInfo.
 type PersonalCustomerInfo struct {
-	// ComplimentaryInfo Objeto que reÃºne as informaÃ§Ãµes relativas ao relacionamento do cliente junto Ã  InstituiÃ§Ã£o. Considera-se relacionamento as informaÃ§Ãµes que permitam conhecer desde quando a pessoa consultada Ã© cliente da instituiÃ§Ã£o, bem como um indicador dos produtos e serviÃ§os que ela consome atualmente e seus representantes
+	// ComplimentaryInfo Objeto que reúne as informações relativas ao relacionamento do cliente junto à Instituição. Considera-se relacionamento as informações que permitam conhecer desde quando a pessoa consultada é cliente da instituição, bem como um indicador dos produtos e serviços que ela consome atualmente e seus representantes
 	ComplimentaryInfo *PersonalComplimentaryInformationData `json:"complimentaryInfo,omitempty"`
 
-	// Identification Conjunto de informaÃ§Ãµes relativas a IdentificaÃ§Ã£o ou seja a aÃ§Ã£o e o efeito de identificar de forma Ãºnica a pessoa natural atravÃ©s de seus dados cadastrais.
+	// Identification Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
 	Identification *PersonalIdentificationData `json:"identification,omitempty"`
 
-	// Qualification Conjunto de informaÃ§Ãµes relativas ao processo de qualificaÃ§Ã£o.
+	// Qualification Conjunto de informações relativas ao processo de qualificação.
 	Qualification *PersonalQualificationData `json:"qualification,omitempty"`
 }
 
-// PersonalDocuments Objeto agrupador de informaÃ§Ãµes relativas a Documentos da pessoa natural
+// PersonalDocuments Objeto agrupador de informações relativas a Documentos da pessoa natural
 type PersonalDocuments = []struct {
-	// ExpirationDate Data de validade do(s) documento(s) de identificaÃ§Ã£o - Se aplicÃ¡vel.
+	// ExpirationDate Data de validade do(s) documento(s) de identificação - Se aplicável.
 	ExpirationDate *timeutil.BrazilDate `json:"expirationDate,omitempty"`
 
-	// IssueLocation Local de emissÃ£o - Se aplicÃ¡vel.
+	// IssueLocation Local de emissão - Se aplicável.
 	IssueLocation *string `json:"issueLocation,omitempty"`
 
-	// Number NÃºmero/cÃ³digo do(s) documento(s) de identificaÃ§Ã£o - Se aplicÃ¡vel.
+	// Number Número/código do(s) documento(s) de identificação - Se aplicável.
 	Number *string `json:"number,omitempty"`
 
-	// Type Tipo do(s) documento(s) de identificaÃ§Ã£o.
+	// Type Tipo do(s) documento(s) de identificação.
 	Type *EnumPersonalDocumentType `json:"type,omitempty"`
 }
 
-// PersonalIdentificationData Conjunto de informaÃ§Ãµes relativas a IdentificaÃ§Ã£o ou seja a aÃ§Ã£o e o efeito de identificar de forma Ãºnica a pessoa natural atravÃ©s de seus dados cadastrais.
+// PersonalIdentificationData Conjunto de informações relativas a Identificação ou seja a ação e o efeito de identificar de forma única a pessoa natural através de seus dados cadastrais.
 type PersonalIdentificationData struct {
-	// BirthDate Data de nascimento, conforme especificaÃ§Ã£o RFC-3339
+	// BirthDate Data de nascimento, conforme especificação RFC-3339
 	BirthDate *timeutil.BrazilDate `json:"birthDate,omitempty"`
 
-	// BrandName Nome da Marca reportada pelo participante do Open Insurance. O conceito a que se refere a marca Ã© em essÃªncia uma promessa da empresa em fornecer uma sÃ©rie especÃfica de atributos, benefÃcios e serviÃ§os uniformes aos clientes
+	// BrandName Nome da Marca reportada pelo participante do Open Insurance. O conceito a que se refere a marca é em essência uma promessa da empresa em fornecer uma série específica de atributos, benefícios e serviços uniformes aos clientes
 	BrandName string `json:"brandName"`
 
-	// CivilName Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil Ã© aquele atribuÃdo Ã  pessoa natural desde o registro de seu nascimento, com o qual serÃ¡ identificada por toda a sua vida, bem como apÃ³s a sua morte)
+	// CivilName Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)
 	CivilName string `json:"civilName"`
 
 	// CivilStatusCode Estado civil do cliente.
 	CivilStatusCode *EnumCivilStatusCode `json:"civilStatusCode,omitempty"`
 
-	// CompanyInfo InformaÃ§Ãµes referente a sociedade a qual a marca pertence.
+	// CompanyInfo Informações referente a sociedade a qual a marca pertence.
 	CompanyInfo struct {
-		// CnpjNumber NÃºmero completo do CNPJ da instituiÃ§Ã£o responsÃ¡vel pelo Cadastro - o CNPJ corresponde ao nÃºmero de inscriÃ§Ã£o no Cadastro de Pessoa JurÃdica.
-		// Deve-se ter apenas os nÃºmeros do CNPJ, sem mÃ¡scara
+		// CnpjNumber Número completo do CNPJ da instituição responsável pelo Cadastro - o CNPJ corresponde ao número de inscrição no Cadastro de Pessoa Jurídica.
+		// Deve-se ter apenas os números do CNPJ, sem máscara
 		CnpjNumber string `json:"cnpjNumber"`
 
-		// Name Nome da InstituiÃ§Ã£o, pertencente Ã  Marca, responsÃ¡vel pela DependÃªncia
+		// Name Nome da Instituição, pertencente à Marca, responsável pela Dependência
 		Name string `json:"name"`
 	} `json:"companyInfo"`
 
-	// Contact Conjunto de informaÃ§Ãµes referentes Ã s formas para contatar o cliente.
+	// Contact Conjunto de informações referentes às formas para contatar o cliente.
 	Contact PersonalContact `json:"contact"`
 
-	// CpfNumber NÃºmero completo do CPF. Atributo que corresponde Ã s informaÃ§Ãµes mÃnimas exigidas pela RegulamentaÃ§Ã£o em vigor. O CPF Ã© o Cadastro de Pessoa natural.  Ele Ã© um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF Ã© uma numeraÃ§Ã£o com 11 dÃgitos, que sÃ³ mudam por decisÃ£o judicial. O documento Ã© emitido pela receita federal
-	// Condicional a seleÃ§Ã£o de true em hasBrazilianNationality
+	// CpfNumber Número completo do CPF. Atributo que corresponde às informações mínimas exigidas pela Regulamentação em vigor. O CPF é o Cadastro de Pessoa natural.  Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal
+	// Condicional a seleção de true em hasBrazilianNationality
 	CpfNumber string `json:"cpfNumber"`
 
-	// Documents Objeto agrupador de informaÃ§Ãµes relativas a Documentos da pessoa natural
+	// Documents Objeto agrupador de informações relativas a Documentos da pessoa natural
 	Documents *PersonalDocuments `json:"documents,omitempty"`
 	Filiation *struct {
-		// CivilName Nome civil completo da pessoa relativa Ã  filiaÃ§Ã£o.
-		// (Direito fundamental da pessoa, o nome civil Ã© aquele atribuÃdo Ã  pessoa natural desde o registro de seu nascimento,
-		// com o qual serÃ¡ identificada por toda a sua vida, bem como apÃ³s a sua morte).
+		// CivilName Nome civil completo da pessoa relativa à filiação.
+		// (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento,
+		// com o qual será identificada por toda a sua vida, bem como após a sua morte).
 		CivilName *string `json:"civilName,omitempty"`
 
-		// Type Tipo de filiaÃ§Ã£o.
+		// Type Tipo de filiação.
 		Type *EnumFiliationType `json:"type,omitempty"`
 	} `json:"filiation,omitempty"`
 
 	// HasBrazilianNationality Informa se o Cliente tem nacionalidade brasileira.
 	HasBrazilianNationality *bool `json:"hasBrazilianNationality"`
 
-	// IdentificationDetails InformaÃ§Ãµes referente ao cÃ´njuge.
+	// IdentificationDetails Informações referente ao cônjuge.
 	IdentificationDetails *struct {
-		// CivilName Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil Ã© aquele atribuÃdo Ã  pessoa natural desde o registro de seu nascimento, com o qual serÃ¡ identificada por toda a sua vida, bem como apÃ³s a sua morte)
+		// CivilName Nome civil completo da pessoa natural (Direito fundamental da pessoa, o nome civil é aquele atribuído à pessoa natural desde o registro de seu nascimento, com o qual será identificada por toda a sua vida, bem como após a sua morte)
 		CivilName *string `json:"civilName,omitempty"`
 
-		// CpfNumber NÃºmero completo do CPF. Atributo que corresponde Ã s informaÃ§Ãµes mÃnimas exigidas pela RegulamentaÃ§Ã£o em vigor. O CPF Ã© o Cadastro de Pessoa natural.  Ele Ã© um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF Ã© uma numeraÃ§Ã£o com 11 dÃgitos, que sÃ³ mudam por decisÃ£o judicial. O documento Ã© emitido pela receita federal
-		// Condicional a seleÃ§Ã£o de true em hasBrazilianNationality
+		// CpfNumber Número completo do CPF. Atributo que corresponde às informações mínimas exigidas pela Regulamentação em vigor. O CPF é o Cadastro de Pessoa natural.  Ele é um documento feito pela Receita Federal e serve para identificar os contribuintes. O CPF é uma numeração com 11 dígitos, que só mudam por decisão judicial. O documento é emitido pela receita federal
+		// Condicional a seleção de true em hasBrazilianNationality
 		CpfNumber *string `json:"cpfNumber,omitempty"`
 	} `json:"identificationDetails,omitempty"`
 
 	// OtherDocuments Objeto que agrupa dados de outros documentos.
-	OtherDocuments         *OtherPersonalDocuments `json:"otherDocuments,omitempty"`
-	OtherNationalitiesInfo *string                 `json:"otherNationalitiesInfo,omitempty"`
+	OtherDocuments *OtherPersonalDocuments `json:"otherDocuments,omitempty"`
 
-	// PersonalID Um identificador Ãºnico e imutÃ¡vel usado para identificar o recurso cliente pessoa natural dentro da transmissora. Este identificador nÃ£o tem significado para o cliente que deu o consentimento
+	// OtherNationalitiesInfo Código do pais de acordo com o código “alpha3” do ISO-3166
+	OtherNationalitiesInfo *string `json:"otherNationalitiesInfo,omitempty"`
+
+	// PersonalID Um identificador único e imutável usado para identificar o recurso cliente pessoa natural dentro da transmissora. Este identificador não tem significado para o cliente que deu o consentimento
 	PersonalID *string `json:"personalId,omitempty"`
 	Sex        *string `json:"sex,omitempty"`
 
 	// SocialName Nome social da pessoa natural, se houver.
 	// (aquele pelo qual travestis e transexuais se reconhecem,
-	// bem como sÃ£o identificados por sua comunidade e em seu meio social, conforme Decreto Local).
+	// bem como são identificados por sua comunidade e em seu meio social, conforme Decreto Local).
 	SocialName *string `json:"socialName,omitempty"`
 
-	// UpdateDateTime Data e hora da atualizaÃ§Ã£o do bloco, conforme especificaÃ§Ã£o RFC-3339
+	// UpdateDateTime Data e hora da atualização do bloco, conforme especificação RFC-3339
 	UpdateDateTime timeutil.DateTime `json:"updateDateTime"`
 }
 
 // PersonalInfo defines model for PersonalInfo.
 type PersonalInfo struct {
-	// Address EndereÃ§o do segurado (restante do endereÃ§o, excluindo cidade, estado e paÃs)
+	// Address Endereço do segurado (restante do endereço, excluindo cidade, estado e país)
 	Address string `json:"address"`
 
 	// BirthDate Data de nascimento do segurado
@@ -6720,13 +6728,13 @@ type PersonalInfo struct {
 	// City Cidade do segurado (por extenso)
 	City string `json:"city"`
 
-	// Country PaÃs do segurado (de acordo com o cÃ³digo "alpha3" do ISO-3166)
+	// Country País do segurado (de acordo com o código "alpha3" do ISO-3166)
 	Country PersonalInfoCountry `json:"country"`
 
 	// Email E-mail do segurado (caso possua)
 	Email *string `json:"email,omitempty"`
 
-	// Identification Documento de IdentificaÃ§Ã£o do segurado
+	// Identification Documento de Identificação do segurado
 	Identification string `json:"identification"`
 
 	// IdentificationType Tipo de Documento do segurado
@@ -6735,17 +6743,17 @@ type PersonalInfo struct {
 	// IdentificationTypeOthers Campo de detalhamento para quando a opcao do tipo de documento do segurado for OUTROS
 	IdentificationTypeOthers *string `json:"identificationTypeOthers,omitempty"`
 
-	// Name Nome ou RazÃ£o Social do segurado
+	// Name Nome ou Razão Social do segurado
 	Name string `json:"name"`
 
-	// PostCode CÃ³digo Postal do segurado
+	// PostCode Código Postal do segurado
 	PostCode string `json:"postCode"`
 
 	// State Estado do segurado (por extenso)
 	State PersonalInfoState `json:"state"`
 }
 
-// PersonalInfoCountry PaÃs do segurado (de acordo com o cÃ³digo "alpha3" do ISO-3166)
+// PersonalInfoCountry País do segurado (de acordo com o código "alpha3" do ISO-3166)
 type PersonalInfoCountry string
 
 // PersonalInfoIdentificationType Tipo de Documento do segurado
@@ -6759,52 +6767,54 @@ type PersonalPostalAddress struct {
 	// AdditionalInfo Alguns logradouros ainda necessitam ser especificados por meio de complemento.
 	AdditionalInfo *string `json:"additionalInfo,omitempty"`
 
-	// Address Corresponde ao endereÃ§o residencial do cliente.
-	Address string                       `json:"address"`
+	// Address Corresponde ao endereço residencial do cliente.
+	Address string `json:"address"`
+
+	// Country Código do pais de acordo com o código “alpha3” do ISO-3166.
 	Country PersonalPostalAddressCountry `json:"country"`
 
-	// CountrySubDivision EnumeraÃ§Ã£o referente a cada sigla da unidade da federaÃ§Ã£o que identifica o estado ou o distrito federal, no qual o endereÃ§o estÃ¡ localizado. p.ex. 'AC'. SÃ£o consideradas apenas as siglas para os estados brasileiros
+	// CountrySubDivision Enumeração referente a cada sigla da unidade da federação que identifica o estado ou o distrito federal, no qual o endereço está localizado. p.ex. 'AC'. São consideradas apenas as siglas para os estados brasileiros
 	CountrySubDivision EnumCountrySubDivision `json:"countrySubDivision"`
 
-	// DistrictName Bairro Ã© uma comunidade ou regiÃ£o localizada em uma cidade ou municÃpio de acordo com as suas subdivisÃµes geogrÃ¡ficas.
+	// DistrictName Bairro é uma comunidade ou região localizada em uma cidade ou município de acordo com as suas subdivisões geográficas.
 	DistrictName *string `json:"districtName,omitempty"`
 
-	// PostCode CÃ³digo de EndereÃ§amento Postal: Composto por um conjunto numÃ©rico de oito dÃgitos, o objetivo principal do CEP Ã© orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuiÃ§Ã£o a localidades, logradouros, unidades dos Correios, serviÃ§os, Ã³rgÃ£os pÃºblicos, empresas e edifÃcios. p.ex. '01311000'.
+	// PostCode Código de Endereçamento Postal: Composto por um conjunto numérico de oito dígitos, o objetivo principal do CEP é orientar e acelerar o encaminhamento, o tratamento e a entrega de objetos postados nos Correios, por meio da sua atribuição a localidades, logradouros, unidades dos Correios, serviços, órgãos públicos, empresas e edifícios. p.ex. '01311000'.
 	PostCode string `json:"postCode"`
 
-	// TownName Localidade: O nome da localidade corresponde Ã  designaÃ§Ã£o da cidade ou municÃpio no qual o endereÃ§o estÃ¡ localizado.
+	// TownName Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
 	TownName string `json:"townName"`
 }
 
-// PersonalPostalAddressCountry defines model for PersonalPostalAddress.Country.
+// PersonalPostalAddressCountry Código do pais de acordo com o código “alpha3” do ISO-3166.
 type PersonalPostalAddressCountry string
 
 // PersonalProcurator defines model for PersonalProcurator.
 type PersonalProcurator struct {
-	// CivilName (Caso Natureza dos poderes vigentes de representante for â€œRepresentante legalâ€ ou â€œProcuradorâ€) Nome ou razÃ£o social do representante
+	// CivilName (Caso Natureza dos poderes vigentes de representante for “Representante legal” ou “Procurador”) Nome ou razão social do representante
 	CivilName *string `json:"civilName,omitempty"`
 
-	// CpfNumber (Caso Natureza dos poderes vigentes de representante for â€œRepresentante legalâ€ ou â€œProcuradorâ€) CPF do representante
+	// CpfNumber (Caso Natureza dos poderes vigentes de representante for “Representante legal” ou “Procurador”) CPF do representante
 	CpfNumber *string `json:"cpfNumber,omitempty"`
 
 	// Nature Natureza dos poderes vigentes de representante
 	Nature EnumProcuratorsNaturePersonal `json:"nature"`
 
-	// SocialName (Caso Natureza dos poderes vigentes de representante for â€œRepresentante legalâ€ ou â€œProcuradorâ€) Nome social do representante
+	// SocialName (Caso Natureza dos poderes vigentes de representante for “Representante legal” ou “Procurador”) Nome social do representante
 	SocialName *string `json:"socialName,omitempty"`
 }
 
-// PersonalQualificationData Conjunto de informaÃ§Ãµes relativas ao processo de qualificaÃ§Ã£o.
+// PersonalQualificationData Conjunto de informações relativas ao processo de qualificação.
 type PersonalQualificationData struct {
-	// InformedPatrimony Objeto que agrupa dados de informaÃ§Ãµes de patrimÃ´nio.
+	// InformedPatrimony Objeto que agrupa dados de informações de patrimônio.
 	InformedPatrimony *struct {
-		// Amount Valor do patrimÃ´nio
+		// Amount Valor do patrimônio
 		Amount *string `json:"amount"`
 
-		// Currency Moeda referente ao valor do patrimÃ´nio, segundo modelo ISO-4217.
+		// Currency Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.
 		Currency *PersonalQualificationDataInformedPatrimonyCurrency `json:"currency,omitempty"`
 
-		// Year Ano de referÃªncia do patrimÃ´nio, conforme especificaÃ§Ã£o RFC-3339.
+		// Year Ano de referência do patrimônio, conforme especificação RFC-3339.
 		Year *string `json:"year,omitempty"`
 	} `json:"informedPatrimony,omitempty"`
 
@@ -6816,78 +6826,78 @@ type PersonalQualificationData struct {
 		// Currency Moeda referente ao valor da renda, segundo modelo ISO-4217.
 		Currency *PersonalQualificationDataInformedRevenueCurrency `json:"currency,omitempty"`
 
-		// Date Data de referÃªncia da renda, conforme especificaÃ§Ã£o RFC-3339.
+		// Date Data de referência da renda, conforme especificação RFC-3339.
 		Date *timeutil.BrazilDate `json:"date,omitempty"`
 
-		// IncomeFrequency FrequÃªncia da renda informada.
+		// IncomeFrequency Frequência da renda informada.
 		IncomeFrequency *EnumIncomeFrequency `json:"incomeFrequency,omitempty"`
 	} `json:"informedRevenue,omitempty"`
 
-	// LifePensionPlans CondiÃ§Ã£o de proponente qualificado, aplicÃ¡vel Ã  contrataÃ§Ã£o de planos de previdÃªncia e vida por sobrevivÃªncia
+	// LifePensionPlans Condição de proponente qualificado, aplicável à contratação de planos de previdência e vida por sobrevivência
 	LifePensionPlans PersonalQualificationDataLifePensionPlans `json:"lifePensionPlans"`
 	Occupation       *[]struct {
-		// Details OcupaÃ§Ã£o
+		// Details Ocupação
 		Details *string `json:"details,omitempty"`
 
-		// OccupationCode CÃ³digo da ocupaÃ§Ã£o
+		// OccupationCode Código da ocupação
 		OccupationCode *string `json:"occupationCode,omitempty"`
 
-		// OccupationCodeType Tipo de cÃ³digo da ocupaÃ§Ã£o
+		// OccupationCodeType Tipo de código da ocupação
 		OccupationCodeType *PersonalQualificationDataOccupationOccupationCodeType `json:"occupationCodeType,omitempty"`
 	} `json:"occupation,omitempty"`
 
-	// PepIdentification Campo deve ser preenchido com a exposiÃ§Ã£o polÃtica do segurado:
+	// PepIdentification Campo deve ser preenchido com a exposição política do segurado:
 	PepIdentification PersonalQualificationDataPepIdentification `json:"pepIdentification"`
 
-	// UpdateDateTime Data e hora da atualizaÃ§Ã£o do bloco, conforme especificaÃ§Ã£o RFC-3339
+	// UpdateDateTime Data e hora da atualização do bloco, conforme especificação RFC-3339
 	UpdateDateTime timeutil.DateTime `json:"updateDateTime"`
 }
 
-// PersonalQualificationDataInformedPatrimonyCurrency Moeda referente ao valor do patrimÃ´nio, segundo modelo ISO-4217.
+// PersonalQualificationDataInformedPatrimonyCurrency Moeda referente ao valor do patrimônio, segundo modelo ISO-4217.
 type PersonalQualificationDataInformedPatrimonyCurrency string
 
 // PersonalQualificationDataInformedRevenueCurrency Moeda referente ao valor da renda, segundo modelo ISO-4217.
 type PersonalQualificationDataInformedRevenueCurrency string
 
-// PersonalQualificationDataLifePensionPlans CondiÃ§Ã£o de proponente qualificado, aplicÃ¡vel Ã  contrataÃ§Ã£o de planos de previdÃªncia e vida por sobrevivÃªncia
+// PersonalQualificationDataLifePensionPlans Condição de proponente qualificado, aplicável à contratação de planos de previdência e vida por sobrevivência
 type PersonalQualificationDataLifePensionPlans string
 
-// PersonalQualificationDataOccupationOccupationCodeType Tipo de cÃ³digo da ocupaÃ§Ã£o
+// PersonalQualificationDataOccupationOccupationCodeType Tipo de código da ocupação
 type PersonalQualificationDataOccupationOccupationCodeType string
 
-// PersonalQualificationDataPepIdentification Campo deve ser preenchido com a exposiÃ§Ã£o polÃtica do segurado:
+// PersonalQualificationDataPepIdentification Campo deve ser preenchido com a exposição política do segurado:
 type PersonalQualificationDataPepIdentification string
 
-// PolicyDataAuto Lista que agrupa os dados das apÃ³lices histÃ³ricos em categorias.
+// PolicyDataAuto Lista que agrupa os dados das apólices históricos em categorias.
 type PolicyDataAuto = []struct {
 	Claim      *InsuranceAutoClaim      `json:"claim,omitempty"`
 	PolicyInfo *InsuranceAutoPolicyInfo `json:"policyInfo,omitempty"`
 
-	// Premium Objeto que agrupa dados de prÃªmio.
+	// Premium Objeto que agrupa dados de prêmio.
 	Premium *InsuranceAutoPremium `json:"premium,omitempty"`
 }
 
-// PolicyDataAutoLead Lista que agrupa os dados das apÃ³lices histÃ³ricos em categorias.
+// PolicyDataAutoLead Lista que agrupa os dados das apólices históricos em categorias.
 type PolicyDataAutoLead = PolicyDataAuto
 
 // Principals defines model for Principals.
 type Principals struct {
-	// Address EndereÃ§o do Tomador/Garantidor (restante do endereÃ§o, excluindo cidade, estado e paÃs)
+	// Address Endereço do Tomador/Garantidor (restante do endereço, excluindo cidade, estado e país)
 	Address string `json:"address"`
 
-	// AddressAditionalInfo EndereÃ§o do Tomador/Garantidor (restante do endereÃ§o, excluindo cidade, estado e paÃs)
+	// AddressAditionalInfo Endereço do Tomador/Garantidor (restante do endereço, excluindo cidade, estado e país)
 	AddressAditionalInfo *string `json:"addressAditionalInfo,omitempty"`
 
 	// City Cidade do Tomador/Garantidor (por extenso)
 	City string `json:"city"`
 
-	// Country PaÃs do Tomador/Garantidor (de acordo com o cÃ³digo "alpha3" do ISO-3166)
+	// Country País do Tomador/Garantidor (de acordo com o código "alpha3" do ISO-3166)
 	Country PrincipalsCountry `json:"country"`
 
 	// Email E-mail do Tomador/Garantidor (caso possua)
 	Email *string `json:"email,omitempty"`
 
-	// Identification Documento de IdentificaÃ§Ã£o do Tomador/Garantidor
+	// Identification Documento de Identificação do Tomador/Garantidor
 	Identification string `json:"identification"`
 
 	// IdentificationType Tipo de Documento do Tomador/Garantidor
@@ -6896,17 +6906,17 @@ type Principals struct {
 	// IdentificationTypeOthers Campo de detalhamento para quando a opcao do tipo de documento do Tomador/Garantidor for OUTROS
 	IdentificationTypeOthers *string `json:"identificationTypeOthers,omitempty"`
 
-	// Name Nome ou RazÃ£o Social do Tomador/Garantidor
+	// Name Nome ou Razão Social do Tomador/Garantidor
 	Name string `json:"name"`
 
-	// PostCode CÃ³digo Postal do Tomador/Garantidor
+	// PostCode Código Postal do Tomador/Garantidor
 	PostCode string `json:"postCode"`
 
 	// State Estado do Tomador/Garantidor (por extenso)
 	State PrincipalsState `json:"state"`
 }
 
-// PrincipalsCountry PaÃs do Tomador/Garantidor (de acordo com o cÃ³digo "alpha3" do ISO-3166)
+// PrincipalsCountry País do Tomador/Garantidor (de acordo com o código "alpha3" do ISO-3166)
 type PrincipalsCountry string
 
 // PrincipalsIdentificationType Tipo de Documento do Tomador/Garantidor
@@ -6917,19 +6927,19 @@ type PrincipalsState string
 
 // QuoteAutoBeneficiary defines model for QuoteAutoBeneficiary.
 type QuoteAutoBeneficiary struct {
-	// HousingVehiclesNumber NÃºmero de veÃculos na residÃªncia
+	// HousingVehiclesNumber Número de veículos na residência
 	HousingVehiclesNumber *string `json:"housingVehiclesNumber,omitempty"`
 
-	// Identification Documento de Identificaï¿½ï¿½o do Beneficiï¿½rio
+	// Identification Documento de Identifica��o do Benefici�rio
 	Identification *string `json:"identification,omitempty"`
 
-	// IdentificationType Tipo de Documento do Beneficiï¿½rio
+	// IdentificationType Tipo de Documento do Benefici�rio
 	IdentificationType *QuoteAutoBeneficiaryIdentificationType `json:"identificationType,omitempty"`
 
-	// IsInsuredTheMainDriver O Segurado ï¿½ o Condutor Principal?
+	// IsInsuredTheMainDriver O Segurado � o Condutor Principal?
 	IsInsuredTheMainDriver *bool `json:"isInsuredTheMainDriver,omitempty"`
 
-	// IsInsuredTheOwner O Segurado Ã© o proprietÃ¡rio?
+	// IsInsuredTheOwner O Segurado é o proprietário?
 	IsInsuredTheOwner *bool `json:"isInsuredTheOwner,omitempty"`
 
 	// IsUndeterminedDriver Condutor Indeterminado
@@ -6944,13 +6954,13 @@ type QuoteAutoBeneficiary struct {
 		// Gender Sexo do Condutor Principal
 		Gender *QuoteAutoBeneficiaryMainDriverGender `json:"gender,omitempty"`
 
-		// Identification Documento de Identificaï¿½ï¿½o do Beneficiï¿½rio
+		// Identification Documento de Identifica��o do Benefici�rio
 		Identification *string `json:"identification,omitempty"`
 
-		// IdentificationType Tipo de Documento do Beneficiï¿½rio
+		// IdentificationType Tipo de Documento do Benefici�rio
 		IdentificationType *QuoteAutoBeneficiaryMainDriverIdentificationType `json:"identificationType,omitempty"`
 
-		// LicensedExperience Tempo de habilitaÃ§Ã£o do condutor utilizado para taxaÃ§Ã£o (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+		// LicensedExperience Tempo de habilitação do condutor utilizado para taxação (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 		LicensedExperience *string `json:"licensedExperience,omitempty"`
 
 		// Name Nome do Condutor Principal
@@ -6959,15 +6969,15 @@ type QuoteAutoBeneficiary struct {
 		// PostCode CEP do Condutor Principal
 		PostCode *string `json:"postCode,omitempty"`
 
-		// Profession ProfissÃ£o do Condutor Principal
+		// Profession Profissão do Condutor Principal
 		Profession *string `json:"profession,omitempty"`
 	} `json:"mainDriver,omitempty"`
 
-	// RelationshipMainDriver Qual a relaÃ§Ã£o do Condutor Principal com o Segurado?
+	// RelationshipMainDriver Qual a relação do Condutor Principal com o Segurado?
 	RelationshipMainDriver *QuoteAutoBeneficiaryRelationshipMainDriver `json:"relationshipMainDriver,omitempty"`
 }
 
-// QuoteAutoBeneficiaryIdentificationType Tipo de Documento do Beneficiï¿½rio
+// QuoteAutoBeneficiaryIdentificationType Tipo de Documento do Benefici�rio
 type QuoteAutoBeneficiaryIdentificationType string
 
 // QuoteAutoBeneficiaryMainDriverCivilStatus Estado civil do Condutor Principal
@@ -6976,10 +6986,10 @@ type QuoteAutoBeneficiaryMainDriverCivilStatus string
 // QuoteAutoBeneficiaryMainDriverGender Sexo do Condutor Principal
 type QuoteAutoBeneficiaryMainDriverGender string
 
-// QuoteAutoBeneficiaryMainDriverIdentificationType Tipo de Documento do Beneficiï¿½rio
+// QuoteAutoBeneficiaryMainDriverIdentificationType Tipo de Documento do Benefici�rio
 type QuoteAutoBeneficiaryMainDriverIdentificationType string
 
-// QuoteAutoBeneficiaryRelationshipMainDriver Qual a relaÃ§Ã£o do Condutor Principal com o Segurado?
+// QuoteAutoBeneficiaryRelationshipMainDriver Qual a relação do Condutor Principal com o Segurado?
 type QuoteAutoBeneficiaryRelationshipMainDriver string
 
 // QuoteAutoCoverage defines model for QuoteAutoCoverage.
@@ -6987,28 +6997,28 @@ type QuoteAutoCoverage struct {
 	// Branch Grupo e ramo da cobertura
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code QuoteAutoCoverageCode `json:"code"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (Caso CÃ³digo da Cobertura for "OUTRAS")
+	// Description Descrição / Nome da Cobertura (Caso Código da Cobertura for "OUTRAS")
 	Description *string `json:"description,omitempty"`
 
-	// InternalCode CÃ³digo interno da cobertura da seguradora
+	// InternalCode Código interno da cobertura da seguradora
 	InternalCode *string `json:"internalCode,omitempty"`
 
-	// IsSeparateContractingAllowed PermissÃ£o para ContrataÃ§Ã£o Separada
+	// IsSeparateContractingAllowed Permissão para Contratação Separada
 	IsSeparateContractingAllowed bool `json:"isSeparateContractingAllowed"`
 
-	// MaxLMI Valor de Limite MÃ¡ximo de IndenizaÃ§Ã£o (LMI) solicitado
+	// MaxLMI Valor de Limite Máximo de Indenização (LMI) solicitado
 	MaxLMI AmountDetails `json:"maxLMI"`
 }
 
-// QuoteAutoCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// QuoteAutoCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type QuoteAutoCoverageCode string
 
 // QuoteAutoInsuredObject Objeto que agrupa os dados de objeto segurado.
 type QuoteAutoInsuredObject struct {
-	// AdjustmentFactor Fator de ajuste da tabela utilizada para valor mÃ©dio de mercado
+	// AdjustmentFactor Fator de ajuste da tabela utilizada para valor médio de mercado
 	AdjustmentFactor *string `json:"adjustmentFactor,omitempty"`
 
 	// ArmouredVehicle Objeto que agrupa os dados de blindagem.
@@ -7020,7 +7030,7 @@ type QuoteAutoInsuredObject struct {
 		IsDesireCoverage *bool `json:"isDesireCoverage,omitempty"`
 	} `json:"armouredVehicle,omitempty"`
 
-	// Beneficiaries Lista de dados de beneficiÃ¡rios.
+	// Beneficiaries Lista de dados de beneficiários.
 	Beneficiaries *[]QuoteAutoBeneficiary `json:"beneficiaries,omitempty"`
 
 	// Chassis Chassi
@@ -7032,52 +7042,52 @@ type QuoteAutoInsuredObject struct {
 	// Color Cor
 	Color string `json:"color"`
 
-	// CommercialActivityType  Tipo de atividade comercial. Condicional, caso a opÃ§Ã£o '3. ExercÃcio do trabalho' seja selecionada no campo 'CÃ³digo de utilizaÃ§Ã£o do veÃculo'
+	// CommercialActivityType  Tipo de atividade comercial. Condicional, caso a opção '3. Exercício do trabalho' seja selecionada no campo 'Código de utilização do veículo'
 	CommercialActivityType *[]QuoteAutoInsuredObjectCommercialActivityType `json:"commercialActivityType,omitempty"`
 
-	// DepartureDateFromCarDealership Data de saÃda da concessionÃ¡ria - Zero km? Condicional e opcional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Zero km?'
+	// DepartureDateFromCarDealership Data de saída da concessionária - Zero km? Condicional e opcional, caso a opção '1. Sim' seja selecionada no campo 'Zero km?'
 	DepartureDateFromCarDealership *timeutil.BrazilDate `json:"departureDateFromCarDealership,omitempty"`
 
 	// DoorsNumber Quantidade de portas
 	DoorsNumber string `json:"doorsNumber"`
 
-	// DriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etÃ¡ria dos 18 aos 25 anos?'sexo dos condutores na faixa etÃ¡ria dos 18 aos 25 anos
+	// DriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etária dos 18 aos 25 anos?'sexo dos condutores na faixa etária dos 18 aos 25 anos
 	DriverBetween18And25YearsOldGender *QuoteAutoInsuredObjectDriverBetween18And25YearsOldGender `json:"driverBetween18and25YearsOldGender,omitempty"`
 
-	// EquipmentsAttached Objeto que agrupa os dados de equipamentos ou acessÃ³rios acoplados.
+	// EquipmentsAttached Objeto que agrupa os dados de equipamentos ou acessórios acoplados.
 	EquipmentsAttached *struct {
-		// EquipmentsAttachedAmount Valor dos equipamentos/acessÃ³rios - Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Deseja cobertura destes equipamentos ou acessÃ³rios?'
+		// EquipmentsAttachedAmount Valor dos equipamentos/acessórios - Condicional, caso a opção '1. Sim' seja selecionada no campo 'Deseja cobertura destes equipamentos ou acessórios?'
 		EquipmentsAttachedAmount *AmountDetails `json:"equipmentsAttachedAmount,omitempty"`
 
-		// IsDesireCoverage Deseja cobertura destes equipamentos ou acessÃ³rios? Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Possui equipamentos ou acessÃ³rios acoplados, fixados ou instalados a veÃculos?'
+		// IsDesireCoverage Deseja cobertura destes equipamentos ou acessórios? Condicional, caso a opção '1. Sim' seja selecionada no campo 'Possui equipamentos ou acessórios acoplados, fixados ou instalados a veículos?'
 		IsDesireCoverage *bool `json:"isDesireCoverage,omitempty"`
 	} `json:"equipmentsAttached,omitempty"`
 
-	// FrequentTrafficArea Qual a Ã¡rea de circulaÃ§Ã£o mais frenquente?
+	// FrequentTrafficArea Qual a área de circulação mais frenquente?
 	FrequentTrafficArea *QuoteAutoInsuredObjectFrequentTrafficArea `json:"frequentTrafficArea,omitempty"`
 
-	// Fuel CombustÃvel
+	// Fuel Combustível
 	Fuel QuoteAutoInsuredObjectFuel `json:"fuel"`
 
-	// GasKit Objeto que agrupa os dados de Kit-gÃ¡s.
+	// GasKit Objeto que agrupa os dados de Kit-gás.
 	GasKit *struct {
-		// GasKitAmount Valor do Kit-gÃ¡s - Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Deseja cobertura do Kit-gÃ¡s?'
+		// GasKitAmount Valor do Kit-gás - Condicional, caso a opção '1. Sim' seja selecionada no campo 'Deseja cobertura do Kit-gás?'
 		GasKitAmount *AmountDetails `json:"gasKitAmount,omitempty"`
 
-		// IsDesireCoverage Deseja cobertura do Kit-gÃ¡s? Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'VeÃculo blindado?'
+		// IsDesireCoverage Deseja cobertura do Kit-gás? Condicional, caso a opção '1. Sim' seja selecionada no campo 'Veículo blindado?'
 		IsDesireCoverage bool `json:"isDesireCoverage"`
 	} `json:"gasKit,omitempty"`
 
-	// Identification Identificador do objeto segurado. Obs.: Para FianÃ§a LocatÃcia, Ã© a identificaÃ§Ã£o do Contrato de LocaÃ§Ã£o.
+	// Identification Identificador do objeto segurado. Obs.: Para Fiança Locatícia, é a identificação do Contrato de Locação.
 	Identification string `json:"identification"`
 
-	// IsActiveTrackingDevice Possui dispositivo rastreador prÃ³prio e ativo (adquirido e pago pelo cliente)?
+	// IsActiveTrackingDevice Possui dispositivo rastreador próprio e ativo (adquirido e pago pelo cliente)?
 	IsActiveTrackingDevice bool `json:"isActiveTrackingDevice"`
 
-	// IsArmouredVehicle VeÃculo blindado?
+	// IsArmouredVehicle Veículo blindado?
 	IsArmouredVehicle bool `json:"isArmouredVehicle"`
 
-	// IsAuctionChassisRescheduled LeilÃ£o ou Chassi remarcado
+	// IsAuctionChassisRescheduled Leilão ou Chassi remarcado
 	IsAuctionChassisRescheduled *bool `json:"isAuctionChassisRescheduled,omitempty"`
 
 	// IsBrandNew Zero km?
@@ -7086,13 +7096,13 @@ type QuoteAutoInsuredObject struct {
 	// IsEquipmentsAttached Utiliza algum sistema de gerenciamento de risco?
 	IsEquipmentsAttached bool `json:"isEquipmentsAttached"`
 
-	// IsExtendCoverageAgedBetween18And25 Deseja estender a cobertura contratada para condutores na faixa etÃ¡ria dos 18 aos 25 anos?
+	// IsExtendCoverageAgedBetween18And25 Deseja estender a cobertura contratada para condutores na faixa etária dos 18 aos 25 anos?
 	IsExtendCoverageAgedBetween18And25 *bool `json:"isExtendCoverageAgedBetween18And25,omitempty"`
 
-	// IsGasKit Possui Kit-gÃ¡s?
+	// IsGasKit Possui Kit-gás?
 	IsGasKit bool `json:"isGasKit"`
 
-	// IsTransportedCargoInsurance Possui seguro da carga transportada? Condicional, caso a opÃ§Ã£o '10. Transporte de Mercadoria' ou '11. Presta ServiÃ§o para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
+	// IsTransportedCargoInsurance Possui seguro da carga transportada? Condicional, caso a opção '10. Transporte de Mercadoria' ou '11. Presta Serviço para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
 	IsTransportedCargoInsurance *bool `json:"isTransportedCargoInsurance,omitempty"`
 
 	// LicensePlate Placa
@@ -7104,141 +7114,141 @@ type QuoteAutoInsuredObject struct {
 
 	// Model Objeto que agrupa os dados de modelo.
 	Model *struct {
-		// Brand Marca do veÃculo
+		// Brand Marca do veículo
 		Brand string `json:"brand"`
 
-		// ManufactureYear Ano de fabricaÃ§Ã£o (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+		// ManufactureYear Ano de fabricação (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 		ManufactureYear *string `json:"manufactureYear,omitempty"`
 
-		// ModelName Nome do modelo (Caso aplicÃ¡vel)
+		// ModelName Nome do modelo (Caso aplicável)
 		ModelName string `json:"modelName"`
 
-		// ModelYear Ano do modelo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+		// ModelYear Ano do modelo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 		ModelYear *string `json:"modelYear,omitempty"`
 	} `json:"model,omitempty"`
 
-	// ModelCode CÃ³digo do modelo de acordo com a tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// ModelCode Código do modelo de acordo com a tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	ModelCode *string `json:"modelCode,omitempty"`
 
-	// OvernightPostCode CEP da localidade de pernoite do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// OvernightPostCode CEP da localidade de pernoite do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	OvernightPostCode string `json:"overnightPostCode"`
 
 	// RiskLocationInfo Objeto que agrupa dados de local de risco.
 	RiskLocationInfo     *QuoteAutoRiskLocation                        `json:"riskLocationInfo,omitempty"`
 	RiskManagementSystem *[]QuoteAutoInsuredObjectRiskManagementSystem `json:"riskManagementSystem,omitempty"`
 
-	// TableUsed Tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas). Condicional, caso a opÃ§Ã£o '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
+	// TableUsed Tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas). Condicional, caso a opção '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
 	TableUsed *QuoteAutoInsuredObjectTableUsed `json:"tableUsed,omitempty"`
 	Tax       *struct {
-		// Exempt Isento de Imposto. Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Isento de Imposto'
+		// Exempt Isento de Imposto. Condicional, caso a opção '1. Sim' seja selecionada no campo 'Isento de Imposto'
 		Exempt bool `json:"exempt"`
 
-		// ExemptionPercentage Percentual da isenÃ§Ã£o. Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Isento de Imposto'
+		// ExemptionPercentage Percentual da isenção. Condicional, caso a opção '1. Sim' seja selecionada no campo 'Isento de Imposto'
 		ExemptionPercentage *string `json:"exemptionPercentage,omitempty"`
 
 		// Type qual imposto isento(s)
 		Type *QuoteAutoInsuredObjectTaxType `json:"type,omitempty"`
 	} `json:"tax,omitempty"`
 
-	// ValueDetermined BRL - De acordo com ISO-4217. Condicional, caso a opÃ§Ã£o '2. Valor determinado' seja selecionada no campo 'Modalidade'
+	// ValueDetermined BRL - De acordo com ISO-4217. Condicional, caso a opção '2. Valor determinado' seja selecionada no campo 'Modalidade'
 	ValueDetermined *string `json:"valueDetermined,omitempty"`
 
 	// VehicleInvoice Objeto que agrupa os dados de Nota Fiscal.
 	VehicleInvoice *struct {
-		// VehicleAmount Valor de NF do veÃculo - Condicional e opcional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Zero km?'
+		// VehicleAmount Valor de NF do veículo - Condicional e opcional, caso a opção '1. Sim' seja selecionada no campo 'Zero km?'
 		VehicleAmount *AmountDetails `json:"vehicleAmount,omitempty"`
 
-		// VehicleNumber NÃºmero da NF do veÃculo
+		// VehicleNumber Número da NF do veículo
 		VehicleNumber *string `json:"vehicleNumber,omitempty"`
 	} `json:"vehicleInvoice,omitempty"`
 	VehicleUse []QuoteAutoInsuredObjectVehicleUse `json:"vehicleUse"`
 
-	// WasThereAClaim Houve sinistro no local nos Ãºltimos 12 meses?
+	// WasThereAClaim Houve sinistro no local nos últimos 12 meses?
 	WasThereAClaim bool `json:"wasThereAClaim"`
 }
 
 // QuoteAutoInsuredObjectCommercialActivityType defines model for QuoteAutoInsuredObject.CommercialActivityType.
 type QuoteAutoInsuredObjectCommercialActivityType string
 
-// QuoteAutoInsuredObjectDriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etÃ¡ria dos 18 aos 25 anos?'sexo dos condutores na faixa etÃ¡ria dos 18 aos 25 anos
+// QuoteAutoInsuredObjectDriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etária dos 18 aos 25 anos?'sexo dos condutores na faixa etária dos 18 aos 25 anos
 type QuoteAutoInsuredObjectDriverBetween18And25YearsOldGender string
 
-// QuoteAutoInsuredObjectFrequentTrafficArea Qual a Ã¡rea de circulaÃ§Ã£o mais frenquente?
+// QuoteAutoInsuredObjectFrequentTrafficArea Qual a área de circulação mais frenquente?
 type QuoteAutoInsuredObjectFrequentTrafficArea string
 
-// QuoteAutoInsuredObjectFuel CombustÃvel
+// QuoteAutoInsuredObjectFuel Combustível
 type QuoteAutoInsuredObjectFuel string
 
-// QuoteAutoInsuredObjectLoadsCarriedinsured Quais as cargas transportadas pelo veÃculo segurado? Condicional, caso a opÃ§Ã£o '10. Transporte de Mercadoria' ou '11. Presta ServiÃ§o para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
+// QuoteAutoInsuredObjectLoadsCarriedinsured Quais as cargas transportadas pelo veículo segurado? Condicional, caso a opção '10. Transporte de Mercadoria' ou '11. Presta Serviço para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
 type QuoteAutoInsuredObjectLoadsCarriedinsured string
 
 // QuoteAutoInsuredObjectModality Modalidade de cobertura (para cobertura de casco)
 type QuoteAutoInsuredObjectModality string
 
-// QuoteAutoInsuredObjectRiskManagementSystem Utiliza algum sistema de gerenciamento de risco?. Condicional, caso a opÃ§Ã£o '10. Transporte de Mercadoria' ou '11. Presta ServiÃ§o para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
+// QuoteAutoInsuredObjectRiskManagementSystem Utiliza algum sistema de gerenciamento de risco?. Condicional, caso a opção '10. Transporte de Mercadoria' ou '11. Presta Serviço para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
 type QuoteAutoInsuredObjectRiskManagementSystem string
 
-// QuoteAutoInsuredObjectTableUsed Tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas). Condicional, caso a opÃ§Ã£o '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
+// QuoteAutoInsuredObjectTableUsed Tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas). Condicional, caso a opção '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
 type QuoteAutoInsuredObjectTableUsed string
 
 // QuoteAutoInsuredObjectTaxType qual imposto isento(s)
 type QuoteAutoInsuredObjectTaxType string
 
-// QuoteAutoInsuredObjectVehicleUse  CÃ³digo de utilizaÃ§Ã£o do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+// QuoteAutoInsuredObjectVehicleUse  Código de utilização do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 type QuoteAutoInsuredObjectVehicleUse string
 
 // QuoteAutoQuoteResultCoverage defines model for QuoteAutoQuoteResultCoverage.
 type QuoteAutoQuoteResultCoverage struct {
-	// POS InformaÃ§Ãµes de POS
+	// POS Informações de POS
 	POS POS `json:"POS"`
 
 	// Branch Grupo e ramo da cobertura
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code QuoteAutoQuoteResultCoverageCode `json:"code"`
 
-	// Deductible InformaÃ§Ãµes de franquia
+	// Deductible Informações de franquia
 	Deductible *QuoteAutoResultDeductible `json:"deductible,omitempty"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (Caso CÃ³digo da Cobertura for "OUTRAS")
+	// Description Descrição / Nome da Cobertura (Caso Código da Cobertura for "OUTRAS")
 	Description *string `json:"description,omitempty"`
 
-	// FullIndemnity Franquia sobre indenizaÃ§Ã£o integral(caso aplicÃ¡vel)
+	// FullIndemnity Franquia sobre indenização integral(caso aplicável)
 	FullIndemnity QuoteAutoQuoteResultCoverageFullIndemnity `json:"fullIndemnity"`
 
-	// GracePeriod PerÃodo de carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriod Período de carência. OBS: Obrigatório, se houver
 	GracePeriod *int `json:"gracePeriod,omitempty"`
 
-	// GracePeriodCountingMethod Indicador de dias Ãºteis ou corridos da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodCountingMethod Indicador de dias úteis ou corridos da carência. OBS: Obrigatório, se houver
 	GracePeriodCountingMethod *QuoteAutoQuoteResultCoverageGracePeriodCountingMethod `json:"gracePeriodCountingMethod,omitempty"`
 
-	// GracePeriodEndDate Data de fim da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodEndDate Data de fim da carência. OBS: Obrigatório, se houver
 	GracePeriodEndDate *timeutil.BrazilDate `json:"gracePeriodEndDate,omitempty"`
 
-	// GracePeriodStartDate Data de inÃcio da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodStartDate Data de início da carência. OBS: Obrigatório, se houver
 	GracePeriodStartDate *timeutil.BrazilDate `json:"gracePeriodStartDate,omitempty"`
 
-	// GracePeriodicity Periodicidade da carÃªncia. OBS: ObrigatÃ³rio, se houver
+	// GracePeriodicity Periodicidade da carência. OBS: Obrigatório, se houver
 	GracePeriodicity *QuoteAutoQuoteResultCoverageGracePeriodicity `json:"gracePeriodicity,omitempty"`
 
-	// InternalCode CÃ³digo interno da cobertura da seguradora
+	// InternalCode Código interno da cobertura da seguradora
 	InternalCode *string `json:"internalCode,omitempty"`
 
-	// IsSeparateContractingAllowed PermissÃ£o para ContrataÃ§Ã£o Separada
+	// IsSeparateContractingAllowed Permissão para Contratação Separada
 	IsSeparateContractingAllowed bool `json:"isSeparateContractingAllowed"`
 }
 
-// QuoteAutoQuoteResultCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// QuoteAutoQuoteResultCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type QuoteAutoQuoteResultCoverageCode string
 
-// QuoteAutoQuoteResultCoverageFullIndemnity Franquia sobre indenizaÃ§Ã£o integral(caso aplicÃ¡vel)
+// QuoteAutoQuoteResultCoverageFullIndemnity Franquia sobre indenização integral(caso aplicável)
 type QuoteAutoQuoteResultCoverageFullIndemnity string
 
-// QuoteAutoQuoteResultCoverageGracePeriodCountingMethod Indicador de dias Ãºteis ou corridos da carÃªncia. OBS: ObrigatÃ³rio, se houver
+// QuoteAutoQuoteResultCoverageGracePeriodCountingMethod Indicador de dias úteis ou corridos da carência. OBS: Obrigatório, se houver
 type QuoteAutoQuoteResultCoverageGracePeriodCountingMethod string
 
-// QuoteAutoQuoteResultCoverageGracePeriodicity Periodicidade da carÃªncia. OBS: ObrigatÃ³rio, se houver
+// QuoteAutoQuoteResultCoverageGracePeriodicity Periodicidade da carência. OBS: Obrigatório, se houver
 type QuoteAutoQuoteResultCoverageGracePeriodicity string
 
 // QuoteAutoResultDeductible defines model for QuoteAutoResultDeductible.
@@ -7246,19 +7256,19 @@ type QuoteAutoResultDeductible struct {
 	// DeductibleAmount Valor da Franquia
 	DeductibleAmount *AmountDetails `json:"deductibleAmount,omitempty"`
 
-	// Description DescriÃ§Ã£o da Franquia
+	// Description Descrição da Franquia
 	Description *string `json:"description,omitempty"`
 
 	// Period Prazo da Franquia
 	Period *int `json:"period,omitempty"`
 
-	// PeriodCountingMethod Indicador de Dias Ãšteis ou Corridos (Caso aplicÃ¡vel)
+	// PeriodCountingMethod Indicador de Dias Úteis ou Corridos (Caso aplicável)
 	PeriodCountingMethod *QuoteAutoResultDeductiblePeriodCountingMethod `json:"periodCountingMethod,omitempty"`
 
 	// PeriodEndDate Data de Fim da Franquia
 	PeriodEndDate *timeutil.BrazilDate `json:"periodEndDate,omitempty"`
 
-	// PeriodStartDate Data de InÃcio da Franquia
+	// PeriodStartDate Data de Início da Franquia
 	PeriodStartDate *timeutil.BrazilDate `json:"periodStartDate,omitempty"`
 
 	// Periodicity Periodicidade da Franquia
@@ -7267,11 +7277,11 @@ type QuoteAutoResultDeductible struct {
 	// Type Tipo de Franquia
 	Type QuoteAutoResultDeductibleType `json:"type"`
 
-	// TypeAdditionalInfo DescriÃ§ao do Tipo de Franquia (Caso Tipo de Franquia for "OUTROS")
+	// TypeAdditionalInfo Descriçao do Tipo de Franquia (Caso Tipo de Franquia for "OUTROS")
 	TypeAdditionalInfo *string `json:"typeAdditionalInfo,omitempty"`
 }
 
-// QuoteAutoResultDeductiblePeriodCountingMethod Indicador de Dias Ãšteis ou Corridos (Caso aplicÃ¡vel)
+// QuoteAutoResultDeductiblePeriodCountingMethod Indicador de Dias Úteis ou Corridos (Caso aplicável)
 type QuoteAutoResultDeductiblePeriodCountingMethod string
 
 // QuoteAutoResultDeductiblePeriodicity Periodicidade da Franquia
@@ -7282,7 +7292,7 @@ type QuoteAutoResultDeductibleType string
 
 // QuoteAutoResultInsuredObject defines model for QuoteAutoResultInsuredObject.
 type QuoteAutoResultInsuredObject struct {
-	// AdjustmentFactor Fator de ajuste da tabela utilizada para valor mÃ©dio de mercado
+	// AdjustmentFactor Fator de ajuste da tabela utilizada para valor médio de mercado
 	AdjustmentFactor *string `json:"adjustmentFactor,omitempty"`
 
 	// ArmouredVehicle Objeto que agrupa os dados de blindagem.
@@ -7294,7 +7304,7 @@ type QuoteAutoResultInsuredObject struct {
 		IsDesireCoverage *bool `json:"isDesireCoverage,omitempty"`
 	} `json:"armouredVehicle,omitempty"`
 
-	// Beneficiaries Lista de dados de beneficiÃ¡rios.
+	// Beneficiaries Lista de dados de beneficiários.
 	Beneficiaries *[]QuoteAutoBeneficiary `json:"beneficiaries,omitempty"`
 
 	// Chassis Chassi
@@ -7306,55 +7316,55 @@ type QuoteAutoResultInsuredObject struct {
 	// Color Cor
 	Color string `json:"color"`
 
-	// CommercialActivityType  Tipo de atividade comercial. Condicional, caso a opÃ§Ã£o '3. ExercÃcio do trabalho' seja selecionada no campo 'CÃ³digo de utilizaÃ§Ã£o do veÃculo'
+	// CommercialActivityType  Tipo de atividade comercial. Condicional, caso a opção '3. Exercício do trabalho' seja selecionada no campo 'Código de utilização do veículo'
 	CommercialActivityType *[]QuoteAutoResultInsuredObjectCommercialActivityType `json:"commercialActivityType,omitempty"`
 
 	// Coverages Lista que agrupa os dados de coberturas.
 	Coverages []QuoteAutoResultInsuredObjectCoverage `json:"coverages"`
 
-	// DepartureDateFromCarDealership Data de saÃda da concessionÃ¡ria - Zero km? Condicional e opcional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Zero km?'
+	// DepartureDateFromCarDealership Data de saída da concessionária - Zero km? Condicional e opcional, caso a opção '1. Sim' seja selecionada no campo 'Zero km?'
 	DepartureDateFromCarDealership *timeutil.BrazilDate `json:"departureDateFromCarDealership,omitempty"`
 
 	// DoorsNumber Quantidade de portas
 	DoorsNumber string `json:"doorsNumber"`
 
-	// DriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etÃ¡ria dos 18 aos 25 anos?'sexo dos condutores na faixa etÃ¡ria dos 18 aos 25 anos
+	// DriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etária dos 18 aos 25 anos?'sexo dos condutores na faixa etária dos 18 aos 25 anos
 	DriverBetween18And25YearsOldGender *QuoteAutoResultInsuredObjectDriverBetween18And25YearsOldGender `json:"driverBetween18and25YearsOldGender,omitempty"`
 
-	// EquipmentsAttached Objeto que agrupa os dados de equipamentos ou acessÃ³rios acoplados.
+	// EquipmentsAttached Objeto que agrupa os dados de equipamentos ou acessórios acoplados.
 	EquipmentsAttached *struct {
-		// EquipmentsAttachedAmount Valor dos equipamentos/acessÃ³rios - Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Deseja cobertura destes equipamentos ou acessÃ³rios?'
+		// EquipmentsAttachedAmount Valor dos equipamentos/acessórios - Condicional, caso a opção '1. Sim' seja selecionada no campo 'Deseja cobertura destes equipamentos ou acessórios?'
 		EquipmentsAttachedAmount *AmountDetails `json:"equipmentsAttachedAmount,omitempty"`
 
-		// IsDesireCoverage Deseja cobertura destes equipamentos ou acessÃ³rios? Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Possui equipamentos ou acessÃ³rios acoplados, fixados ou instalados a veÃculos?'
+		// IsDesireCoverage Deseja cobertura destes equipamentos ou acessórios? Condicional, caso a opção '1. Sim' seja selecionada no campo 'Possui equipamentos ou acessórios acoplados, fixados ou instalados a veículos?'
 		IsDesireCoverage *bool `json:"isDesireCoverage,omitempty"`
 	} `json:"equipmentsAttached,omitempty"`
 
-	// FrequentTrafficArea Qual a Ã¡rea de circulaÃ§Ã£o mais frenquente?
+	// FrequentTrafficArea Qual a área de circulação mais frenquente?
 	FrequentTrafficArea *QuoteAutoResultInsuredObjectFrequentTrafficArea `json:"frequentTrafficArea,omitempty"`
 
-	// Fuel CombustÃvel
+	// Fuel Combustível
 	Fuel QuoteAutoResultInsuredObjectFuel `json:"fuel"`
 
-	// GasKit Objeto que agrupa os dados de Kit-gÃ¡s.
+	// GasKit Objeto que agrupa os dados de Kit-gás.
 	GasKit *struct {
-		// GasKitAmount Valor do Kit-gÃ¡s - Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Deseja cobertura do Kit-gÃ¡s?'
+		// GasKitAmount Valor do Kit-gás - Condicional, caso a opção '1. Sim' seja selecionada no campo 'Deseja cobertura do Kit-gás?'
 		GasKitAmount *AmountDetails `json:"gasKitAmount,omitempty"`
 
-		// IsDesireCoverage Deseja cobertura do Kit-gÃ¡s? Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'VeÃculo blindado?'
+		// IsDesireCoverage Deseja cobertura do Kit-gás? Condicional, caso a opção '1. Sim' seja selecionada no campo 'Veículo blindado?'
 		IsDesireCoverage bool `json:"isDesireCoverage"`
 	} `json:"gasKit,omitempty"`
 
-	// Identification Identificador do objeto segurado. Obs.: Para FianÃ§a LocatÃcia, Ã© a identificaÃ§Ã£o do Contrato de LocaÃ§Ã£o.
+	// Identification Identificador do objeto segurado. Obs.: Para Fiança Locatícia, é a identificação do Contrato de Locação.
 	Identification string `json:"identification"`
 
-	// IsActiveTrackingDevice Possui dispositivo rastreador prÃ³prio e ativo (adquirido e pago pelo cliente)?
+	// IsActiveTrackingDevice Possui dispositivo rastreador próprio e ativo (adquirido e pago pelo cliente)?
 	IsActiveTrackingDevice bool `json:"isActiveTrackingDevice"`
 
-	// IsArmouredVehicle VeÃculo blindado?
+	// IsArmouredVehicle Veículo blindado?
 	IsArmouredVehicle bool `json:"isArmouredVehicle"`
 
-	// IsAuctionChassisRescheduled LeilÃ£o ou Chassi remarcado
+	// IsAuctionChassisRescheduled Leilão ou Chassi remarcado
 	IsAuctionChassisRescheduled *bool `json:"isAuctionChassisRescheduled,omitempty"`
 
 	// IsBrandNew Zero km?
@@ -7363,13 +7373,13 @@ type QuoteAutoResultInsuredObject struct {
 	// IsEquipmentsAttached Utiliza algum sistema de gerenciamento de risco?
 	IsEquipmentsAttached bool `json:"isEquipmentsAttached"`
 
-	// IsExtendCoverageAgedBetween18And25 Deseja estender a cobertura contratada para condutores na faixa etÃ¡ria dos 18 aos 25 anos?
+	// IsExtendCoverageAgedBetween18And25 Deseja estender a cobertura contratada para condutores na faixa etária dos 18 aos 25 anos?
 	IsExtendCoverageAgedBetween18And25 *bool `json:"isExtendCoverageAgedBetween18And25,omitempty"`
 
-	// IsGasKit Possui Kit-gÃ¡s?
+	// IsGasKit Possui Kit-gás?
 	IsGasKit bool `json:"isGasKit"`
 
-	// IsTransportedCargoInsurance Possui seguro da carga transportada? Condicional, caso a opÃ§Ã£o '10. Transporte de Mercadoria' ou '11. Presta ServiÃ§o para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
+	// IsTransportedCargoInsurance Possui seguro da carga transportada? Condicional, caso a opção '10. Transporte de Mercadoria' ou '11. Presta Serviço para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
 	IsTransportedCargoInsurance *bool `json:"isTransportedCargoInsurance,omitempty"`
 
 	// LicensePlate Placa
@@ -7384,129 +7394,129 @@ type QuoteAutoResultInsuredObject struct {
 
 	// Model Objeto que agrupa os dados de modelo.
 	Model *struct {
-		// Brand Marca do veÃculo
+		// Brand Marca do veículo
 		Brand string `json:"brand"`
 
-		// ManufactureYear Ano de fabricaÃ§Ã£o (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+		// ManufactureYear Ano de fabricação (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 		ManufactureYear *string `json:"manufactureYear,omitempty"`
 
-		// ModelName Nome do modelo (Caso aplicÃ¡vel)
+		// ModelName Nome do modelo (Caso aplicável)
 		ModelName string `json:"modelName"`
 
-		// ModelYear Ano do modelo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+		// ModelYear Ano do modelo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 		ModelYear *string `json:"modelYear,omitempty"`
 	} `json:"model,omitempty"`
 
-	// ModelCode CÃ³digo do modelo de acordo com a tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// ModelCode Código do modelo de acordo com a tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	ModelCode *string `json:"modelCode,omitempty"`
 
-	// OvernightPostCode CEP da localidade de pernoite do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+	// OvernightPostCode CEP da localidade de pernoite do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 	OvernightPostCode string `json:"overnightPostCode"`
 
 	// RiskLocationInfo Objeto que agrupa dados de local de risco.
 	RiskLocationInfo     *QuoteAutoRiskLocation                              `json:"riskLocationInfo,omitempty"`
 	RiskManagementSystem *[]QuoteAutoResultInsuredObjectRiskManagementSystem `json:"riskManagementSystem,omitempty"`
 
-	// TableUsed Tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas). Condicional, caso a opÃ§Ã£o '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
+	// TableUsed Tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas). Condicional, caso a opção '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
 	TableUsed *QuoteAutoResultInsuredObjectTableUsed `json:"tableUsed,omitempty"`
 
-	// Tariff Campo Categoria tarifÃ¡ria
+	// Tariff Campo Categoria tarifária
 	Tariff *QuoteAutoResultInsuredObjectTariff `json:"tariff,omitempty"`
 
 	// Tax Objeto que agrupa os dados de imposto.
 	Tax *struct {
-		// Exempt Isento de Imposto. Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Isento de Imposto'
+		// Exempt Isento de Imposto. Condicional, caso a opção '1. Sim' seja selecionada no campo 'Isento de Imposto'
 		Exempt bool `json:"exempt"`
 
-		// ExemptionPercentage Percentual da isenÃ§Ã£o. Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Isento de Imposto'
+		// ExemptionPercentage Percentual da isenção. Condicional, caso a opção '1. Sim' seja selecionada no campo 'Isento de Imposto'
 		ExemptionPercentage *string `json:"exemptionPercentage,omitempty"`
 
 		// Type qual imposto isento(s)
 		Type *QuoteAutoResultInsuredObjectTaxType `json:"type,omitempty"`
 	} `json:"tax,omitempty"`
 
-	// ValueDetermined BRL - De acordo com ISO-4217. Condicional, caso a opÃ§Ã£o '2. Valor determinado' seja selecionada no campo 'Modalidade'
+	// ValueDetermined BRL - De acordo com ISO-4217. Condicional, caso a opção '2. Valor determinado' seja selecionada no campo 'Modalidade'
 	ValueDetermined *string `json:"valueDetermined,omitempty"`
 
 	// VehicleInvoice Objeto que agrupa os dados de Nota Fiscal.
 	VehicleInvoice *struct {
-		// VehicleAmount Valor de NF do veÃculo - Condicional e opcional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'Zero km?'
+		// VehicleAmount Valor de NF do veículo - Condicional e opcional, caso a opção '1. Sim' seja selecionada no campo 'Zero km?'
 		VehicleAmount *AmountDetails `json:"vehicleAmount,omitempty"`
 
-		// VehicleNumber NÃºmero da NF do veÃculo
+		// VehicleNumber Número da NF do veículo
 		VehicleNumber *string `json:"vehicleNumber,omitempty"`
 	} `json:"vehicleInvoice,omitempty"`
 	VehicleUse []QuoteAutoResultInsuredObjectVehicleUse `json:"vehicleUse"`
 
-	// WasThereAClaim Houve sinistro no local nos Ãºltimos 12 meses?
+	// WasThereAClaim Houve sinistro no local nos últimos 12 meses?
 	WasThereAClaim bool `json:"wasThereAClaim"`
 }
 
 // QuoteAutoResultInsuredObjectCommercialActivityType defines model for QuoteAutoResultInsuredObject.CommercialActivityType.
 type QuoteAutoResultInsuredObjectCommercialActivityType string
 
-// QuoteAutoResultInsuredObjectDriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etÃ¡ria dos 18 aos 25 anos?'sexo dos condutores na faixa etÃ¡ria dos 18 aos 25 anos
+// QuoteAutoResultInsuredObjectDriverBetween18And25YearsOldGender Condicional, caso seja selecionado '1. Sim' no campo 'Deseja estender a cobertura contratada para condutores na faixa etária dos 18 aos 25 anos?'sexo dos condutores na faixa etária dos 18 aos 25 anos
 type QuoteAutoResultInsuredObjectDriverBetween18And25YearsOldGender string
 
-// QuoteAutoResultInsuredObjectFrequentTrafficArea Qual a Ã¡rea de circulaÃ§Ã£o mais frenquente?
+// QuoteAutoResultInsuredObjectFrequentTrafficArea Qual a área de circulação mais frenquente?
 type QuoteAutoResultInsuredObjectFrequentTrafficArea string
 
-// QuoteAutoResultInsuredObjectFuel CombustÃvel
+// QuoteAutoResultInsuredObjectFuel Combustível
 type QuoteAutoResultInsuredObjectFuel string
 
 // QuoteAutoResultInsuredObjectLicensePlateType defines model for QuoteAutoResultInsuredObject.LicensePlateType.
 type QuoteAutoResultInsuredObjectLicensePlateType string
 
-// QuoteAutoResultInsuredObjectLoadsCarriedinsured Quais as cargas transportadas pelo veÃculo segurado? Condicional, caso a opÃ§Ã£o '10. Transporte de Mercadoria' ou '11. Presta ServiÃ§o para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
+// QuoteAutoResultInsuredObjectLoadsCarriedinsured Quais as cargas transportadas pelo veículo segurado? Condicional, caso a opção '10. Transporte de Mercadoria' ou '11. Presta Serviço para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
 type QuoteAutoResultInsuredObjectLoadsCarriedinsured string
 
 // QuoteAutoResultInsuredObjectModality Modalidade de cobertura (para cobertura de casco)
 type QuoteAutoResultInsuredObjectModality string
 
-// QuoteAutoResultInsuredObjectRiskManagementSystem Utiliza algum sistema de gerenciamento de risco?. Condicional, caso a opÃ§Ã£o '10. Transporte de Mercadoria' ou '11. Presta ServiÃ§o para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
+// QuoteAutoResultInsuredObjectRiskManagementSystem Utiliza algum sistema de gerenciamento de risco?. Condicional, caso a opção '10. Transporte de Mercadoria' ou '11. Presta Serviço para Transportadora' seja selecionada no campo 'Tipo de Atividade Comercial'
 type QuoteAutoResultInsuredObjectRiskManagementSystem string
 
-// QuoteAutoResultInsuredObjectTableUsed Tabela de referÃªncia adotada no plano (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas). Condicional, caso a opÃ§Ã£o '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
+// QuoteAutoResultInsuredObjectTableUsed Tabela de referência adotada no plano (Casco, RCF-A, APP, Assistência e Outras Coberturas). Condicional, caso a opção '1. Valor de mercado referenciado' seja selecionada no campo 'Modalidade'
 type QuoteAutoResultInsuredObjectTableUsed string
 
-// QuoteAutoResultInsuredObjectTariff Campo Categoria tarifÃ¡ria
+// QuoteAutoResultInsuredObjectTariff Campo Categoria tarifária
 type QuoteAutoResultInsuredObjectTariff string
 
 // QuoteAutoResultInsuredObjectTaxType qual imposto isento(s)
 type QuoteAutoResultInsuredObjectTaxType string
 
-// QuoteAutoResultInsuredObjectVehicleUse  CÃ³digo de utilizaÃ§Ã£o do veÃculo (Casco, RCF-A, APP, AssistÃªncia e Outras Coberturas)
+// QuoteAutoResultInsuredObjectVehicleUse  Código de utilização do veículo (Casco, RCF-A, APP, Assistência e Outras Coberturas)
 type QuoteAutoResultInsuredObjectVehicleUse string
 
 // QuoteAutoResultInsuredObjectCoverage defines model for QuoteAutoResultInsuredObjectCoverage.
 type QuoteAutoResultInsuredObjectCoverage struct {
-	// LMI Limite mÃ¡ximo de indenizaÃ§Ã£o (LMI)
+	// LMI Limite máximo de indenização (LMI)
 	LMI AmountDetails `json:"LMI"`
 
-	// Branch Grupo e Ramo da Cobertura (Conforme regulamentaÃ§Ã£o Susep vigente)
+	// Branch Grupo e Ramo da Cobertura (Conforme regulamentação Susep vigente)
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code             QuoteAutoResultInsuredObjectCoverageCode              `json:"code"`
 	CompensationType *QuoteAutoResultInsuredObjectCoverageCompensationType `json:"compensationType,omitempty"`
 
-	// DaysForTotalCompensation NÃºmero de dias de cobertura para direito Ã  indenizaÃ§Ã£o pelo valor de novo (Casco)
+	// DaysForTotalCompensation Número de dias de cobertura para direito à indenização pelo valor de novo (Casco)
 	DaysForTotalCompensation string `json:"daysForTotalCompensation"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (ObrigatÃ³rio quando o campo 'Codigo' for preenchido com 'Outras')
+	// Description Descrição / Nome da Cobertura (Obrigatório quando o campo 'Codigo' for preenchido com 'Outras')
 	Description *string `json:"description,omitempty"`
 
-	// InternalCode CÃ³digo interno da cobertura da seguradora
+	// InternalCode Código interno da cobertura da seguradora
 	InternalCode *string `json:"internalCode,omitempty"`
 
 	// IsMainCoverage Indicador de Cobertura Principal
 	IsMainCoverage *bool `json:"isMainCoverage,omitempty"`
 
-	// PartialCompensationPercentage Percentual por indenizaÃ§Ã£o parcial(caso aplicÃ¡vel)
+	// PartialCompensationPercentage Percentual por indenização parcial(caso aplicável)
 	PartialCompensationPercentage *string `json:"partialCompensationPercentage,omitempty"`
 }
 
-// QuoteAutoResultInsuredObjectCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// QuoteAutoResultInsuredObjectCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type QuoteAutoResultInsuredObjectCoverageCode string
 
 // QuoteAutoResultInsuredObjectCoverageCompensationType defines model for QuoteAutoResultInsuredObjectCoverage.CompensationType.
@@ -7515,47 +7525,47 @@ type QuoteAutoResultInsuredObjectCoverageCompensationType string
 // QuoteAutoRiskLocation Objeto que agrupa dados de local de risco.
 type QuoteAutoRiskLocation struct {
 	Housing *struct {
-		// GateType Tipo de portÃ£o do local onde o veÃculo Ã© guardado na residÃªncia
+		// GateType Tipo de portão do local onde o veículo é guardado na residência
 		GateType *QuoteAutoRiskLocationHousingGateType `json:"gateType,omitempty"`
 
-		// IsKeptInGarage O veÃculo Ã© guardado em garagem/estacionamento fechado na residÃªncia?
+		// IsKeptInGarage O veículo é guardado em garagem/estacionamento fechado na residência?
 		IsKeptInGarage *bool `json:"isKeptInGarage,omitempty"`
 
-		// Type Qual Ã© o tipo de residÃªncia do condutor principal?
+		// Type Qual é o tipo de residência do condutor principal?
 		Type *QuoteAutoRiskLocationHousingType `json:"type,omitempty"`
 	} `json:"housing,omitempty"`
 
-	// IsUsedCollege VeÃculo Ã© utilizado para ir Ã  faculdade/colÃ©gio?
+	// IsUsedCollege Veículo é utilizado para ir à faculdade/colégio?
 	IsUsedCollege *bool `json:"isUsedCollege,omitempty"`
 
-	// IsUsedCommuteWork VeÃculo Ã© utilizado para ir ao trabalho?
+	// IsUsedCommuteWork Veículo é utilizado para ir ao trabalho?
 	IsUsedCommuteWork *bool `json:"isUsedCommuteWork,omitempty"`
 
-	// KmAveragePerWeek Quantos KM em mÃ©dia o veÃculo circula por semana
+	// KmAveragePerWeek Quantos KM em média o veículo circula por semana
 	KmAveragePerWeek *string `json:"kmAveragePerWeek,omitempty"`
 	UsedCollege      *struct {
-		// DistanceFromResidence DistÃ¢ncia da residÃªncia atÃ© unidade de ensino (Em km). Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'utilizado para ir Ã  faculdade?'
+		// DistanceFromResidence Distância da residência até unidade de ensino (Em km). Condicional, caso a opção '1. Sim' seja selecionada no campo 'utilizado para ir à faculdade?'
 		DistanceFromResidence *string `json:"distanceFromResidence,omitempty"`
 
-		// IsKeptInGarage VeÃculo Ã© guardado em garagem/estacionamento fechado quando utilizado para ir Ã  faculdade/colÃ©gio? Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'utilizado para ir Ã  faculdade?'
+		// IsKeptInGarage Veículo é guardado em garagem/estacionamento fechado quando utilizado para ir à faculdade/colégio? Condicional, caso a opção '1. Sim' seja selecionada no campo 'utilizado para ir à faculdade?'
 		IsKeptInGarage *bool `json:"isKeptInGarage,omitempty"`
 	} `json:"usedCollege,omitempty"`
 	UsedCommuteWork *struct {
-		// DistanceFromResidence Campo aberto para detalhamento da quilometragem. Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'utilizado para ir ao trabalho?'
+		// DistanceFromResidence Campo aberto para detalhamento da quilometragem. Condicional, caso a opção '1. Sim' seja selecionada no campo 'utilizado para ir ao trabalho?'
 		DistanceFromResidence *string `json:"distanceFromResidence,omitempty"`
 
-		// IsKeptInGarage VeÃculo Ã© guardado em garagem/estacionamento fechado quando utilizado para ir ao local de trabalho?Condicional, caso a opÃ§Ã£o '1. Sim' seja selecionada no campo 'utilizado para ir ao trabalho?'
+		// IsKeptInGarage Veículo é guardado em garagem/estacionamento fechado quando utilizado para ir ao local de trabalho?Condicional, caso a opção '1. Sim' seja selecionada no campo 'utilizado para ir ao trabalho?'
 		IsKeptInGarage *bool `json:"isKeptInGarage,omitempty"`
 	} `json:"usedCommuteWork,omitempty"`
 }
 
-// QuoteAutoRiskLocationHousingGateType Tipo de portÃ£o do local onde o veÃculo Ã© guardado na residÃªncia
+// QuoteAutoRiskLocationHousingGateType Tipo de portão do local onde o veículo é guardado na residência
 type QuoteAutoRiskLocationHousingGateType string
 
-// QuoteAutoRiskLocationHousingType Qual Ã© o tipo de residÃªncia do condutor principal?
+// QuoteAutoRiskLocationHousingType Qual é o tipo de residência do condutor principal?
 type QuoteAutoRiskLocationHousingType string
 
-// QuoteCustomData Objeto que agrupa as categorias de dados customizÃ¡veis em listas.
+// QuoteCustomData Objeto que agrupa as categorias de dados customizáveis em listas.
 type QuoteCustomData struct {
 	Beneficiaries             *[]CustomInfoData `json:"beneficiaries,omitempty"`
 	Coverages                 *[]CustomInfoData `json:"coverages,omitempty"`
@@ -7568,24 +7578,24 @@ type QuoteCustomData struct {
 	RiskLocationInfo          *[]CustomInfoData `json:"riskLocationInfo,omitempty"`
 }
 
-// QuoteDataAuto Objeto que agrupa dados especÃficos do ramo de cotaÃ§Ã£o.
+// QuoteDataAuto Objeto que agrupa dados específicos do ramo de cotação.
 type QuoteDataAuto struct {
-	// BonusClass Classe de BÃ´nus. Condicional, caso a opÃ§Ã£o '2. RenovaÃ§Ã£o' seja selecionada no campo 'tipo de Seguro'
+	// BonusClass Classe de Bônus. Condicional, caso a opção '2. Renovação' seja selecionada no campo 'tipo de Seguro'
 	BonusClass *string `json:"bonusClass,omitempty"`
 
 	// Coverages Lista que agrupa os dados de coberturas.
 	Coverages []QuoteAutoCoverage `json:"coverages"`
 
-	// Currency Moeda de emissÃ£o do contrato de acordo com ISO-4217.
+	// Currency Moeda de emissão do contrato de acordo com ISO-4217.
 	Currency QuoteDataAutoCurrency `json:"currency"`
 
-	// HasAnIndividualItem Trata-se uma apÃ³lice individual com apenas um item?
+	// HasAnIndividualItem Trata-se uma apólice individual com apenas um item?
 	HasAnIndividualItem bool `json:"hasAnIndividualItem"`
 
-	// IdentifierCode CÃ³digo Identificador. Condicional, caso a opÃ§Ã£o '2. RenovaÃ§Ã£o' seja selecionada no campo 'tipo de Seguro'
+	// IdentifierCode Código Identificador. Condicional, caso a opção '2. Renovação' seja selecionada no campo 'tipo de Seguro'
 	IdentifierCode *string `json:"identifierCode,omitempty"`
 
-	// IncludesAssistanceServices Deseja contrataÃ§Ã£o de serviÃ§os de assistÃªncia
+	// IncludesAssistanceServices Deseja contratação de serviços de assistência
 	IncludesAssistanceServices bool `json:"includesAssistanceServices"`
 
 	// InsuranceType Tipo de Seguro
@@ -7594,65 +7604,65 @@ type QuoteDataAuto struct {
 	// InsuredObject Objeto que agrupa os dados de objeto segurado.
 	InsuredObject *QuoteAutoInsuredObject `json:"insuredObject,omitempty"`
 
-	// InsurerID Nome para identifcar a congÃªnere de renovaÃ§Ã£o
+	// InsurerID Nome para identifcar a congênere de renovação
 	InsurerID *string `json:"insurerId,omitempty"`
 
-	// IsCollectiveStipulated ApÃ³lice coletiva, por estipulaÃ§Ã£o ou automÃ³vel frota?
+	// IsCollectiveStipulated Apólice coletiva, por estipulação ou automóvel frota?
 	IsCollectiveStipulated bool `json:"isCollectiveStipulated"`
 
-	// PolicyID NÃºmero para identificar a apÃ³lice atual
+	// PolicyID Número para identificar a apólice atual
 	PolicyID *string `json:"policyId,omitempty"`
 
-	// TermEndDate AtÃ© as 24 horas do dia
+	// TermEndDate Até as 24 horas do dia
 	TermEndDate timeutil.BrazilDate `json:"termEndDate"`
 
-	// TermStartDate VigÃªncia das 24 horas do dia
+	// TermStartDate Vigência das 24 horas do dia
 	TermStartDate timeutil.BrazilDate `json:"termStartDate"`
 
-	// TermType Tipo de vigÃªncia
+	// TermType Tipo de vigência
 	TermType QuoteDataAutoTermType `json:"termType"`
 }
 
-// QuoteDataAutoCurrency Moeda de emissÃ£o do contrato de acordo com ISO-4217.
+// QuoteDataAutoCurrency Moeda de emissão do contrato de acordo com ISO-4217.
 type QuoteDataAutoCurrency string
 
 // QuoteDataAutoInsuranceType Tipo de Seguro
 type QuoteDataAutoInsuranceType string
 
-// QuoteDataAutoTermType Tipo de vigÃªncia
+// QuoteDataAutoTermType Tipo de vigência
 type QuoteDataAutoTermType string
 
 // QuoteRequestAuto defines model for QuoteRequestAuto.
 type QuoteRequestAuto struct {
 	Data struct {
-		// ConsentID O consentId Ã© o identificador Ãºnico do consentimento e deverÃ¡ ser um URN - Uniform Resource Name.
-		// Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) Ã© um Uniform Resource
-		// Identifier - URI - que Ã© atribuÃdo sob o URI scheme "urn" e um namespace URN especÃfico, com a intenÃ§Ã£o de que o URN
-		// seja um identificador de recurso persistente e independente da localizaÃ§Ã£o.
+		// ConsentID O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.
+		// Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource
+		// Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN
+		// seja um identificador de recurso persistente e independente da localização.
 		// Considerando a string urn:initiator:C1DD93123 como exemplo para consentId temos:
 		// - o namespace(urn)
-		// - o identificador associado ao namespace da instituiÃ§Ã£o transnmissora (initiator)
-		// - o identificador especÃfico dentro do namespace (C1DD93123).
-		// InformaÃ§Ãµes mais detalhadas sobre a construÃ§Ã£o de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
+		// - o identificador associado ao namespace da instituição transnmissora (initiator)
+		// - o identificador específico dentro do namespace (C1DD93123).
+		// Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
 		ConsentID string `json:"consentId"`
 
-		// ExpirationDateTime Data e hora de expiraÃ§Ã£o da permissÃ£o. De preenchimento obrigatÃ³rio, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificaÃ§Ã£o RFC-3339, sempre com a utilizaÃ§Ã£o de timezone UTC(UTC time format).
+		// ExpirationDateTime Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
 		ExpirationDateTime timeutil.DateTime `json:"expirationDateTime"`
 
-		// HistoricalData Objeto que agrupa todos dados histÃ³ricos do cliente.
+		// HistoricalData Objeto que agrupa todos dados históricos do cliente.
 		HistoricalData *struct {
-			// Customer Objeto que agrupa as categorias de dados histÃ³ricos cadastrais do cliente.
+			// Customer Objeto que agrupa as categorias de dados históricos cadastrais do cliente.
 			Customer *struct {
 				ComplimentaryInformationData *QuoteRequestAuto_Data_HistoricalData_Customer_ComplimentaryInformationData `json:"complimentaryInformationData,omitempty"`
 				IdentificationData           *QuoteRequestAuto_Data_HistoricalData_Customer_IdentificationData           `json:"identificationData,omitempty"`
 				QualificationData            *QuoteRequestAuto_Data_HistoricalData_Customer_QualificationData            `json:"qualificationData,omitempty"`
 			} `json:"customer,omitempty"`
 
-			// Policies Lista que agrupa os dados das apÃ³lices histÃ³ricos em categorias.
+			// Policies Lista que agrupa os dados das apólices históricos em categorias.
 			Policies *PolicyDataAuto `json:"policies,omitempty"`
 		} `json:"historicalData,omitempty"`
 
-		// QuoteCustomData Objeto que agrupa as categorias de dados customizÃ¡veis em listas.
+		// QuoteCustomData Objeto que agrupa as categorias de dados customizáveis em listas.
 		QuoteCustomData *QuoteCustomData `json:"quoteCustomData,omitempty"`
 
 		// QuoteCustomer Objeto que agrupa as categorias de dados cadastrais do cliente.
@@ -7662,7 +7672,7 @@ type QuoteRequestAuto struct {
 			QualificationData            *QuoteRequestAuto_Data_QuoteCustomer_QualificationData            `json:"qualificationData,omitempty"`
 		} `json:"quoteCustomer"`
 
-		// QuoteData Objeto que agrupa dados especÃficos do ramo de cotaÃ§Ã£o.
+		// QuoteData Objeto que agrupa dados específicos do ramo de cotação.
 		QuoteData QuoteDataAuto `json:"quoteData"`
 	} `json:"data"`
 }
@@ -7700,30 +7710,30 @@ type QuoteRequestAuto_Data_QuoteCustomer_QualificationData struct {
 // QuoteRequestAutoLead defines model for QuoteRequestAutoLead.
 type QuoteRequestAutoLead struct {
 	Data struct {
-		// ConsentID O consentId Ã© o identificador Ãºnico do consentimento e deverÃ¡ ser um URN - Uniform Resource Name.
-		// Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) Ã© um Uniform Resource
-		// Identifier - URI - que Ã© atribuÃdo sob o URI scheme "urn" e um namespace URN especÃfico, com a intenÃ§Ã£o de que o URN
-		// seja um identificador de recurso persistente e independente da localizaÃ§Ã£o.
+		// ConsentID O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.
+		// Um URN, conforme definido na [RFC8141](https://tools.ietf.org/html/rfc8141) é um Uniform Resource
+		// Identifier - URI - que é atribuído sob o URI scheme "urn" e um namespace URN específico, com a intenção de que o URN
+		// seja um identificador de recurso persistente e independente da localização.
 		// Considerando a string urn:initiator:C1DD93123 como exemplo para consentId temos:
 		// - o namespace(urn)
-		// - o identificador associado ao namespace da instituiÃ§Ã£o transnmissora (initiator)
-		// - o identificador especÃfico dentro do namespace (C1DD93123).
-		// InformaÃ§Ãµes mais detalhadas sobre a construÃ§Ã£o de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
+		// - o identificador associado ao namespace da instituição transnmissora (initiator)
+		// - o identificador específico dentro do namespace (C1DD93123).
+		// Informações mais detalhadas sobre a construção de namespaces devem ser consultadas na [RFC8141](https://tools.ietf.org/html/rfc8141).
 		ConsentID string `json:"consentId"`
 
-		// ExpirationDateTime Data e hora de expiraÃ§Ã£o da permissÃ£o. De preenchimento obrigatÃ³rio, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificaÃ§Ã£o RFC-3339, sempre com a utilizaÃ§Ã£o de timezone UTC(UTC time format).
+		// ExpirationDateTime Data e hora de expiração da permissão. De preenchimento obrigatório, reflete a data limite de validade do consentimento. Uma string com data e hora conforme especificação RFC-3339, sempre com a utilização de timezone UTC(UTC time format).
 		ExpirationDateTime timeutil.DateTime `json:"expirationDateTime"`
 
-		// HistoricalData Objeto que agrupa todos dados histÃ³ricos do cliente.
+		// HistoricalData Objeto que agrupa todos dados históricos do cliente.
 		HistoricalData *struct {
-			// Customer Objeto que agrupa as categorias de dados histÃ³ricos cadastrais do cliente.
+			// Customer Objeto que agrupa as categorias de dados históricos cadastrais do cliente.
 			Customer *struct {
 				ComplimentaryInformationData *QuoteRequestAutoLead_Data_HistoricalData_Customer_ComplimentaryInformationData `json:"complimentaryInformationData,omitempty"`
 				IdentificationData           *QuoteRequestAutoLead_Data_HistoricalData_Customer_IdentificationData           `json:"identificationData,omitempty"`
 				QualificationData            *QuoteRequestAutoLead_Data_HistoricalData_Customer_QualificationData            `json:"qualificationData,omitempty"`
 			} `json:"customer,omitempty"`
 
-			// Policies Lista que agrupa os dados das apÃ³lices histÃ³ricos em categorias.
+			// Policies Lista que agrupa os dados das apólices históricos em categorias.
 			Policies *PolicyDataAutoLead `json:"policies,omitempty"`
 		} `json:"historicalData,omitempty"`
 
@@ -7734,14 +7744,14 @@ type QuoteRequestAutoLead struct {
 			QualificationData            *QuoteRequestAutoLead_Data_QuoteCustomer_QualificationData            `json:"qualificationData,omitempty"`
 		} `json:"quoteCustomer"`
 
-		// QuoteData Objeto que agrupa dados especÃficos do ramo de cotaÃ§Ã£o.
+		// QuoteData Objeto que agrupa dados específicos do ramo de cotação.
 		QuoteData struct {
 			// Coverages Lista que agrupa os dados de coberturas.
 			Coverages []struct {
 				// Branch Grupo e ramo da cobertura
 				Branch string `json:"branch"`
 
-				// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+				// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 				Code QuoteRequestAutoLeadDataQuoteDataCoveragesCode `json:"code"`
 			} `json:"coverages"`
 		} `json:"quoteData"`
@@ -7778,28 +7788,28 @@ type QuoteRequestAutoLead_Data_QuoteCustomer_QualificationData struct {
 	union json.RawMessage
 }
 
-// QuoteRequestAutoLeadDataQuoteDataCoveragesCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// QuoteRequestAutoLeadDataQuoteDataCoveragesCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type QuoteRequestAutoLeadDataQuoteDataCoveragesCode string
 
 // QuoteResultAssistance defines model for QuoteResultAssistance.
 type QuoteResultAssistance struct {
-	// AssistancePremiumAmount Valor de PrÃªmio da AssistÃªncia
+	// AssistancePremiumAmount Valor de Prêmio da Assistência
 	AssistancePremiumAmount *AmountDetails `json:"assistancePremiumAmount,omitempty"`
 
-	// Description DescriÃ§Ã£o do serviÃ§o prestado
+	// Description Descrição do serviço prestado
 	Description string `json:"description"`
 
-	// Service Nome do serviÃ§o prestado
+	// Service Nome do serviço prestado
 	Service QuoteResultAssistanceService `json:"service"`
 
-	// Type Tipo de prestaÃ§Ã£o de serviÃ§os
+	// Type Tipo de prestação de serviços
 	Type QuoteResultAssistanceType `json:"type"`
 }
 
-// QuoteResultAssistanceService Nome do serviÃ§o prestado
+// QuoteResultAssistanceService Nome do serviço prestado
 type QuoteResultAssistanceService string
 
-// QuoteResultAssistanceType Tipo de prestaÃ§Ã£o de serviÃ§os
+// QuoteResultAssistanceType Tipo de prestação de serviços
 type QuoteResultAssistanceType string
 
 // QuoteResultPayment defines model for QuoteResultPayment.
@@ -7807,14 +7817,14 @@ type QuoteResultPayment struct {
 	// Amount Valor da parcela
 	Amount AmountDetails `json:"amount"`
 
-	// PaymentType Meio de Pagamento Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+	// PaymentType Meio de Pagamento Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 	PaymentType QuoteResultPaymentPaymentType `json:"paymentType"`
 }
 
-// QuoteResultPaymentPaymentType Meio de Pagamento Obs: ObrigatÃ³rio caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
+// QuoteResultPaymentPaymentType Meio de Pagamento Obs: Obrigatório caso Tipo de Movimento for  LIQUIDACAO_DE_PREMIO e LIQUIDACAO_DE_CUSTO_DE_AQUISICAO
 type QuoteResultPaymentPaymentType string
 
-// QuoteResultPremium Objeto que agrupa dados de prÃªmio.
+// QuoteResultPremium Objeto que agrupa dados de prêmio.
 type QuoteResultPremium struct {
 	// IOF Valor do IOF
 	IOF AmountDetails `json:"IOF"`
@@ -7822,19 +7832,19 @@ type QuoteResultPremium struct {
 	// Coverages Lista que agrupa os dados de coberturas.
 	Coverages []QuoteResultPremiumCoverage `json:"coverages"`
 
-	// InterestRateOverPayments Taxa de juros sobre o parcelamento do prÃªmio
+	// InterestRateOverPayments Taxa de juros sobre o parcelamento do prêmio
 	InterestRateOverPayments *float32 `json:"interestRateOverPayments,omitempty"`
 
 	// Payments Lista que agrupa os dados de pagamentos.
 	Payments []QuoteResultPayment `json:"payments"`
 
-	// PaymentsQuantity Quantidade de parcelas do prÃªmio do contrato
+	// PaymentsQuantity Quantidade de parcelas do prêmio do contrato
 	PaymentsQuantity string `json:"paymentsQuantity"`
 
-	// TotalNetAmount Valor de prÃªmio lÃquido total
+	// TotalNetAmount Valor de prêmio líquido total
 	TotalNetAmount AmountDetails `json:"totalNetAmount"`
 
-	// TotalPremiumAmount Valor total do prÃªmio do contrato
+	// TotalPremiumAmount Valor total do prêmio do contrato
 	TotalPremiumAmount AmountDetails `json:"totalPremiumAmount"`
 }
 
@@ -7843,20 +7853,20 @@ type QuoteResultPremiumCoverage struct {
 	// Branch Grupo e ramo da cobertura
 	Branch string `json:"branch"`
 
-	// Code CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+	// Code Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 	Code QuoteResultPremiumCoverageCode `json:"code"`
 
-	// Description DescriÃ§Ã£o / Nome da Cobertura (Caso CÃ³digo da Cobertura for "OUTRAS")
+	// Description Descrição / Nome da Cobertura (Caso Código da Cobertura for "OUTRAS")
 	Description *string `json:"description,omitempty"`
 
-	// InternalCode CÃ³digo interno da cobertura da seguradora
+	// InternalCode Código interno da cobertura da seguradora
 	InternalCode *string `json:"internalCode,omitempty"`
 
-	// PremiumAmount Valor de PrÃªmio da Cobertura
+	// PremiumAmount Valor de Prêmio da Cobertura
 	PremiumAmount AmountDetails `json:"premiumAmount"`
 }
 
-// QuoteResultPremiumCoverageCode CÃ³digo da cobertura, conforme Anexo II do Manual de Escopo de Dados
+// QuoteResultPremiumCoverageCode Código da cobertura, conforme Anexo II do Manual de Escopo de Dados
 type QuoteResultPremiumCoverageCode string
 
 // QuoteStatus defines model for QuoteStatus.
@@ -7864,28 +7874,28 @@ type QuoteStatus struct {
 	// RejectionReason Campo condicionado ao status "RJCT", que deve apresentar a justificativa a recusa ao risco.
 	RejectionReason *string `json:"rejectionReason,omitempty"`
 
-	// Status Status da cotaÃ§Ã£o.
+	// Status Status da cotação.
 	Status QuoteStatusStatus `json:"status"`
 
-	// StatusUpdateDateTime Data e hora da atualizaÃ§Ã£o do status.
+	// StatusUpdateDateTime Data e hora da atualização do status.
 	StatusUpdateDateTime timeutil.DateTime `json:"statusUpdateDateTime"`
 }
 
-// QuoteStatusStatus Status da cotaÃ§Ã£o.
+// QuoteStatusStatus Status da cotação.
 type QuoteStatusStatus string
 
 // QuoteStatusAuto defines model for QuoteStatusAuto.
 type QuoteStatusAuto struct {
-	// QuoteCustomData Objeto que agrupa as categorias de dados customizÃ¡veis em listas.
+	// QuoteCustomData Objeto que agrupa as categorias de dados customizáveis em listas.
 	QuoteCustomData *QuoteCustomData              `json:"quoteCustomData,omitempty"`
 	QuoteCustomer   QuoteStatusAuto_QuoteCustomer `json:"quoteCustomer"`
 
-	// QuoteData Objeto que agrupa dados especÃficos do ramo de cotaÃ§Ã£o.
+	// QuoteData Objeto que agrupa dados específicos do ramo de cotação.
 	QuoteData ResultQuoteQuoteAuto `json:"quoteData"`
 
-	// Quotes Lista de cotaÃ§Ãµes enviadas pela seguradora.
+	// Quotes Lista de cotações enviadas pela seguradora.
 	Quotes []struct {
-		// Assistances Lista que agrupa dados de assistÃªncias.
+		// Assistances Lista que agrupa dados de assistências.
 		Assistances []QuoteResultAssistance `json:"assistances"`
 
 		// Coverages Lista que agrupa os dados de coberturas.
@@ -7894,10 +7904,10 @@ type QuoteStatusAuto struct {
 		// InsurerQuoteID Id da proposta da segurada
 		InsurerQuoteID string `json:"insurerQuoteId"`
 
-		// PremiumInfo Objeto que agrupa dados de prÃªmio.
+		// PremiumInfo Objeto que agrupa dados de prêmio.
 		PremiumInfo QuoteResultPremium `json:"premiumInfo"`
 
-		// SusepProcessNumbers NÃºmero do Processo Susep das Coberturas
+		// SusepProcessNumbers Número do Processo Susep das Coberturas
 		SusepProcessNumbers []string `json:"susepProcessNumbers"`
 	} `json:"quotes"`
 }
@@ -7910,16 +7920,16 @@ type QuoteStatusAuto_QuoteCustomer struct {
 // ResponseError defines model for ResponseError.
 type ResponseError struct {
 	Errors []struct {
-		// Code CÃ³digo de erro especÃfico do endpoint
+		// Code Código de erro específico do endpoint
 		Code string `json:"code"`
 
-		// Detail DescriÃ§Ã£o legÃvel por humanos deste erro especÃfico
+		// Detail Descrição legível por humanos deste erro específico
 		Detail string `json:"detail"`
 
-		// RequestDateTime Data e hora da consulta, conforme especificaÃ§Ã£o RFC-3339, formato UTC.
+		// RequestDateTime Data e hora da consulta, conforme especificação RFC-3339, formato UTC.
 		RequestDateTime *timeutil.DateTime `json:"requestDateTime,omitempty"`
 
-		// Title TÃtulo legÃvel por humanos deste erro especÃfico
+		// Title Título legível por humanos deste erro específico
 		Title string `json:"title"`
 	} `json:"errors"`
 	Meta *api.Meta `json:"meta,omitempty"`
@@ -7927,31 +7937,31 @@ type ResponseError struct {
 
 // ResponsePatch defines model for ResponsePatch.
 type ResponsePatch struct {
-	// Data Objeto contendo informaÃ§Ãµes da atualizaÃ§Ã£o.
+	// Data Objeto contendo informações da atualização.
 	Data struct {
 		// InsurerQuoteID Id da proposta da segurada
-		// Esse ID Ã© utilizado em jornadas de cotaÃ§Ã£o completa/firme e leva o nÃºmero identificador da proposta aceita (ACKN) pelo cliente.
+		// Esse ID é utilizado em jornadas de cotação completa/firme e leva o número identificador da proposta aceita (ACKN) pelo cliente.
 		// Condicional ao status de ACKN.
 		InsurerQuoteID *string `json:"insurerQuoteId,omitempty"`
 
 		// Links Condicional ao status de ACKN.
 		Links *struct {
-			// Redirect Link interno da seguradora, onde o cliente Ã© redirecionado para conclusÃ£o da contrataÃ§Ã£o
+			// Redirect Link interno da seguradora, onde o cliente é redirecionado para conclusão da contratação
 			Redirect string `json:"redirect"`
 		} `json:"links,omitempty"`
 
-		// ProtocolDateTime Data e hora do protocolamento da cotaÃ§Ã£o, conforme especificaÃ§Ã£o RFC-3339, formato UTC. Condicional ao status de ACKN.
+		// ProtocolDateTime Data e hora do protocolamento da cotação, conforme especificação RFC-3339, formato UTC. Condicional ao status de ACKN.
 		ProtocolDateTime *timeutil.DateTime `json:"protocolDateTime,omitempty"`
 
-		// ProtocolNumber Protocolo referente a cotaÃ§Ã£o aceita. Condicional ao status de ACKN.
+		// ProtocolNumber Protocolo referente a cotação aceita. Condicional ao status de ACKN.
 		ProtocolNumber *string `json:"protocolNumber,omitempty"`
 
-		// Status Status da cotaÃ§Ã£o.
+		// Status Status da cotação.
 		Status ResponsePatchDataStatus `json:"status"`
 	} `json:"data"`
 }
 
-// ResponsePatchDataStatus Status da cotaÃ§Ã£o.
+// ResponsePatchDataStatus Status da cotação.
 type ResponsePatchDataStatus string
 
 // ResponseQuoteAuto defines model for ResponseQuoteAuto.
@@ -7971,52 +7981,52 @@ type ResponseQuoteAutoLead struct {
 // ResponseQuoteStatusAuto defines model for ResponseQuoteStatusAuto.
 type ResponseQuoteStatusAuto struct {
 	Data struct {
-		// QuoteInfo Objeto que agrupa todos os dados de cotaÃ§Ã£o. Condicional ao pedido de cotaÃ§Ã£o jÃ¡ ter sido aceita.
+		// QuoteInfo Objeto que agrupa todos os dados de cotação. Condicional ao pedido de cotação já ter sido aceita.
 		QuoteInfo *QuoteStatusAuto `json:"quoteInfo,omitempty"`
 
 		// RejectionReason Campo condicionado ao status "RJCT", que deve apresentar a justificativa a recusa ao risco.
 		RejectionReason *string `json:"rejectionReason,omitempty"`
 
-		// Status Status da cotaÃ§Ã£o.
+		// Status Status da cotação.
 		Status ResponseQuoteStatusAutoDataStatus `json:"status"`
 
-		// StatusUpdateDateTime Data e hora da atualizaÃ§Ã£o do status.
+		// StatusUpdateDateTime Data e hora da atualização do status.
 		StatusUpdateDateTime timeutil.DateTime `json:"statusUpdateDateTime"`
 	} `json:"data"`
 	Links api.Links `json:"links"`
 	Meta  api.Meta  `json:"meta"`
 }
 
-// ResponseQuoteStatusAutoDataStatus Status da cotaÃ§Ã£o.
+// ResponseQuoteStatusAutoDataStatus Status da cotação.
 type ResponseQuoteStatusAutoDataStatus string
 
 // ResponseRevokePatch defines model for ResponseRevokePatch.
 type ResponseRevokePatch struct {
-	// Data Objeto contendo informaÃ§Ãµes da atualizaÃ§Ã£o.
+	// Data Objeto contendo informações da atualização.
 	Data struct {
-		// Status Status da cotaÃ§Ã£o.
+		// Status Status da cotação.
 		Status ResponseRevokePatchDataStatus `json:"status"`
 	} `json:"data"`
 }
 
-// ResponseRevokePatchDataStatus Status da cotaÃ§Ã£o.
+// ResponseRevokePatchDataStatus Status da cotação.
 type ResponseRevokePatchDataStatus string
 
-// ResultQuoteQuoteAuto Objeto que agrupa dados especÃficos do ramo de cotaÃ§Ã£o.
+// ResultQuoteQuoteAuto Objeto que agrupa dados específicos do ramo de cotação.
 type ResultQuoteQuoteAuto struct {
-	// BonusClass Classe de BÃ´nus. Condicional, caso a opÃ§Ã£o '2. RenovaÃ§Ã£o' seja selecionada no campo 'tipo de Seguro'
+	// BonusClass Classe de Bônus. Condicional, caso a opção '2. Renovação' seja selecionada no campo 'tipo de Seguro'
 	BonusClass *string `json:"bonusClass,omitempty"`
 
-	// Currency Moeda de emissÃ£o do contrato de acordo com ISO-4217.
+	// Currency Moeda de emissão do contrato de acordo com ISO-4217.
 	Currency ResultQuoteQuoteAutoCurrency `json:"currency"`
 
-	// HasAnIndividualItem Trata-se uma apÃ³lice individual com apenas um item?
+	// HasAnIndividualItem Trata-se uma apólice individual com apenas um item?
 	HasAnIndividualItem bool `json:"hasAnIndividualItem"`
 
-	// IdentifierCode CÃ³digo Identificador. Condicional, caso a opÃ§Ã£o '2. RenovaÃ§Ã£o' seja selecionada no campo 'tipo de Seguro'
+	// IdentifierCode Código Identificador. Condicional, caso a opção '2. Renovação' seja selecionada no campo 'tipo de Seguro'
 	IdentifierCode *string `json:"identifierCode,omitempty"`
 
-	// IncludesAssistanceServices Deseja contrataÃ§Ã£o de serviÃ§os de assistÃªncia
+	// IncludesAssistanceServices Deseja contratação de serviços de assistência
 	IncludesAssistanceServices bool `json:"includesAssistanceServices"`
 
 	// InsuranceType Tipo de Seguro
@@ -8025,49 +8035,49 @@ type ResultQuoteQuoteAuto struct {
 	// InsuredObjects Lista que agrupa os dados de objetos segurados.
 	InsuredObjects *[]QuoteAutoResultInsuredObject `json:"insuredObjects,omitempty"`
 
-	// InsurerID Nome para identifcar a congÃªnere de renovaÃ§Ã£o
+	// InsurerID Nome para identifcar a congênere de renovação
 	InsurerID *string `json:"insurerId,omitempty"`
 
-	// IsCollectiveStipulated ApÃ³lice coletiva, por estipulaÃ§Ã£o ou automÃ³vel frota?
+	// IsCollectiveStipulated Apólice coletiva, por estipulação ou automóvel frota?
 	IsCollectiveStipulated bool `json:"isCollectiveStipulated"`
 
-	// PolicyID NÃºmero para identificar a apÃ³lice atual
+	// PolicyID Número para identificar a apólice atual
 	PolicyID *string `json:"policyId,omitempty"`
 
-	// TermEndDate AtÃ© as 24 horas do dia
+	// TermEndDate Até as 24 horas do dia
 	TermEndDate timeutil.BrazilDate `json:"termEndDate"`
 
-	// TermStartDate VigÃªncia das 24 horas do dia
+	// TermStartDate Vigência das 24 horas do dia
 	TermStartDate timeutil.BrazilDate `json:"termStartDate"`
 
-	// TermType Tipo de vigÃªncia
+	// TermType Tipo de vigência
 	TermType ResultQuoteQuoteAutoTermType `json:"termType"`
 }
 
-// ResultQuoteQuoteAutoCurrency Moeda de emissÃ£o do contrato de acordo com ISO-4217.
+// ResultQuoteQuoteAutoCurrency Moeda de emissão do contrato de acordo com ISO-4217.
 type ResultQuoteQuoteAutoCurrency string
 
 // ResultQuoteQuoteAutoInsuranceType Tipo de Seguro
 type ResultQuoteQuoteAutoInsuranceType string
 
-// ResultQuoteQuoteAutoTermType Tipo de vigÃªncia
+// ResultQuoteQuoteAutoTermType Tipo de vigência
 type ResultQuoteQuoteAutoTermType string
 
 // RevokePatchPayload defines model for RevokePatchPayload.
 type RevokePatchPayload struct {
-	// Data RevogaÃ§Ã£o de LEAD.
+	// Data Revogação de LEAD.
 	Data struct {
 		Author struct {
-			// IdentificationNumber NÃºmero de identificaÃ§Ã£o (CPF ou CNPJ) do solicitante do cancelamento/revogaÃ§Ã£o.
+			// IdentificationNumber Número de identificação (CPF ou CNPJ) do solicitante do cancelamento/revogação.
 			IdentificationNumber string `json:"identificationNumber"`
 
-			// IdentificationType Tipo identificaÃ§Ã£o (CPF ou CNPJ) do solicitante do cancelamento/revogaÃ§Ã£o.
+			// IdentificationType Tipo identificação (CPF ou CNPJ) do solicitante do cancelamento/revogação.
 			IdentificationType RevokePatchPayloadDataAuthorIdentificationType `json:"identificationType"`
 		} `json:"author"`
 	} `json:"data"`
 }
 
-// RevokePatchPayloadDataAuthorIdentificationType Tipo identificaÃ§Ã£o (CPF ou CNPJ) do solicitante do cancelamento/revogaÃ§Ã£o.
+// RevokePatchPayloadDataAuthorIdentificationType Tipo identificação (CPF ou CNPJ) do solicitante do cancelamento/revogação.
 type RevokePatchPayloadDataAuthorIdentificationType string
 
 // Authorization defines model for Authorization.
@@ -8144,105 +8154,105 @@ type UnprocessableEntityQuote = N422ResponseErrorCreateQuote
 
 // PostQuoteAutoLeadParams defines parameters for PostQuoteAutoLead.
 type PostQuoteAutoLeadParams struct {
-	// Authorization CabeÃ§alho HTTP padrÃ£o. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
+	// Authorization Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
 	Authorization Authorization `json:"Authorization"`
 
-	// XFapiAuthDate Data em que o usuÃ¡rio logou pela Ãºltima vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+	// XFapiAuthDate Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
 	XFapiAuthDate *XFapiAuthDate `json:"x-fapi-auth-date,omitempty"`
 
-	// XFapiCustomerIPAddress O endereÃ§o IP do usuÃ¡rio se estiver atualmente logado com o receptor.
+	// XFapiCustomerIPAddress O endereço IP do usuário se estiver atualmente logado com o receptor.
 	XFapiCustomerIPAddress *XFapiCustomerIPAddress `json:"x-fapi-customer-ip-address,omitempty"`
 
-	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlaÃ§Ã£o. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeÃ§alho de resposta.
+	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
 	XFapiInteractionID XFapiInteractionID `json:"x-fapi-interaction-id"`
 
-	// XCustomerUserAgent Indica o user-agent que o usuÃ¡rio utiliza.
+	// XCustomerUserAgent Indica o user-agent que o usuário utiliza.
 	XCustomerUserAgent *XCustomerUserAgent `json:"x-customer-user-agent,omitempty"`
 
-	// XIdempotencyKey CabeÃ§alho HTTP personalizado. Identificador de solicitaÃ§Ã£o
-	// exclusivo para suportar a idempotÃªncia.
+	// XIdempotencyKey Cabeçalho HTTP personalizado. Identificador de solicitação
+	// exclusivo para suportar a idempotência.
 	XIdempotencyKey XIdempotencyKey `json:"x-idempotency-key"`
 }
 
 // PatchQuoteAutoLeadParams defines parameters for PatchQuoteAutoLead.
 type PatchQuoteAutoLeadParams struct {
-	// Authorization CabeÃ§alho HTTP padrÃ£o. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
+	// Authorization Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
 	Authorization Authorization `json:"Authorization"`
 
-	// XFapiAuthDate Data em que o usuÃ¡rio logou pela Ãºltima vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+	// XFapiAuthDate Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
 	XFapiAuthDate *XFapiAuthDate `json:"x-fapi-auth-date,omitempty"`
 
-	// XFapiCustomerIPAddress O endereÃ§o IP do usuÃ¡rio se estiver atualmente logado com o receptor.
+	// XFapiCustomerIPAddress O endereço IP do usuário se estiver atualmente logado com o receptor.
 	XFapiCustomerIPAddress *XFapiCustomerIPAddress `json:"x-fapi-customer-ip-address,omitempty"`
 
-	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlaÃ§Ã£o. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeÃ§alho de resposta.
+	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
 	XFapiInteractionID XFapiInteractionID `json:"x-fapi-interaction-id"`
 
-	// XCustomerUserAgent Indica o user-agent que o usuÃ¡rio utiliza.
+	// XCustomerUserAgent Indica o user-agent que o usuário utiliza.
 	XCustomerUserAgent *XCustomerUserAgent `json:"x-customer-user-agent,omitempty"`
 }
 
 // PostQuoteAutoParams defines parameters for PostQuoteAuto.
 type PostQuoteAutoParams struct {
-	// Authorization CabeÃ§alho HTTP padrÃ£o. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
+	// Authorization Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
 	Authorization Authorization `json:"Authorization"`
 
-	// XFapiAuthDate Data em que o usuÃ¡rio logou pela Ãºltima vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+	// XFapiAuthDate Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
 	XFapiAuthDate *XFapiAuthDate `json:"x-fapi-auth-date,omitempty"`
 
-	// XFapiCustomerIPAddress O endereÃ§o IP do usuÃ¡rio se estiver atualmente logado com o receptor.
+	// XFapiCustomerIPAddress O endereço IP do usuário se estiver atualmente logado com o receptor.
 	XFapiCustomerIPAddress *XFapiCustomerIPAddress `json:"x-fapi-customer-ip-address,omitempty"`
 
-	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlaÃ§Ã£o. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeÃ§alho de resposta.
+	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
 	XFapiInteractionID XFapiInteractionID `json:"x-fapi-interaction-id"`
 
-	// XCustomerUserAgent Indica o user-agent que o usuÃ¡rio utiliza.
+	// XCustomerUserAgent Indica o user-agent que o usuário utiliza.
 	XCustomerUserAgent *XCustomerUserAgent `json:"x-customer-user-agent,omitempty"`
 
-	// XIdempotencyKey CabeÃ§alho HTTP personalizado. Identificador de solicitaÃ§Ã£o
-	// exclusivo para suportar a idempotÃªncia.
+	// XIdempotencyKey Cabeçalho HTTP personalizado. Identificador de solicitação
+	// exclusivo para suportar a idempotência.
 	XIdempotencyKey XIdempotencyKey `json:"x-idempotency-key"`
 }
 
 // PatchQuoteAutoParams defines parameters for PatchQuoteAuto.
 type PatchQuoteAutoParams struct {
-	// Authorization CabeÃ§alho HTTP padrÃ£o. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
+	// Authorization Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
 	Authorization Authorization `json:"Authorization"`
 
-	// XFapiAuthDate Data em que o usuÃ¡rio logou pela Ãºltima vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+	// XFapiAuthDate Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
 	XFapiAuthDate *XFapiAuthDate `json:"x-fapi-auth-date,omitempty"`
 
-	// XFapiCustomerIPAddress O endereÃ§o IP do usuÃ¡rio se estiver atualmente logado com o receptor.
+	// XFapiCustomerIPAddress O endereço IP do usuário se estiver atualmente logado com o receptor.
 	XFapiCustomerIPAddress *XFapiCustomerIPAddress `json:"x-fapi-customer-ip-address,omitempty"`
 
-	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlaÃ§Ã£o. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeÃ§alho de resposta.
+	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
 	XFapiInteractionID XFapiInteractionID `json:"x-fapi-interaction-id"`
 
-	// XCustomerUserAgent Indica o user-agent que o usuÃ¡rio utiliza.
+	// XCustomerUserAgent Indica o user-agent que o usuário utiliza.
 	XCustomerUserAgent *XCustomerUserAgent `json:"x-customer-user-agent,omitempty"`
 }
 
 // GetQuoteAutoParams defines parameters for GetQuoteAuto.
 type GetQuoteAutoParams struct {
-	// Page NÃºmero da pÃ¡gina que estÃ¡ sendo requisitada (o valor da primeira pÃ¡gina Ã© 1).
+	// Page Número da página que está sendo requisitada (o valor da primeira página é 1).
 	Page *Page `form:"page,omitempty" json:"page,omitempty"`
 
-	// PageSize Quantidade total de registros por pÃ¡ginas.
+	// PageSize Quantidade total de registros por páginas.
 	PageSize *PageSize `form:"page-size,omitempty" json:"page-size,omitempty"`
 
-	// Authorization CabeÃ§alho HTTP padrÃ£o. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
+	// Authorization Cabeçalho HTTP padrão. Permite que as credenciais sejam fornecidas dependendo do tipo de recurso solicitado.
 	Authorization Authorization `json:"Authorization"`
 
-	// XFapiAuthDate Data em que o usuÃ¡rio logou pela Ãºltima vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
+	// XFapiAuthDate Data em que o usuário logou pela última vez com o receptor. Representada de acordo com a [RFC7231](https://tools.ietf.org/html/rfc7231). Exemplo: Sun, 10 Sep 2017 19:43:31 UTC
 	XFapiAuthDate *XFapiAuthDate `json:"x-fapi-auth-date,omitempty"`
 
-	// XFapiCustomerIPAddress O endereÃ§o IP do usuÃ¡rio se estiver atualmente logado com o receptor.
+	// XFapiCustomerIPAddress O endereço IP do usuário se estiver atualmente logado com o receptor.
 	XFapiCustomerIPAddress *XFapiCustomerIPAddress `json:"x-fapi-customer-ip-address,omitempty"`
 
-	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlaÃ§Ã£o. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeÃ§alho de resposta.
+	// XFapiInteractionID Um UID [RFC4122](https://tools.ietf.org/html/rfc4122) usado como um ID de correlação. Se fornecido, o transmissor deve "reproduzir" esse valor no cabeçalho de resposta.
 	XFapiInteractionID XFapiInteractionID `json:"x-fapi-interaction-id"`
 
-	// XCustomerUserAgent Indica o user-agent que o usuÃ¡rio utiliza.
+	// XCustomerUserAgent Indica o user-agent que o usuário utiliza.
 	XCustomerUserAgent *XCustomerUserAgent `json:"x-customer-user-agent,omitempty"`
 }
 
@@ -9066,19 +9076,19 @@ func (t *QuoteStatusAuto_QuoteCustomer) UnmarshalJSON(b []byte) error {
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-	// Envia dados de cotaÃ§Ã£o e contrataÃ§Ã£o de AutoLead
+	// Envia dados de cotação e contratação de AutoLead
 	// (POST /lead/request)
 	PostQuoteAutoLead(w http.ResponseWriter, r *http.Request, params PostQuoteAutoLeadParams)
-	// Atualiza dados de cotaÃ§Ã£o e contrataÃ§Ã£o de AutoLead identificado por consentId
+	// Atualiza dados de cotação e contratação de AutoLead identificado por consentId
 	// (PATCH /lead/request/{consentId})
 	PatchQuoteAutoLead(w http.ResponseWriter, r *http.Request, consentID ConsentID, params PatchQuoteAutoLeadParams)
-	// Envia dados de cotaÃ§Ã£o e contrataÃ§Ã£o de Auto
+	// Envia dados de cotação e contratação de Auto
 	// (POST /request)
 	PostQuoteAuto(w http.ResponseWriter, r *http.Request, params PostQuoteAutoParams)
-	// Atualiza dados de cotaÃ§Ã£o e contrataÃ§Ã£o de Auto identificado por consentId
+	// Atualiza dados de cotação e contratação de Auto identificado por consentId
 	// (PATCH /request/{consentId})
 	PatchQuoteAuto(w http.ResponseWriter, r *http.Request, consentID ConsentID, params PatchQuoteAutoParams)
-	// ObtÃ©m os dados de cotaÃ§Ã£o e contrataÃ§Ã£o de Auto identificado por consentId
+	// Obtém os dados de cotação e contratação de Auto identificado por consentId
 	// (GET /request/{consentId}/quote-status)
 	GetQuoteAuto(w http.ResponseWriter, r *http.Request, consentID ConsentID, params GetQuoteAutoParams)
 }
@@ -10649,19 +10659,19 @@ func (response GetQuoteAutodefaultApplicationJSONCharsetUTF8Response) VisitGetQu
 
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
-	// Envia dados de cotaÃ§Ã£o e contrataÃ§Ã£o de AutoLead
+	// Envia dados de cotação e contratação de AutoLead
 	// (POST /lead/request)
 	PostQuoteAutoLead(ctx context.Context, request PostQuoteAutoLeadRequestObject) (PostQuoteAutoLeadResponseObject, error)
-	// Atualiza dados de cotaÃ§Ã£o e contrataÃ§Ã£o de AutoLead identificado por consentId
+	// Atualiza dados de cotação e contratação de AutoLead identificado por consentId
 	// (PATCH /lead/request/{consentId})
 	PatchQuoteAutoLead(ctx context.Context, request PatchQuoteAutoLeadRequestObject) (PatchQuoteAutoLeadResponseObject, error)
-	// Envia dados de cotaÃ§Ã£o e contrataÃ§Ã£o de Auto
+	// Envia dados de cotação e contratação de Auto
 	// (POST /request)
 	PostQuoteAuto(ctx context.Context, request PostQuoteAutoRequestObject) (PostQuoteAutoResponseObject, error)
-	// Atualiza dados de cotaÃ§Ã£o e contrataÃ§Ã£o de Auto identificado por consentId
+	// Atualiza dados de cotação e contratação de Auto identificado por consentId
 	// (PATCH /request/{consentId})
 	PatchQuoteAuto(ctx context.Context, request PatchQuoteAutoRequestObject) (PatchQuoteAutoResponseObject, error)
-	// ObtÃ©m os dados de cotaÃ§Ã£o e contrataÃ§Ã£o de Auto identificado por consentId
+	// Obtém os dados de cotação e contratação de Auto identificado por consentId
 	// (GET /request/{consentId}/quote-status)
 	GetQuoteAuto(ctx context.Context, request GetQuoteAutoRequestObject) (GetQuoteAutoResponseObject, error)
 }
@@ -10859,588 +10869,595 @@ func (sh *strictHandler) GetQuoteAuto(w http.ResponseWriter, r *http.Request, co
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"QwBNAwA=",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
