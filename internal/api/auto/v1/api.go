@@ -17,6 +17,8 @@ import (
 	"github.com/luikyv/mock-insurer/internal/page"
 )
 
+var _ StrictServerInterface = Server{}
+
 type Server struct {
 	baseURL        string
 	service        auto.Service

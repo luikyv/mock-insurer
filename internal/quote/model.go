@@ -1,9 +1,42 @@
 package quote
 
 import (
+	"github.com/google/uuid"
 	"github.com/luikyv/mock-insurer/internal/customer"
 	"github.com/luikyv/mock-insurer/internal/insurer"
+	"github.com/luikyv/mock-insurer/internal/timeutil"
 )
+
+type Lead interface {
+	GetID() uuid.UUID
+	GetStatus() Status
+	SetStatus(Status)
+	SetStatusUpdatedAt(timeutil.DateTime)
+	SetUpdatedAt(timeutil.DateTime)
+	SetCreatedAt(timeutil.DateTime)
+	GetOrgID() string
+}
+
+type Quote interface {
+	GetID() uuid.UUID
+	GetStatus() Status
+	SetStatus(Status)
+	SetStatusUpdatedAt(timeutil.DateTime)
+	SetUpdatedAt(timeutil.DateTime)
+	SetCreatedAt(timeutil.DateTime)
+	GetTermStartDate() timeutil.BrazilDate
+	GetTermEndDate() timeutil.BrazilDate
+	SetRejectionReason(string)
+	SetInsurerQuoteID(string)
+	SetProtocolDateTime(timeutil.DateTime)
+	SetProtocolNumber(string)
+	SetRedirectLink(string)
+	GetPersonalIdentification() *string
+	GetBusinessIdentification() *string
+	GetOfferIDs() []string
+	CreateOffers()
+	GetOrgID() string
+}
 
 type Status string
 
@@ -55,4 +88,14 @@ type PatchData struct {
 	InsurerQuoteID             *string
 	AuthorIdentificationType   insurer.IdentificationType
 	AuthorIdentificationNumber string
+}
+
+type LeadQuery struct {
+	ID        string
+	ConsentID string
+}
+
+type Query struct {
+	ID        string
+	ConsentID string
 }

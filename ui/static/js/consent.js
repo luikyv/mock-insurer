@@ -15,10 +15,10 @@ function toggleGroup(selector) {
   boxes.forEach((b) => (b.checked = !allChecked));
 }
 
-document.getElementById('accountsSelectAll')?.addEventListener('click', () => {
-  toggleGroup('.account-checkbox');
+document.getElementById('auto-policies-select-all')?.addEventListener('click', () => {
+  toggleGroup('.auto-policy-checkbox');
 });
 
-document.getElementById('loansSelectAll')?.addEventListener('click', () => {
-  toggleGroup('.loan-checkbox');
+document.getElementById('capitalization-title-plans-select-all')?.addEventListener('click', () => {
+  toggleGroup('.capitalization-title-plan-checkbox');
 });

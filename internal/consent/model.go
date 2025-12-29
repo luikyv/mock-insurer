@@ -213,12 +213,6 @@ const (
 
 type Permissions []Permission
 
-func (p Permissions) HasAutoPermissions() bool {
-	return slices.ContainsFunc(p, func(permission Permission) bool {
-		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_AUTO_")
-	})
-}
-
 func (p Permissions) HasCustomerPersonalPermissions() bool {
 	return slices.ContainsFunc(p, func(permission Permission) bool {
 		return strings.HasPrefix(string(permission), "CUSTOMERS_PERSONAL_")
@@ -228,6 +222,23 @@ func (p Permissions) HasCustomerPersonalPermissions() bool {
 func (p Permissions) HasCustomerBusinessPermissions() bool {
 	return slices.ContainsFunc(p, func(permission Permission) bool {
 		return strings.HasPrefix(string(permission), "CUSTOMERS_BUSINESS_")
+	})
+}
+
+func (p Permissions) HasAutoPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_AUTO_")
+	})
+}
+
+func (p Permissions) HasCapitalizationTitlePermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return slices.Contains([]Permission{
+			PermissionCapitalizationTitleRead,
+			PermissionCapitalizationTitlePlanInfoRead,
+			PermissionCapitalizationTitleEventsRead,
+			PermissionCapitalizationTitleSettlementsRead,
+		}, permission)
 	})
 }
 

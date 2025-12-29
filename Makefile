@@ -60,7 +60,8 @@ cs-tests:
 	@conformance/venv/bin/python conformance/run-test-plan.py \
 		"Insurance auto api test v1.4.0" ./conformance/config.json \
 		"Insurance customer personal api test-v1.6.0" ./conformance/config.json \
-		"quote-auto_test-plan-v1.10.0" ./conformance/config.json \
+		"capitalization-title_test-plan_v1.5.0" ./conformance/config.json \
+		"quote-auto_test-plan-v1.10" ./conformance/config.json \
 		--expected-skips-file ./conformance/expected_skips.json \
 		--expected-failures-file ./conformance/expected_failures.json \
 		--export-dir ./conformance/results \

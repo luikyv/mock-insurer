@@ -20,7 +20,8 @@ const (
 type Type string
 
 const (
-	TypeAuto Type = "DAMAGES_AND_PEOPLE_AUTO"
+	TypeAuto                Type = "DAMAGES_AND_PEOPLE_AUTO"
+	TypeCapitalizationTitle Type = "CAPITALIZATION_TITLES"
 )
 
 type Resource struct {

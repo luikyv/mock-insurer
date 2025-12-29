@@ -6,6 +6,7 @@ import (
 	"github.com/luikyv/mock-insurer/internal/auto"
 	"github.com/luikyv/mock-insurer/internal/insurer"
 	"github.com/luikyv/mock-insurer/internal/quote"
+	"github.com/luikyv/mock-insurer/internal/strutil"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"gorm.io/gorm"
 )
@@ -35,6 +36,127 @@ func (p *Quote) BeforeCreate(tx *gorm.DB) error {
 		p.ID = uuid.New()
 	}
 	return nil
+}
+
+func (q *Quote) GetID() uuid.UUID {
+	return q.ID
+}
+
+func (q *Quote) GetStatus() quote.Status {
+	return q.Status
+}
+
+func (q *Quote) SetStatus(status quote.Status) {
+	q.Status = status
+}
+
+func (q *Quote) SetStatusUpdatedAt(updatedAt timeutil.DateTime) {
+	q.StatusUpdatedAt = updatedAt
+}
+
+func (q *Quote) SetUpdatedAt(updatedAt timeutil.DateTime) {
+	q.UpdatedAt = updatedAt
+}
+
+func (q *Quote) SetCreatedAt(createdAt timeutil.DateTime) {
+	q.CreatedAt = createdAt
+
+}
+
+func (q *Quote) GetTermStartDate() timeutil.BrazilDate {
+	return q.Data.TermStartDate
+}
+
+func (q *Quote) GetTermEndDate() timeutil.BrazilDate {
+	return q.Data.TermEndDate
+}
+
+func (q *Quote) SetRejectionReason(rejectionReason string) {
+	q.Data.RejectionReason = &rejectionReason
+}
+
+func (q *Quote) SetInsurerQuoteID(insurerQuoteID string) {
+	q.Data.InsurerQuoteID = &insurerQuoteID
+}
+
+func (q *Quote) SetProtocolDateTime(protocolDateTime timeutil.DateTime) {
+	q.Data.ProtocolDateTime = &protocolDateTime
+}
+
+func (q *Quote) SetProtocolNumber(protocolNumber string) {
+	q.Data.ProtocolNumber = &protocolNumber
+}
+
+func (q *Quote) SetRedirectLink(redirectLink string) {
+	q.Data.RedirectLink = &redirectLink
+}
+
+func (q *Quote) GetPersonalIdentification() *string {
+	if q.Data.Customer.Personal == nil {
+		return nil
+	}
+	return &q.Data.Customer.Personal.Identification.CPF
+}
+
+func (q *Quote) GetBusinessIdentification() *string {
+	if q.Data.Customer.Business == nil {
+		return nil
+	}
+	return &q.Data.Customer.Business.Identification.CompanyInfo.CNPJ
+}
+
+func (q *Quote) GetOfferIDs() []string {
+	if q.Data.Quotes == nil {
+		return nil
+	}
+
+	offerIDs := make([]string, 0, len(*q.Data.Quotes))
+	for _, o := range *q.Data.Quotes {
+		offerIDs = append(offerIDs, o.InsurerQuoteID)
+	}
+	return offerIDs
+}
+
+func (q *Quote) CreateOffers() {
+	q.Data.Quotes = &[]Offer{
+		{
+			InsurerQuoteID:      uuid.New().String(),
+			SusepProcessNumbers: []string{strutil.Random(50)},
+			Premium: Premium{
+				PaymentsQuantity: "1",
+				TotalAmount: insurer.AmountDetails{
+					Amount:   "100.00",
+					UnitType: insurer.UnitTypeMonetary,
+					Unit: &insurer.Unit{
+						Code:        insurer.UnitCodeReal,
+						Description: insurer.UnitDescriptionBRL,
+					},
+				},
+				TotalNetAmount: insurer.AmountDetails{
+					Amount:   "100.00",
+					UnitType: insurer.UnitTypeMonetary,
+					Unit: &insurer.Unit{
+						Code:        insurer.UnitCodeReal,
+						Description: insurer.UnitDescriptionBRL,
+					},
+				},
+				IOF: insurer.AmountDetails{
+					Amount:   "100.00",
+					UnitType: insurer.UnitTypeMonetary,
+					Unit: &insurer.Unit{
+						Code:        insurer.UnitCodeReal,
+						Description: insurer.UnitDescriptionBRL,
+					},
+				},
+			},
+			Coverages:   []OfferCoverage{},
+			Assistances: []Assistance{},
+		},
+	}
+}
+
+func (q *Quote) GetOrgID() string {
+	return q.OrgID
 }
 
 type Data struct {
@@ -84,6 +206,34 @@ func (l *Lead) BeforeCreate(tx *gorm.DB) error {
 		l.ID = uuid.New()
 	}
 	return nil
+}
+
+func (l *Lead) GetID() uuid.UUID {
+	return l.ID
+}
+
+func (l *Lead) GetStatus() quote.Status {
+	return l.Status
+}
+
+func (l *Lead) SetStatus(status quote.Status) {
+	l.Status = status
+}
+
+func (l *Lead) SetStatusUpdatedAt(updatedAt timeutil.DateTime) {
+	l.StatusUpdatedAt = updatedAt
+}
+
+func (l *Lead) SetUpdatedAt(updatedAt timeutil.DateTime) {
+	l.UpdatedAt = updatedAt
+}
+
+func (l *Lead) SetCreatedAt(createdAt timeutil.DateTime) {
+	l.CreatedAt = createdAt
+}
+
+func (l *Lead) GetOrgID() string {
+	return l.OrgID
 }
 
 type LeadData struct {
@@ -600,13 +750,3 @@ const (
 	TariffBusNationalAndImported          Tariff = "ONIBUS_NACIONAL_E_IMPORTADO"
 	TariffUtilityNationalAndImported      Tariff = "UTILITARIO_NACIONAL_E_IMPORTADO"
 )
-
-type LeadQuery struct {
-	ID        string
-	ConsentID string
-}
-
-type Query struct {
-	ID        string
-	ConsentID string
-}

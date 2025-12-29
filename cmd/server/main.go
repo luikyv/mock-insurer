@@ -14,6 +14,7 @@ import (
 
 	"github.com/luikyv/mock-insurer/cmd/cmdutil"
 	autoapi "github.com/luikyv/mock-insurer/internal/api/auto"
+	capitalizationtitleapi "github.com/luikyv/mock-insurer/internal/api/capitalizationtitle"
 	consentapi "github.com/luikyv/mock-insurer/internal/api/consent"
 	customerapi "github.com/luikyv/mock-insurer/internal/api/customer"
 	oidcapi "github.com/luikyv/mock-insurer/internal/api/oidc"
@@ -31,6 +32,7 @@ import (
 	"github.com/luikyv/go-oidc/pkg/goidc"
 	"github.com/luikyv/go-oidc/pkg/provider"
 	"github.com/luikyv/mock-insurer/internal/api"
+	"github.com/luikyv/mock-insurer/internal/capitalizationtitle"
 	"github.com/luikyv/mock-insurer/internal/consent"
 	"github.com/luikyv/mock-insurer/internal/oidc"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
@@ -88,9 +90,10 @@ func main() {
 	consentService := consent.NewService(db, userService)
 	customerService := customer.NewService(db)
 	autoService := auto.NewService(db)
+	capitalizationTitleService := capitalizationtitle.NewService(db)
 	quoteAutoService := quoteauto.NewService(db)
 
-	op, err := openidProvider(db, clientService, userService, consentService, autoService)
+	op, err := openidProvider(db, clientService, userService, consentService, autoService, capitalizationTitleService)
 	if err != nil {
 		slog.Error("failed to create openid provider", "error", err)
 		os.Exit(1)
@@ -104,6 +107,7 @@ func main() {
 	resourceapi.NewServer(APIMTLSHost, resourceService, consentService, op).RegisterRoutes(mux)
 	customerapi.NewServer(APIMTLSHost, customerService, consentService, op).RegisterRoutes(mux)
 	autoapi.NewServer(APIMTLSHost, autoService, consentService, op).RegisterRoutes(mux)
+	capitalizationtitleapi.NewServer(APIMTLSHost, capitalizationTitleService, consentService, op).RegisterRoutes(mux)
 	quoteautoapi.NewServer(APIMTLSHost, quoteAutoService, idempotencyService, op).RegisterRoutes(mux)
 
 	handler := middleware(mux)
@@ -183,6 +187,7 @@ func openidProvider(
 	userService user.Service,
 	consentService consent.Service,
 	autoService auto.Service,
+	capitalizationTitleService capitalizationtitle.Service,
 ) (*provider.Provider, error) {
 	var scopes = []goidc.Scope{
 		goidc.ScopeOpenID,
@@ -191,6 +196,7 @@ func openidProvider(
 		resource.Scope,
 		customer.Scope,
 		auto.Scope,
+		capitalizationtitle.Scope,
 		quoteauto.Scope,
 		quoteauto.ScopeLead,
 		goidc.NewScope("dynamic-fields"),
@@ -269,7 +275,7 @@ func openidProvider(
 		provider.WithIDTokenEncryption(goidc.RSA_OAEP),
 		provider.WithIDTokenContentEncryptionAlgs(goidc.A256GCM),
 		provider.WithHandleGrantFunc(oidc.HandleGrantFunc(op, consentService)),
-		provider.WithPolicies(oidc.Policies(AuthHost, userService, consentService, autoService)...),
+		provider.WithPolicies(oidc.Policies(AuthHost, userService, consentService, autoService, capitalizationTitleService)...),
 		provider.WithNotifyErrorFunc(oidc.LogError),
 		provider.WithDCR(oidc.DCRFunc(oidc.DCRConfig{
 			Scopes:       scopes,

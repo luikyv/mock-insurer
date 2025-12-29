@@ -19,8 +19,8 @@ func NewService(db *gorm.DB) Service {
 	return Service{storage: storage{db: db}}
 }
 
-func (s Service) Policies(ctx context.Context, orgID string, opts *Filter, pag page.Pagination) (page.Page[*Policy], error) {
-	return s.storage.policies(ctx, orgID, opts, pag)
+func (s Service) Policies(ctx context.Context, ownerID, orgID string, pag page.Pagination) (page.Page[*Policy], error) {
+	return s.storage.policies(ctx, ownerID, orgID, pag)
 }
 
 func (s Service) Authorize(ctx context.Context, ids []string, ownerID, consentID, orgID string) error {

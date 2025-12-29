@@ -13,6 +13,7 @@ import (
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
 	"github.com/luikyv/mock-insurer/internal/auto"
+	"github.com/luikyv/mock-insurer/internal/capitalizationtitle"
 	"github.com/luikyv/mock-insurer/internal/consent"
 	"github.com/luikyv/mock-insurer/internal/page"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
@@ -26,11 +27,12 @@ const (
 	sessionParamUserID     = "user_id"
 	sessionParamBusinessID = "business_id"
 
-	formParamUsername      = "username"
-	formParamPassword      = "password"
-	formParamLogin         = "login"
-	formParamConsent       = "consent"
-	formParamAutoPolicyIDs = "auto-policies"
+	formParamUsername                   = "username"
+	formParamPassword                   = "password"
+	formParamLogin                      = "login"
+	formParamConsent                    = "consent"
+	formParamAutoPolicyIDs              = "auto-policies"
+	formParamCapitalizationTitlePlanIDs = "capitalization-title-plans"
 
 	correctPassword = "P@ssword01"
 )
@@ -42,6 +44,7 @@ func Policies(
 	userService user.Service,
 	consentService consent.Service,
 	autoService auto.Service,
+	capitalizationTitleService capitalizationtitle.Service,
 ) []goidc.AuthnPolicy {
 	tmpl := template.Must(template.ParseFS(ui.Templates, "*.html"))
 	return []goidc.AuthnPolicy{
@@ -59,7 +62,13 @@ func Policies(
 			},
 			goidc.NewAuthnStep("setup", validateConsentStep(consentService)),
 			goidc.NewAuthnStep("login", loginStep(baseURL, tmpl, userService)),
-			goidc.NewAuthnStep("consent", grantConsentStep(baseURL, tmpl, userService, consentService, autoService)),
+			goidc.NewAuthnStep("consent", grantConsentStep(
+				baseURL, tmpl,
+				userService,
+				consentService,
+				autoService,
+				capitalizationTitleService,
+			)),
 			goidc.NewAuthnStep("finish", grantAuthorizationStep()),
 		),
 	}
@@ -150,16 +159,18 @@ func grantConsentStep(
 	userService user.Service,
 	consentService consent.Service,
 	autoService auto.Service,
+	capitalizationTitleService capitalizationtitle.Service,
 ) goidc.AuthnFunc {
 	type Page struct {
-		BaseURL              string
-		CallbackID           string
-		UserCPF              string
-		BusinessCNPJ         string
-		Nonce                string
-		CustomerPersonalInfo bool
-		CustomerBusinessInfo bool
-		AutoPolicies         []*auto.Policy
+		BaseURL                  string
+		CallbackID               string
+		UserCPF                  string
+		BusinessCNPJ             string
+		Nonce                    string
+		CustomerPersonalInfo     bool
+		CustomerBusinessInfo     bool
+		AutoPolicies             []*auto.Policy
+		CapitalizationTitlePlans []*capitalizationtitle.Plan
 	}
 
 	renderConsentPage := func(w http.ResponseWriter, r *http.Request, as *goidc.AuthnSession, c *consent.Consent) (goidc.Status, error) {
@@ -172,15 +183,6 @@ func grantConsentStep(
 
 		userID := as.StoredParameter(sessionParamUserID).(string)
 		orgID := as.StoredParameter(OrgIDKey).(string)
-		if c.Permissions.HasAutoPermissions() {
-			slog.InfoContext(r.Context(), "rendering consent page with auto policies")
-			policies, err := autoService.Policies(r.Context(), orgID, &auto.Filter{OwnerID: userID}, page.NewPagination(nil, nil))
-			if err != nil {
-				slog.ErrorContext(r.Context(), "could not load the user accounts", "error", err)
-				return goidc.StatusFailure, fmt.Errorf("could not load the user accounts")
-			}
-			consentPage.AutoPolicies = policies.Records
-		}
 
 		if c.Permissions.HasCustomerPersonalPermissions() {
 			slog.InfoContext(r.Context(), "rendering consent page with customer personal information")
@@ -190,6 +192,26 @@ func grantConsentStep(
 		if c.Permissions.HasCustomerBusinessPermissions() {
 			slog.InfoContext(r.Context(), "rendering consent page with customer business information")
 			consentPage.CustomerBusinessInfo = true
+		}
+
+		if c.Permissions.HasAutoPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with auto policies")
+			policies, err := autoService.Policies(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's auto policies", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's auto policies")
+			}
+			consentPage.AutoPolicies = policies.Records
+		}
+
+		if c.Permissions.HasCapitalizationTitlePermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with capitalization title plans")
+			plans, err := capitalizationTitleService.Plans(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's capitalization title plans", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's capitalization title plans")
+			}
+			consentPage.CapitalizationTitlePlans = plans.Records
 		}
 
 		return renderPage(w, tmpl, "consent", consentPage)
@@ -257,6 +279,15 @@ func grantConsentStep(
 			slog.InfoContext(r.Context(), "authorizing auto policies", "auto policies", autoPolicyIDs)
 			if err := autoService.Authorize(r.Context(), autoPolicyIDs, userID, c.ID.String(), orgID); err != nil {
 				slog.InfoContext(r.Context(), "could not authorize auto policies", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
+
+		if c.Permissions.HasCapitalizationTitlePermissions() {
+			capitalizationTitlePlanIDs := r.Form[formParamCapitalizationTitlePlanIDs]
+			slog.InfoContext(r.Context(), "authorizing capitalization title plans", "capitalization title plans", capitalizationTitlePlanIDs)
+			if err := capitalizationTitleService.Authorize(r.Context(), capitalizationTitlePlanIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize capitalization title plans", "error", err)
 				return goidc.StatusFailure, err
 			}
 		}

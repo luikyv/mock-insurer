@@ -20,6 +20,8 @@ import (
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 )
 
+var _ StrictServerInterface = Server{}
+
 type Server struct {
 	baseURL            string
 	service            quoteauto.Service

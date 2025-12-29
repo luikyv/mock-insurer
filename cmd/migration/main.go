@@ -98,7 +98,7 @@ func seedDatabase(ctx context.Context, db *gorm.DB) error {
 }
 
 func seedOAuthClients(ctx context.Context, db *gorm.DB) error {
-	scopes := "openid consents consent resources customers insurance-auto quote-auto quote-auto-lead dynamic-fields"
+	scopes := "openid consents consent resources customers insurance-auto capitalization-title quote-auto quote-auto-lead dynamic-fields"
 	testClientOne := &client.Client{
 		ID: "client_one",
 		Data: goidc.Client{

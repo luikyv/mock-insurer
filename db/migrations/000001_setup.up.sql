@@ -1,13 +1,3 @@
-CREATE TABLE sessions (
-    id UUID PRIMARY KEY,
-    username TEXT,
-    organizations JSONB,
-    expires_at TIMESTAMPTZ NOT NULL,
-    code_verifier TEXT,
-    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
-    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
-);
-
 CREATE TABLE mock_users (
     id UUID PRIMARY KEY,
     username TEXT NOT NULL,
@@ -199,6 +189,48 @@ CREATE TABLE insurance_auto_policy_claims (
     updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
+CREATE TABLE insurance_capitalization_title_plans (
+    id UUID PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_capitalization_title_plans (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    plan_id UUID NOT NULL REFERENCES insurance_capitalization_title_plans(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_capitalization_title_plans PRIMARY KEY (consent_id, plan_id)
+);
+
+CREATE TABLE insurance_capitalization_title_events (
+    id UUID PRIMARY KEY,
+    plan_id UUID NOT NULL REFERENCES insurance_capitalization_title_plans(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_capitalization_title_settlements (
+    id UUID PRIMARY KEY,
+    plan_id UUID NOT NULL REFERENCES insurance_capitalization_title_plans(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
 CREATE OR REPLACE VIEW consent_resources AS
     WITH authorised_consents AS (SELECT id, org_id FROM consents WHERE status = 'AUTHORISED')
 
@@ -212,7 +244,21 @@ CREATE OR REPLACE VIEW consent_resources AS
         consent_insurance_auto_policies.created_at,
         consent_insurance_auto_policies.updated_at
     FROM consent_insurance_auto_policies
-    JOIN authorised_consents ON consent_insurance_auto_policies.consent_id = authorised_consents.id AND consent_insurance_auto_policies.org_id = authorised_consents.org_id;
+    JOIN authorised_consents ON consent_insurance_auto_policies.consent_id = authorised_consents.id AND consent_insurance_auto_policies.org_id = authorised_consents.org_id
+
+    UNION ALL
+
+    SELECT
+        'CAPITALIZATION_TITLES' AS resource_type,
+        consent_insurance_capitalization_title_plans.consent_id,
+        consent_insurance_capitalization_title_plans.plan_id::TEXT AS resource_id,
+        consent_insurance_capitalization_title_plans.owner_id,
+        consent_insurance_capitalization_title_plans.status,
+        consent_insurance_capitalization_title_plans.org_id,
+        consent_insurance_capitalization_title_plans.created_at,
+        consent_insurance_capitalization_title_plans.updated_at
+    FROM consent_insurance_capitalization_title_plans
+    JOIN authorised_consents ON consent_insurance_capitalization_title_plans.consent_id = authorised_consents.id AND consent_insurance_capitalization_title_plans.org_id = authorised_consents.org_id;
 
     -- UNION ALL
 

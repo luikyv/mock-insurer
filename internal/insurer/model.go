@@ -86,6 +86,7 @@ const (
 	CountrySubDivisionES CountrySubDivision = "ES"
 	CountrySubDivisionGO CountrySubDivision = "GO"
 	CountrySubDivisionMA CountrySubDivision = "MA"
+	CountrySubDivisionRJ CountrySubDivision = "RJ"
 )
 
 type PhoneAreaCode string

@@ -11,7 +11,7 @@ import (
 )
 
 type Storage interface {
-	policies(ctx context.Context, orgID string, opts *Filter, pag page.Pagination) (page.Page[*Policy], error)
+	policies(ctx context.Context, ownerID, orgID string, pag page.Pagination) (page.Page[*Policy], error)
 	createConsentPolicy(ctx context.Context, c *ConsentPolicy) error
 	consentPolicy(ctx context.Context, id, consentID, orgID string) (*ConsentPolicy, error)
 	consentPolicies(ctx context.Context, consentID, orgID string, pag page.Pagination) (page.Page[*ConsentPolicy], error)
@@ -23,15 +23,13 @@ type storage struct {
 	db *gorm.DB
 }
 
-func (s storage) policies(ctx context.Context, orgID string, opts *Filter, pag page.Pagination) (page.Page[*Policy], error) {
-	query := s.db.WithContext(ctx).Where("org_id = ? OR cross_org = true", orgID).Order("created_at DESC")
-	if opts.OwnerID != "" {
-		query = query.Where("owner_id = ?", opts.OwnerID)
-	}
-
+func (s storage) policies(ctx context.Context, ownerID, orgID string, pag page.Pagination) (page.Page[*Policy], error) {
+	query := s.db.WithContext(ctx).
+		Where("owner_id = ? OR org_id = ? OR cross_org = true", ownerID, orgID).
+		Order("created_at DESC")
 	policies, err := page.Paginate[*Policy](query, pag)
 	if err != nil {
-		return page.Page[*Policy]{}, err
+		return page.Page[*Policy]{}, fmt.Errorf("failed to find policies: %w", err)
 	}
 	return policies, nil
 }

@@ -97,6 +97,8 @@ To run Mock Insurer with the Open Finance Conformance Suite:
    ```
 
 ## TODO
+- Drop all data.
+- Migration as a container?
 - DB indexes.
 - Add doc.go's.
 - Remove descriptions.
