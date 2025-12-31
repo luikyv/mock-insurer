@@ -170,7 +170,7 @@ func TestUpdate(t *testing.T) {
 					t.Errorf("got CNPJ %v, want %s", updated.CNPJ, *tt.updates.CNPJ)
 				}
 			}
-			if !updated.CreatedAt.Truncate(time.Second).Equal(user.CreatedAt.Time.Truncate(time.Second)) {
+			if !updated.CreatedAt.Truncate(time.Second).Equal(user.CreatedAt.Truncate(time.Second)) {
 				t.Errorf("got CreatedAt %s, want %s", updated.CreatedAt.String(), user.CreatedAt.String())
 			}
 			if updated.UpdatedAt.Before(user.UpdatedAt) {
