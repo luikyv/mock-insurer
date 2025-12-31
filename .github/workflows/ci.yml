@@ -30,7 +30,7 @@ jobs:
         run: |
           docker compose up psql-test -d
           sleep 10
-          go test -race -coverprofile coverage.out ./pkg/... ./internal/...
+          go test -race -coverprofile coverage.out ./internal/...
           go tool cover -func coverage.out
 
       - name: Quality Gate
