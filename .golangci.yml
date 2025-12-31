@@ -9,7 +9,6 @@ linters:
     - copyloopvar
     - decorder
     - dogsled
-    - dupl
     - errchkjson
     - errorlint
     - errname
