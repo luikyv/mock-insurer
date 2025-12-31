@@ -48,6 +48,9 @@ build:
 lint:
 	@golangci-lint run ./...
 
+test-db:
+	@docker compose up psql-test
+
 test:
 	@go test ./internal/...
 

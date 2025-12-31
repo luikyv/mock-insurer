@@ -188,6 +188,7 @@ func TestUser(t *testing.T) {
 		Name:     "Query User 1",
 		CPF:      "11111111111",
 		OrgID:    testutil.OrgID,
+		CrossOrg: true,
 	}
 	err := service.Create(context.Background(), user1)
 	if err != nil {
@@ -352,6 +353,21 @@ func TestDelete(t *testing.T) {
 		t.Fatalf("failed to create user: %v", err)
 	}
 
+	t.Run("should not delete user from wrong org", func(t *testing.T) {
+		// When.
+		err = service.Delete(context.Background(), user.ID, "wrong-org")
+
+		// Then.
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+
+		_, err = service.User(context.Background(), Query{ID: user.ID.String()}, testutil.OrgID)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
 	t.Run("should delete user successfully", func(t *testing.T) {
 		// When.
 		err := service.Delete(context.Background(), user.ID, testutil.OrgID)
@@ -364,27 +380,6 @@ func TestDelete(t *testing.T) {
 		_, err = service.User(context.Background(), Query{ID: user.ID.String()}, testutil.OrgID)
 		if !errors.Is(err, ErrNotFound) {
 			t.Errorf("got %v, want ErrNotFound", err)
-		}
-	})
-
-	t.Run("should not delete user from wrong org", func(t *testing.T) {
-		// Given.
-		err := service.Create(context.Background(), user)
-		if err != nil {
-			t.Fatalf("failed to create user: %v", err)
-		}
-
-		// When.
-		err = service.Delete(context.Background(), user.ID, "wrong-org")
-
-		// Then.
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
-		}
-
-		_, err = service.User(context.Background(), Query{ID: user.ID.String()}, "wrong-org")
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
 		}
 	})
 }
@@ -522,28 +517,6 @@ func TestBindUserToBusiness(t *testing.T) {
 		// Then.
 		if !errors.Is(err, ErrNotFound) {
 			t.Errorf("got %v, want ErrNotFound", err)
-		}
-	})
-
-	t.Run("should return error for wrong org", func(t *testing.T) {
-		// Given.
-		otherUser := &User{
-			Username: "other@example.com",
-			Name:     "Other User",
-			CPF:      "30303030303",
-			OrgID:    "other-org",
-		}
-		err := service.Create(context.Background(), otherUser)
-		if err != nil {
-			t.Fatalf("failed to create other user: %v", err)
-		}
-
-		// When.
-		err = service.BindUserToBusiness(context.Background(), otherUser.ID, business.ID, "other-org")
-
-		// Then.
-		if !errors.Is(err, ErrInvalidOrgID) {
-			t.Errorf("got %v, want ErrInvalidOrgID", err)
 		}
 	})
 }

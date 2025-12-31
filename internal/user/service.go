@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm/clause"
 
@@ -98,7 +99,10 @@ func (s Service) Users(ctx context.Context, orgID string, pag page.Pagination) (
 }
 
 func (s Service) Delete(ctx context.Context, id uuid.UUID, orgID string) error {
-	return s.db.WithContext(ctx).Where("id = ? AND org_id = ?", id, orgID).Delete(&User{}).Error
+	if err := s.db.WithContext(ctx).Where("id = ? AND org_id = ?", id, orgID).Delete(&User{}).Error; err != nil {
+		return fmt.Errorf("could not delete user: %w", err)
+	}
+	return nil
 }
 
 // Business retrieves and returns the business user entity associated with the specified user ID and CNPJ.
@@ -131,21 +135,17 @@ func (s Service) BindUserToBusiness(ctx context.Context, userID, businessID uuid
 	if err != nil {
 		return err
 	}
-	if business.OrgID != orgID {
-		return ErrInvalidOrgID
+	if business.CNPJ == nil {
+		return ErrBusinessHasNoCNPJ
 	}
-	// TODO: check if business is a company.
 
 	user, err := s.User(ctx, Query{ID: userID.String()}, orgID)
 	if err != nil {
 		return err
 	}
-	if user.OrgID != orgID {
-		return ErrInvalidOrgID
-	}
 
 	userBusiness := &UserBusiness{
-		UserID:         userID,
+		UserID:         user.ID,
 		BusinessUserID: business.ID,
 		OrgID:          orgID,
 	}

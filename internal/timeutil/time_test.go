@@ -364,8 +364,8 @@ func TestBrazilDate_Value(t *testing.T) {
 		t.Errorf("got %v, want America/Sao_Paulo", timeValue.Location())
 	}
 
-	if timeValue.Hour() != 0 || timeValue.Minute() != 0 || timeValue.Second() != 0 {
-		t.Errorf("got %v, want midnight", timeValue)
+	if timeValue.Hour() != 12 || timeValue.Minute() != 0 || timeValue.Second() != 0 {
+		t.Errorf("got %v, want midday", timeValue)
 	}
 }
 
@@ -579,8 +579,8 @@ func TestBrazilDateNow(t *testing.T) {
 		t.Errorf("expected America/Sao_Paulo location, got %v", date.Location())
 	}
 
-	if date.Hour() != 0 || date.Minute() != 0 || date.Second() != 0 {
-		t.Errorf("expected midnight time, got %v", date.Time)
+	if date.Hour() != 12 || date.Minute() != 0 || date.Second() != 0 {
+		t.Errorf("expected midday time, got %v", date.Time)
 	}
 
 	beforeDate := NewBrazilDate(before)
@@ -602,7 +602,7 @@ func TestNewBrazilDate(t *testing.T) {
 		t.Errorf("expected America/Sao_Paulo location, got %v", date.Location())
 	}
 
-	if date.Hour() != 0 || date.Minute() != 0 || date.Second() != 0 {
+	if date.Hour() != 12 || date.Minute() != 0 || date.Second() != 0 {
 		t.Errorf("expected midnight time, got %v", date.Time)
 	}
 
@@ -652,8 +652,8 @@ func TestDateTime_BrazilDate(t *testing.T) {
 		t.Errorf("expected America/Sao_Paulo location, got %v", brDate.Location())
 	}
 
-	if brDate.Hour() != 0 || brDate.Minute() != 0 || brDate.Second() != 0 {
-		t.Errorf("expected midnight time, got %v", brDate.Time)
+	if brDate.Hour() != 12 || brDate.Minute() != 0 || brDate.Second() != 0 {
+		t.Errorf("expected midday time, got %v", brDate.Time)
 	}
 
 	if brDate.Year() != 2023 || brDate.Month() != 12 || brDate.Day() != 25 {

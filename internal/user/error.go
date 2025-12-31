@@ -7,4 +7,5 @@ var (
 	ErrAlreadyExists          = errors.New("entity already exists")
 	ErrUserDoesNotOwnBusiness = errors.New("user is not associated with the business")
 	ErrInvalidOrgID           = errors.New("invalid org id")
+	ErrBusinessHasNoCNPJ      = errors.New("business has no cnpj")
 )

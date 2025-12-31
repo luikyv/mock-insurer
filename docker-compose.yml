@@ -44,7 +44,6 @@ services:
         aliases:
           - database.local
 
-  # TODO: Remove this service. Mock the unit tests since the cs will use the real database.
   psql-test:
     profiles:
       - test
