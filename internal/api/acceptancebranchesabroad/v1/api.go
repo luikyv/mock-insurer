@@ -4,7 +4,6 @@ package v1
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
@@ -440,7 +439,7 @@ func (s Server) GetInsuranceAcceptanceAndBranchesAbroadpolicyIDPremium(ctx conte
 					payments = append(payments, Payment{
 						MovementDate:             pay.MovementDate,
 						MovementType:             PaymentMovementType(pay.MovementType),
-						MovementPaymentsNumber:   fmt.Sprintf("%d", pay.MovementPaymentsNumber),
+						MovementPaymentsNumber:   pay.MovementPaymentsNumber,
 						Amount:                   pay.Amount,
 						MaturityDate:             pay.MaturityDate,
 						TellerID:                 pay.TellerID,
