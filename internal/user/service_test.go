@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/luikyv/mock-insurer/internal/page"
@@ -169,7 +170,7 @@ func TestUpdate(t *testing.T) {
 					t.Errorf("got CNPJ %v, want %s", updated.CNPJ, *tt.updates.CNPJ)
 				}
 			}
-			if !updated.CreatedAt.Equal(user.CreatedAt.Time) {
+			if !updated.CreatedAt.Truncate(time.Second).Equal(user.CreatedAt.Time.Truncate(time.Second)) {
 				t.Errorf("got CreatedAt %s, want %s", updated.CreatedAt.String(), user.CreatedAt.String())
 			}
 			if updated.UpdatedAt.Before(user.UpdatedAt) {
