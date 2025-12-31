@@ -162,7 +162,7 @@ func fetchSoftwareStatementJWKS(keystoreHost string) (goidc.JSONWebKeySet, error
 	if err != nil {
 		return goidc.JSONWebKeySet{}, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if resp.StatusCode != http.StatusOK {
 		return goidc.JSONWebKeySet{}, fmt.Errorf("keystore jwks unexpected status code: %d", resp.StatusCode)

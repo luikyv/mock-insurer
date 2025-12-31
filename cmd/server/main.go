@@ -150,7 +150,15 @@ func main() {
 	handler := middleware(mux)
 	slog.Info("starting mock insurer")
 
-	if err := http.ListenAndServe(":"+Port, handler); err != nil && !errors.Is(err, http.ErrServerClosed) {
+	httpServer := &http.Server{
+		Addr:              ":" + Port,
+		Handler:           handler,
+		ReadTimeout:       5 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       120 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+	}
+	if err := httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		slog.Error("failed to start mock insurer", "error", err)
 		os.Exit(1)
 	}
@@ -191,6 +199,7 @@ func (h *logCtxHandler) Handle(ctx context.Context, r slog.Record) error {
 func httpClient() *http.Client {
 	tlsConfig := &tls.Config{
 		Renegotiation: tls.RenegotiateOnceAsClient,
+		MinVersion:    tls.VersionTLS13,
 	}
 	if Env == cmdutil.LocalEnvironment {
 		tlsConfig.InsecureSkipVerify = true

@@ -92,7 +92,7 @@ const (
 	ClaimStatusClosedWithCompensation     ClaimStatus = "ENCERRADO_COM_INDENIZACAO"
 	ClaimStatusClosedWithoutCompensation  ClaimStatus = "ENCERRADO_SEM_INDENIZACAO"
 	ClaimStatusReopened                   ClaimStatus = "REABERTO"
-	ClaimStatusCanceledByOperationalError ClaimStatus = "CANCELADO_POR_ERRO_OPERACIONAL"
+	ClaimStatusCanceledByOperationalError ClaimStatus = "CANCELADO_POR_ERRO_OPERACIONAL" //nolint:misspell
 	ClaimStatusInitialEvaluation          ClaimStatus = "AVALIACAO_INICIAL"
 )
 
@@ -127,9 +127,9 @@ const (
 	CoverageCodeGAPOutstandingBalance                                           CoverageCode = "GAP_SALDO_DEVEDOR"
 	CoverageCodeGAPAccessoryExpenses                                            CoverageCode = "GAP_DESPESAS_ACESSORIAS"
 	CoverageCodeStopLoss                                                        CoverageCode = "STOP_LOSS"
-	CoverageCodeNonPaymentOfInsuredClientPortfolio                              CoverageCode = "NAO_PAGAMENTO_DA_CARTEIRA_DE_CLIENTES_DO_SEGURADO"
-	CoverageCodeNonPaymentOfInsuredClientPortfolioCommercialDefault             CoverageCode = "NAO_PAGAMENTO_DA_CARTEIRA_DE_CLIENTES_DO_SEGURADO_INADIMPLENCIA_POR_QUESTAO_COMERCIAL"
-	CoverageCodeNonPaymentOfInsuredClientPortfolioPoliticalExtraordinaryDefault CoverageCode = "NAO_PAGAMENTO_DA_CARTEIRA_DE_CLIENTES_DO_SEGURADO_INADIMPLENCIA_POR_QUESTAO_POLITICA_EXTRAORDINARIO"
+	CoverageCodeNonPaymentOfInsuredClientPortfolio                              CoverageCode = "NAO_PAGAMENTO_DA_CARTEIRA_DE_CLIENTES_DO_SEGURADO"                                                   //nolint:misspell
+	CoverageCodeNonPaymentOfInsuredClientPortfolioCommercialDefault             CoverageCode = "NAO_PAGAMENTO_DA_CARTEIRA_DE_CLIENTES_DO_SEGURADO_INADIMPLENCIA_POR_QUESTAO_COMERCIAL"               //nolint:misspell
+	CoverageCodeNonPaymentOfInsuredClientPortfolioPoliticalExtraordinaryDefault CoverageCode = "NAO_PAGAMENTO_DA_CARTEIRA_DE_CLIENTES_DO_SEGURADO_INADIMPLENCIA_POR_QUESTAO_POLITICA_EXTRAORDINARIO" //nolint:misspell
 	CoverageCodeOthers                                                          CoverageCode = "OUTRAS"
 )
 
@@ -232,7 +232,7 @@ const (
 	IntermediaryTypeBroker                       IntermediaryType = "CORRETOR"
 	IntermediaryTypeRepresentative               IntermediaryType = "REPRESENTANTE"
 	IntermediaryTypeStipulatorEndorserInstitutor IntermediaryType = "ESTIPULANTE_AVERBADOR_INSTITUIDOR"
-	IntermediaryTypeCorrespondent                IntermediaryType = "CORRESPONDENTE"
+	IntermediaryTypeCorrespondent                IntermediaryType = "CORRESPONDENTE" //nolint:misspell
 	IntermediaryTypeMicroinsuranceAgent          IntermediaryType = "AGENTE_DE_MICROSSEGUROS"
 	IntermediaryTypeOthers                       IntermediaryType = "OUTROS"
 )
@@ -250,7 +250,7 @@ type InsuredObjectType string
 
 const (
 	InsuredObjectTypeContract              InsuredObjectType = "CONTRATO"
-	InsuredObjectTypeAdministrativeProcess InsuredObjectType = "PROCESSO_ADMINISTRATIVO"
+	InsuredObjectTypeAdministrativeProcess InsuredObjectType = "PROCESSO_ADMINISTRATIVO" //nolint:misspell
 	InsuredObjectTypeJudicialProcess       InsuredObjectType = "PROCESSO_JUDICIAL"
 	InsuredObjectTypeAutomobile            InsuredObjectType = "AUTOMOVEL"
 	InsuredObjectTypeDriver                InsuredObjectType = "CONDUTOR"

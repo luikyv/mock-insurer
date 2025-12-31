@@ -327,7 +327,7 @@ const (
 	IncomeFrequencyBimonthly   IncomeFrequency = "BIMESTRAL"
 	IncomeFrequencyQuarterly   IncomeFrequency = "TRIMESTRAL"
 	IncomeFrequencySemiannual  IncomeFrequency = "SEMESTRAL"
-	IncomeFrequencyAnnual      IncomeFrequency = "ANUAL"
+	IncomeFrequencyAnnual      IncomeFrequency = "ANUAL" //nolint:misspell
 )
 
 type PersonalInformedPatrimony struct {

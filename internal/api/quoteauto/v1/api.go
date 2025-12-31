@@ -4,6 +4,7 @@ package v1
 import (
 	"context"
 	"errors"
+	"log/slog"
 	"net/http"
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
@@ -2334,7 +2335,7 @@ func (s Server) GetQuoteAuto(ctx context.Context, request GetQuoteAutoRequestObj
 					QuoteCustomer: func() QuoteStatusAuto_QuoteCustomer {
 						var quoteCustomer QuoteStatusAuto_QuoteCustomer
 						if q.Data.Customer.Personal != nil {
-							quoteCustomer.FromPersonalCustomerInfo(PersonalCustomerInfo{
+							if err := quoteCustomer.FromPersonalCustomerInfo(PersonalCustomerInfo{
 								Identification: func() *PersonalIdentificationData {
 									if q.Data.Customer.Personal.Identification == nil {
 										return nil
@@ -2547,7 +2548,9 @@ func (s Server) GetQuoteAuto(ctx context.Context, request GetQuoteAutoRequestObj
 										}(),
 									}
 								}(),
-							})
+							}); err != nil {
+								slog.ErrorContext(ctx, "failed to convert personal customer info", "error", err.Error())
+							}
 						} else if q.Data.Customer.Business != nil {
 							businessInfo := BusinessCustomerInfo{
 								Identification: func() *BusinessIdentificationData {
@@ -2822,7 +2825,9 @@ func (s Server) GetQuoteAuto(ctx context.Context, request GetQuoteAutoRequestObj
 									}
 								}(),
 							}
-							quoteCustomer.FromBusinessCustomerInfo(businessInfo)
+							if err := quoteCustomer.FromBusinessCustomerInfo(businessInfo); err != nil {
+								slog.ErrorContext(ctx, "failed to convert business customer info", "error", err.Error())
+							}
 						}
 						return quoteCustomer
 					}(),

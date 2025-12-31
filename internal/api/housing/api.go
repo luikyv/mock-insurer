@@ -33,4 +33,3 @@ func (s Server) RegisterRoutes(mux *http.ServeMux) {
 		versionV1: muxV1,
 	}))
 }
-

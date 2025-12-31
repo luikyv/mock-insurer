@@ -155,7 +155,7 @@ const (
 type Modality string
 
 const (
-	ModalityTraditional         Modality = "TRADICIONAL"
+	ModalityTraditional         Modality = "TRADICIONAL" //nolint:misspell
 	ModalityGuaranteeInstrument Modality = "INSTRUMENTO_GARANTIA"
 	ModalityScheduledPurchase   Modality = "COMPRA_PROGRAMADA"
 	ModalityPrizePhilanthropy   Modality = "FILANTROPIA_PREMIAVEL"
@@ -172,7 +172,7 @@ type Quota struct {
 type Index string
 
 const (
-	IndexBasicRemunerationSavingsDeposits Index = "INDICE_REMUNERACAO_BASICA_DEPOSITOS_POUPANCA"
+	IndexBasicRemunerationSavingsDeposits Index = "INDICE_REMUNERACAO_BASICA_DEPOSITOS_POUPANCA" //nolint:misspell
 	IndexIPCA                             Index = "IPCA"
 	IndexINCC                             Index = "INCC"
 	IndexINPC                             Index = "INPC"

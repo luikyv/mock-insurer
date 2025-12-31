@@ -19,14 +19,12 @@ import (
 const (
 	HeaderCustomerIPAddress  = "X-FAPI-Customer-IP-Address"
 	HeaderCustomerUserAgent  = "X-Customer-User-Agent"
-	HeaderXFAPIInteractionID = "X-FAPI-Interaction-ID"
+	HeaderXFAPIInteractionID = "X-Fapi-Interaction-Id"
 	HeaderVersion            = "X-V"
 	HeaderMinVersion         = "X-Min-V"
 )
 
-type Options struct {
-	ErrorPagination bool
-}
+type Options struct{}
 
 func CertCN(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -48,10 +46,7 @@ func FAPIID() func(http.Handler) http.Handler {
 	return FAPIIDWithOptions(nil)
 }
 
-func FAPIIDWithOptions(opts *Options) func(http.Handler) http.Handler {
-	if opts == nil {
-		opts = &Options{}
-	}
+func FAPIIDWithOptions(_ *Options) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			interactionID := r.Header.Get(HeaderXFAPIInteractionID)

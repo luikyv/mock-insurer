@@ -92,7 +92,7 @@ const (
 	ClaimStatusClosedWithCompensation     ClaimStatus = "ENCERRADO_COM_INDENIZACAO"
 	ClaimStatusClosedWithoutCompensation  ClaimStatus = "ENCERRADO_SEM_INDENIZACAO"
 	ClaimStatusReopened                   ClaimStatus = "REABERTO"
-	ClaimStatusCanceledByOperationalError ClaimStatus = "CANCELADO_POR_ERRO_OPERACIONAL"
+	ClaimStatusCanceledByOperationalError ClaimStatus = "CANCELADO_POR_ERRO_OPERACIONAL" //nolint:misspell
 	ClaimStatusInitialEvaluation          ClaimStatus = "AVALIACAO_INICIAL"
 )
 
@@ -226,7 +226,7 @@ const (
 	IntermediaryTypeBroker                       IntermediaryType = "CORRETOR"
 	IntermediaryTypeRepresentative               IntermediaryType = "REPRESENTANTE"
 	IntermediaryTypeStipulatorEndorserInstitutor IntermediaryType = "ESTIPULANTE_AVERBADOR_INSTITUIDOR"
-	IntermediaryTypeCorrespondent                IntermediaryType = "CORRESPONDENTE"
+	IntermediaryTypeCorrespondent                IntermediaryType = "CORRESPONDENTE" //nolint:misspell
 	IntermediaryTypeMicroinsuranceAgent          IntermediaryType = "AGENTE_DE_MICROSSEGUROS"
 	IntermediaryTypeOthers                       IntermediaryType = "OUTROS"
 )
@@ -244,7 +244,7 @@ type InsuredObjectType string
 
 const (
 	InsuredObjectTypeContract              InsuredObjectType = "CONTRATO"
-	InsuredObjectTypeAdministrativeProcess InsuredObjectType = "PROCESSO_ADMINISTRATIVO"
+	InsuredObjectTypeAdministrativeProcess InsuredObjectType = "PROCESSO_ADMINISTRATIVO" //nolint:misspell
 	InsuredObjectTypeJudicialProcess       InsuredObjectType = "PROCESSO_JUDICIAL"
 	InsuredObjectTypeAutomobile            InsuredObjectType = "AUTOMOVEL"
 	InsuredObjectTypeDriver                InsuredObjectType = "CONDUTOR"

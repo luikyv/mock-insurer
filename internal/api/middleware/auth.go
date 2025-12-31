@@ -18,11 +18,7 @@ func Auth(op *provider.Provider, grantType goidc.GrantType, scopes ...goidc.Scop
 	return AuthWithOptions(op, grantType, nil, scopes...)
 }
 
-func AuthWithOptions(op *provider.Provider, grantType goidc.GrantType, opts *Options, scopes ...goidc.Scope) func(http.Handler) http.Handler {
-	if opts == nil {
-		opts = &Options{}
-	}
-
+func AuthWithOptions(op *provider.Provider, grantType goidc.GrantType, _ *Options, scopes ...goidc.Scope) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()

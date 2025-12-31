@@ -62,7 +62,7 @@ const (
 	PeriodicityBimonthly  Periodicity = "BIMESTRAL"
 	PeriodicityQuarterly  Periodicity = "TRIMESTRAL"
 	PeriodicitySemiannual Periodicity = "SEMESTRAL"
-	PeriodicityAnnual     Periodicity = "ANUAL"
+	PeriodicityAnnual     Periodicity = "ANUAL" //nolint:misspell
 	PeriodicityOneTime    Periodicity = "PAGAMENTO_UNICO"
 	PeriodicityOthers     Periodicity = "OUTROS"
 )
@@ -70,6 +70,6 @@ const (
 type TaxRegime string
 
 const (
-	TaxRegimeProgressive TaxRegime = "PROGRESSIVO"
-	TaxRegimeRegressive  TaxRegime = "REGRESSIVO"
+	TaxRegimeProgressive TaxRegime = "PROGRESSIVO" //nolint:misspell
+	TaxRegimeRegressive  TaxRegime = "REGRESSIVO"  //nolint:misspell
 )

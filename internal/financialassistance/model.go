@@ -131,5 +131,5 @@ const (
 	CounterInstallmentPeriodicityBimonthly  CounterInstallmentPeriodicity = "BIMESTRAL"
 	CounterInstallmentPeriodicityQuarterly  CounterInstallmentPeriodicity = "TRIMESTRAL"
 	CounterInstallmentPeriodicitySemiannual CounterInstallmentPeriodicity = "SEMESTRAL"
-	CounterInstallmentPeriodicityAnnual     CounterInstallmentPeriodicity = "ANUAL"
+	CounterInstallmentPeriodicityAnnual     CounterInstallmentPeriodicity = "ANUAL" //nolint:misspell
 )

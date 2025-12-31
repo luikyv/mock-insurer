@@ -51,7 +51,7 @@ func main() {
 			w.Header().Set("Content-Type", "application/json")
 
 			w.WriteHeader(http.StatusOK)
-			io.WriteString(w, `{
+			_, _ = io.WriteString(w, `{
 				"authorization_endpoint": "https://directory.local/authorize",
 				"id_token_signing_alg_values_supported": [
 					"PS256",
@@ -271,7 +271,7 @@ func main() {
 	// does not accept self-signed certificates.
 	http.HandleFunc("GET directory.local/participants", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, `[
+		_, _ = io.WriteString(w, `[
 			{
 				"OrganisationId": "00000000-0000-0000-0000-000000000000",
 				"AuthorisationServers": [
@@ -429,7 +429,15 @@ func main() {
 		]`)
 	})
 	go func() {
-		if err := http.ListenAndServe(":80", nil); err != http.ErrServerClosed {
+		httpServer := &http.Server{
+			Addr:              ":80",
+			Handler:           nil,
+			ReadTimeout:       5 * time.Second,
+			WriteTimeout:      10 * time.Second,
+			IdleTimeout:       120 * time.Second,
+			ReadHeaderTimeout: 2 * time.Second,
+		}
+		if err := httpServer.ListenAndServe(); err != http.ErrServerClosed {
 			log.Fatal(err)
 		}
 	}()
@@ -450,6 +458,7 @@ func main() {
 		Addr:    ":443",
 		Handler: loggingMiddleware(mux),
 		TLSConfig: &tls.Config{
+			MinVersion: tls.VersionTLS12,
 			// Only hosts starting with "matls-" require mTLS.
 			GetConfigForClient: func(hello *tls.ClientHelloInfo) (*tls.Config, error) {
 				log.Printf("picking tls config for %s\n", hello.ServerName)
@@ -466,6 +475,10 @@ func main() {
 				return cfg, nil
 			},
 		},
+		ReadTimeout:       5 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       120 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
 	}
 
 	log.Println("starting server")

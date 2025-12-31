@@ -320,7 +320,7 @@ const (
 type CommercialActivityType string
 
 const (
-	CommercialActivityTypeProfessionalCommercialRepresentationSalesPromotersAndServiceProviders CommercialActivityType = "COMERCIAL_ATIVIDADE_PROFISSIONAL_PARA_REPRESENTACAO_COMERCIAL_VENDEDORES_PROMOTORES_E_PRESTADORES_DE_SERVICOS"
+	CommercialActivityTypeProfessionalCommercialRepresentationSalesPromotersAndServiceProviders CommercialActivityType = "COMERCIAL_ATIVIDADE_PROFISSIONAL_PARA_REPRESENTACAO_COMERCIAL_VENDEDORES_PROMOTORES_E_PRESTADORES_DE_SERVICOS" //nolint:misspell
 	CommercialActivityTypePrivateTaxi                                                           CommercialActivityType = "TAXI_PARTICULAR"
 	CommercialActivityTypeRideShareAppDriver                                                    CommercialActivityType = "MOTORISTA_DE_APLICATIVO_APLICATIVO_DE_TRANSPORTE"
 	CommercialActivityTypeMotorcycleTaxi                                                        CommercialActivityType = "MOTO_TAXI"
@@ -330,10 +330,10 @@ const (
 	CommercialActivityTypeOccasionalRental                                                      CommercialActivityType = "LOCADORA_AVULSO"
 	CommercialActivityTypeFreightTransport                                                      CommercialActivityType = "TRANSPORTE_DE_MERCADORIA"
 	CommercialActivityTypeTransportCompanyService                                               CommercialActivityType = "PRESTA_SERVICO_PARA_TRANSPORTADORA"
-	CommercialActivityTypeUrbanPassengerTransport                                               CommercialActivityType = "TRANSPORTE_DE_PESSOAS_URBANO"
-	CommercialActivityTypeContinuousBusinessCharterPassengerTransport                           CommercialActivityType = "TRANSPORTE_DE_PESSOAS_FRETAMENTO_EMPRESARIAL_CONTINUO"
-	CommercialActivityTypeMixedCharterPassengerTransport                                        CommercialActivityType = "TRANSPORTE_DE_PESSOAS_FRETAMENTO_MISTO_FRETE_PESSOAS"
-	CommercialActivityTypeTouristCharterPassengerTransport                                      CommercialActivityType = "TRANSPORTE_DE_PESSOAS_FRETAMENTO_TURISTICO"
+	CommercialActivityTypeUrbanPassengerTransport                                               CommercialActivityType = "TRANSPORTE_DE_PESSOAS_URBANO"                          //nolint:gosec
+	CommercialActivityTypeContinuousBusinessCharterPassengerTransport                           CommercialActivityType = "TRANSPORTE_DE_PESSOAS_FRETAMENTO_EMPRESARIAL_CONTINUO" //nolint:gosec
+	CommercialActivityTypeMixedCharterPassengerTransport                                        CommercialActivityType = "TRANSPORTE_DE_PESSOAS_FRETAMENTO_MISTO_FRETE_PESSOAS"  //nolint:gosec
+	CommercialActivityTypeTouristCharterPassengerTransport                                      CommercialActivityType = "TRANSPORTE_DE_PESSOAS_FRETAMENTO_TURISTICO"            //nolint:gosec
 	CommercialActivityTypeOfficialPublicAgencyVehicles                                          CommercialActivityType = "VEICULOS_OFICIAIS_ORGAO_PUBLICO"
 	CommercialActivityTypeAmbulance                                                             CommercialActivityType = "AMBULANCIA"
 	CommercialActivityTypeFirefighters                                                          CommercialActivityType = "BOMBEIROS"
@@ -447,7 +447,7 @@ const (
 type GateType string
 
 const (
-	GateTypeAutomatic GateType = "PORTAO_AUTOMATICO"
+	GateTypeAutomatic GateType = "PORTAO_AUTOMATICO" //nolint:misspell
 	GateTypeManual    GateType = "PORTAO_MANUAL"
 )
 
@@ -594,9 +594,9 @@ const (
 	AssistanceServiceFuneralAssistance                                        AssistanceService = "ASSISTENCIA_FUNERAL"
 	AssistanceServicePetFuneralAssistance                                     AssistanceService = "ASSISTENCIA_FUNERAL_PET"
 	AssistanceServiceITAssistance                                             AssistanceService = "ASSISTENCIA_INFORMATICA"
-	AssistanceServiceNutritionalAssistance                                    AssistanceService = "ASSISTENCIA_NUTRICIONAL"
+	AssistanceServiceNutritionalAssistance                                    AssistanceService = "ASSISTENCIA_NUTRICIONAL" //nolint:misspell
 	AssistanceServicePetAssistance                                            AssistanceService = "ASSISTENCIA_PET"
-	AssistanceServiceResidentialAssistance                                    AssistanceService = "ASSISTENCIA_RESIDENCIAL"
+	AssistanceServiceResidentialAssistance                                    AssistanceService = "ASSISTENCIA_RESIDENCIAL" //nolint:misspell
 	AssistanceServiceSustainableAssistance                                    AssistanceService = "ASSISTENCIA_SUSTENTAVEL"
 	AssistanceServiceEmergencyVeterinaryAssistance                            AssistanceService = "ASSISTENCIA_VETERINARIA_EMERGENCIAL"
 	AssistanceServiceHealthAndWellnessAssistance                              AssistanceService = "ASSISTENCIAS_SAUDE_E_BEM_ESTAR"
@@ -629,7 +629,7 @@ const (
 	AssistanceServiceMedicalSurgicalAndHospitalizationExpenses                AssistanceService = "DESPESAS_MEDICAS_CIRURGICAS_E_DE_HOSPITALIZACAO"
 	AssistanceServiceDentalExpenses                                           AssistanceService = "DESPESAS_ODONTOLOGICAS"
 	AssistanceServiceElectrician                                              AssistanceService = "ELETRICISTA"
-	AssistanceServiceEmergencies                                              AssistanceService = "EMERGENCIAS"
+	AssistanceServiceEmergencies                                              AssistanceService = "EMERGENCIAS" //nolint:misspell
 	AssistanceServicePlumber                                                  AssistanceService = "ENCANADOR"
 	AssistanceServiceSendingCompanionInCaseOfAccident                         AssistanceService = "ENVIO_DE_ACOMPANHANTE_EM_CASO_DE_ACIDENTE"
 	AssistanceServiceSendingFamilyMemberForAccompanimentOfMinorsUnderFourteen AssistanceService = "ENVIO_DE_FAMILIAR_PARA_ACOMPANHAMENTO_DE_MENORES_DE_CATORZE_ANOS"
@@ -666,7 +666,7 @@ const (
 	AssistanceServiceMedicalMonitoring                                        AssistanceService = "MONITORACAO_MEDICA"
 	AssistanceServiceMotorcycle                                               AssistanceService = "MOTO"
 	AssistanceServiceFriendDriver                                             AssistanceService = "MOTORISTA_AMIGO"
-	AssistanceServiceSubstituteDriver                                         AssistanceService = "MOTORISTA_SUBSTITUTO"
+	AssistanceServiceSubstituteDriver                                         AssistanceService = "MOTORISTA_SUBSTITUTO" //nolint:misspell
 	AssistanceServiceMTAAlternativeTransport                                  AssistanceService = "MTA_MEIO_DE_TRANSPORTE_ALTERNATIVO"
 	AssistanceServiceMovingAndFurnitureStorage                                AssistanceService = "MUDANCA_E_GUARDA_DE_MOVEIS"
 	AssistanceServiceOrganization                                             AssistanceService = "ORGANIZACAO"
@@ -677,45 +677,48 @@ const (
 	AssistanceServiceTowing                                                   AssistanceService = "REBOQUE"
 	AssistanceServiceBikeTowing                                               AssistanceService = "REBOQUE_BIKE"
 	AssistanceServiceVehicleRecovery                                          AssistanceService = "RECUPERACAO_DO_VEICULO"
-	AssistanceServiceEarlyReturnInCaseOfFamilyDeath                           AssistanceService = "REGRESSO_ANTECIPADO_EM_CASO_DE_FALECIMENTO_DE_PARENTES"
-	AssistanceServiceUserReturnAfterHospitalDischarge                         AssistanceService = "REGRESSO_DO_USUARIO_APOS_ALTA_HOSPITALAR"
-	AssistanceServiceCeilingFanReinstallationAndRepair                        AssistanceService = "REINSTALACAO_E_REPARO_DO_VENTILADOR_DE_TETO"
-	AssistanceServiceFurnitureRearrangement                                   AssistanceService = "REMANEJAMENTO_DE_MOVEIS"
-	AssistanceServiceHospitalRemoval                                          AssistanceService = "REMOCAO_HOSPITALAR"
-	AssistanceServiceMedicalRemoval                                           AssistanceService = "REMOCAO_MEDICA"
-	AssistanceServiceInterHospitalMedicalRemoval                              AssistanceService = "REMOCAO_MEDICA_INTER_HOSPITALAR"
-	AssistanceServiceAutomotiveRepair                                         AssistanceService = "REPARACAO_AUTOMOTIVA"
-	AssistanceServiceTelephonyRepair                                          AssistanceService = "REPARO_DE_TELEFONIA"
-	AssistanceServiceAutomaticGateRepair                                      AssistanceService = "REPARO_EM_PORTOES_AUTOMATICOS"
-	AssistanceServiceAntennaMountingRepair                                    AssistanceService = "REPARO_FIXACAO_DE_ANTENAS"
-	AssistanceServiceElectricalRepairs                                        AssistanceService = "REPAROS_ELETRICOS"
-	AssistanceServiceEarlyReturnToResidence                                   AssistanceService = "RETORNO_ANTECIPADO_AO_DOMICILIO"
-	AssistanceServiceStoveReversal                                            AssistanceService = "REVERSAO_DE_FOGAO"
-	AssistanceServiceElectricalInstallationReview                             AssistanceService = "REVISAO_DE_INSTALACAO_ELETRICA"
-	AssistanceServiceInternationalSecondMedicalOpinion                        AssistanceService = "SEGUNDA_OPINIAO_MEDICA_INTERNACIONAL"
-	AssistanceServiceSecurity                                                 AssistanceService = "SEGURANCA"
-	AssistanceServiceMetalworker                                              AssistanceService = "SERRALHEIRO"
-	AssistanceServiceMedicalReferralService                                   AssistanceService = "SERVICO_DE_INDICACAO_MEDICA"
-	AssistanceServiceCleaningService                                          AssistanceService = "SERVICO_DE_LIMPEZA"
-	AssistanceServiceAutoServices                                             AssistanceService = "SERVICOS_AUTO"
-	AssistanceServiceSpecialObjectMountingServices                            AssistanceService = "SERVICOS_ESPECIAIS_FIXACAO_DE_OBJETOS"
-	AssistanceServiceGeneralServices                                          AssistanceService = "SERVICOS_GERAIS"
-	AssistanceServiceTireReplacement                                          AssistanceService = "SUBSTITUICAO_DE_PNEUS"
-	AssistanceServiceRoofTileReplacement                                      AssistanceService = "SUBSTITUICAO_DE_TELHAS"
-	AssistanceServiceTaxi                                                     AssistanceService = "TAXI"
-	AssistanceServiceTelemedicine                                             AssistanceService = "TELEMEDICINA"
-	AssistanceServiceUrgentMessageTransmission                                AssistanceService = "TRANSMISSAO_DE_MENSAGENS_URGENTES"
-	AssistanceServiceFamilyTransportAndSending                                AssistanceService = "TRANSPORTE_E_ENVIO_DE_FAMILIAR"
-	AssistanceServiceFurnitureTransportAndStorage                             AssistanceService = "TRANSPORTE_E_GUARDA_MOVEIS"
-	AssistanceServiceSchoolPeopleTransport                                    AssistanceService = "TRANSPORTE_ESCOLAR_PESSOAS"
-	AssistanceServiceEmergencyVeterinaryTransport                             AssistanceService = "TRANSPORTE_VETERINARIO_EMERGENCIAL"
-	AssistanceServiceBodyTransfer                                             AssistanceService = "TRASLADO_DE_CORPO"
-	AssistanceServiceBatteryReplacement                                       AssistanceService = "TROCA_DE_BATERIA"
-	AssistanceServiceTireChange                                               AssistanceService = "TROCA_DE_PNEUS"
-	AssistanceServiceLeakDetection                                            AssistanceService = "VERIFICACAO_DE_POSSIVEIS_VAZAMENTOS"
-	AssistanceServiceGlassAndAccessories                                      AssistanceService = "VIDROS_E_ACESSORIOS"
-	AssistanceServiceSurveillanceAndSecurity                                  AssistanceService = "VIGILANCIA_E_SEGURANCA"
-	AssistanceServiceOthers                                                   AssistanceService = "OUTROS"
+	//nolint:misspell
+	AssistanceServiceEarlyReturnInCaseOfFamilyDeath AssistanceService = "REGRESSO_ANTECIPADO_EM_CASO_DE_FALECIMENTO_DE_PARENTES"
+	//nolint:misspell
+	AssistanceServiceUserReturnAfterHospitalDischarge  AssistanceService = "REGRESSO_DO_USUARIO_APOS_ALTA_HOSPITALAR"
+	AssistanceServiceCeilingFanReinstallationAndRepair AssistanceService = "REINSTALACAO_E_REPARO_DO_VENTILADOR_DE_TETO"
+	AssistanceServiceFurnitureRearrangement            AssistanceService = "REMANEJAMENTO_DE_MOVEIS"
+	AssistanceServiceHospitalRemoval                   AssistanceService = "REMOCAO_HOSPITALAR"
+	AssistanceServiceMedicalRemoval                    AssistanceService = "REMOCAO_MEDICA"
+	AssistanceServiceInterHospitalMedicalRemoval       AssistanceService = "REMOCAO_MEDICA_INTER_HOSPITALAR"
+	AssistanceServiceAutomotiveRepair                  AssistanceService = "REPARACAO_AUTOMOTIVA"
+	AssistanceServiceTelephonyRepair                   AssistanceService = "REPARO_DE_TELEFONIA"
+	AssistanceServiceAutomaticGateRepair               AssistanceService = "REPARO_EM_PORTOES_AUTOMATICOS"
+	AssistanceServiceAntennaMountingRepair             AssistanceService = "REPARO_FIXACAO_DE_ANTENAS"
+	AssistanceServiceElectricalRepairs                 AssistanceService = "REPAROS_ELETRICOS"
+	AssistanceServiceEarlyReturnToResidence            AssistanceService = "RETORNO_ANTECIPADO_AO_DOMICILIO"
+	AssistanceServiceStoveReversal                     AssistanceService = "REVERSAO_DE_FOGAO"
+	AssistanceServiceElectricalInstallationReview      AssistanceService = "REVISAO_DE_INSTALACAO_ELETRICA"
+	//nolint:misspell
+	AssistanceServiceInternationalSecondMedicalOpinion AssistanceService = "SEGUNDA_OPINIAO_MEDICA_INTERNACIONAL"
+	AssistanceServiceSecurity                          AssistanceService = "SEGURANCA"
+	AssistanceServiceMetalworker                       AssistanceService = "SERRALHEIRO"
+	AssistanceServiceMedicalReferralService            AssistanceService = "SERVICO_DE_INDICACAO_MEDICA"
+	AssistanceServiceCleaningService                   AssistanceService = "SERVICO_DE_LIMPEZA"
+	AssistanceServiceAutoServices                      AssistanceService = "SERVICOS_AUTO"
+	AssistanceServiceSpecialObjectMountingServices     AssistanceService = "SERVICOS_ESPECIAIS_FIXACAO_DE_OBJETOS"
+	AssistanceServiceGeneralServices                   AssistanceService = "SERVICOS_GERAIS"
+	AssistanceServiceTireReplacement                   AssistanceService = "SUBSTITUICAO_DE_PNEUS"
+	AssistanceServiceRoofTileReplacement               AssistanceService = "SUBSTITUICAO_DE_TELHAS"
+	AssistanceServiceTaxi                              AssistanceService = "TAXI"
+	AssistanceServiceTelemedicine                      AssistanceService = "TELEMEDICINA"
+	AssistanceServiceUrgentMessageTransmission         AssistanceService = "TRANSMISSAO_DE_MENSAGENS_URGENTES"
+	AssistanceServiceFamilyTransportAndSending         AssistanceService = "TRANSPORTE_E_ENVIO_DE_FAMILIAR"
+	AssistanceServiceFurnitureTransportAndStorage      AssistanceService = "TRANSPORTE_E_GUARDA_MOVEIS"
+	AssistanceServiceSchoolPeopleTransport             AssistanceService = "TRANSPORTE_ESCOLAR_PESSOAS"
+	AssistanceServiceEmergencyVeterinaryTransport      AssistanceService = "TRANSPORTE_VETERINARIO_EMERGENCIAL"
+	AssistanceServiceBodyTransfer                      AssistanceService = "TRASLADO_DE_CORPO"
+	AssistanceServiceBatteryReplacement                AssistanceService = "TROCA_DE_BATERIA"
+	AssistanceServiceTireChange                        AssistanceService = "TROCA_DE_PNEUS"
+	AssistanceServiceLeakDetection                     AssistanceService = "VERIFICACAO_DE_POSSIVEIS_VAZAMENTOS"
+	AssistanceServiceGlassAndAccessories               AssistanceService = "VIDROS_E_ACESSORIOS"
+	AssistanceServiceSurveillanceAndSecurity           AssistanceService = "VIGILANCIA_E_SEGURANCA"
+	AssistanceServiceOthers                            AssistanceService = "OUTROS"
 )
 
 type Premium struct {
@@ -742,8 +745,8 @@ const (
 type Tariff string
 
 const (
-	TariffPassengerNational               Tariff = "PASSEIO_NACIONAL"
-	TariffPassengerImported               Tariff = "PASSEIO_IMPORTADO"
+	TariffPassengerNational               Tariff = "PASSEIO_NACIONAL"  //nolint:gosec
+	TariffPassengerImported               Tariff = "PASSEIO_IMPORTADO" //nolint:gosec
 	TariffPickupNationalAndImported       Tariff = "PICK_UP_NACIONAL_E_IMPORTADO"
 	TariffCargoVehicleNationalAndImported Tariff = "VEICULO_DE_CARGA_NACIONAL_E_IMPORTADO"
 	TariffMotorcycleNationalAndImported   Tariff = "MOTOCICLETA_NACIONAL_E_IMPORTADO"

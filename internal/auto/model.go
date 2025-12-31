@@ -213,7 +213,7 @@ const (
 	IntermediaryTypeBroker                       IntermediaryType = "CORRETOR"
 	IntermediaryTypeRepresentative               IntermediaryType = "REPRESENTANTE"
 	IntermediaryTypeStipulatorEndorserInstitutor IntermediaryType = "ESTIPULANTE_AVERBADOR_INSTITUIDOR"
-	IntermediaryTypeCorrespondent                IntermediaryType = "CORRESPONDENTE"
+	IntermediaryTypeCorrespondent                IntermediaryType = "CORRESPONDENTE" //nolint:misspell
 	IntermediaryTypeMicroinsuranceAgent          IntermediaryType = "AGENTE_DE_MICROSSEGUROS"
 	IntermediaryTypeOthers                       IntermediaryType = "OUTROS"
 )
@@ -419,8 +419,8 @@ const (
 	CoverageCodeCollisionFull                     CoverageCode = "CASCO_COLISAO_INDENIZACAO_INTEGRAL"
 	CoverageCodeOptionalVehicleLiability          CoverageCode = "RESPONSABILIDADE_CIVIL_FACULTATIVA_DE_VEICULOS_RCFV"
 	CoverageCodeOptionalDriverLiability           CoverageCode = "RESPONSABILIDADE_CIVIL_FACULTATIVA_DO_CONDUTOR_RCFC"
-	CoverageCodePassengerAccidentVehicle          CoverageCode = "ACIDENTE_PESSOAIS_DE_PASSAGEIROS_APP_VEICULO"
-	CoverageCodePassengerAccidentDriver           CoverageCode = "ACIDENTE_PESSOAIS_DE_PASSAGEIROS_APP_CONDUTOR"
+	CoverageCodePassengerAccidentVehicle          CoverageCode = "ACIDENTE_PESSOAIS_DE_PASSAGEIROS_APP_VEICULO"  //nolint:gosec
+	CoverageCodePassengerAccidentDriver           CoverageCode = "ACIDENTE_PESSOAIS_DE_PASSAGEIROS_APP_CONDUTOR" //nolint:gosec
 	CoverageCodeGlass                             CoverageCode = "VIDROS"
 	CoverageCodeDailyUnavailability               CoverageCode = "DIARIA_POR_INDISPONIBILIDADE"
 	CoverageCodeLightsHeadlightsRearviewMirrors   CoverageCode = "LFR_LANTERNAS_FAROIS_E_RETROVISORES"
@@ -428,7 +428,7 @@ const (
 	CoverageCodeReserveCar                        CoverageCode = "CARRO_RESERVA"
 	CoverageCodeMinorRepairs                      CoverageCode = "PEQUENOS_REPAROS"
 	CoverageCodeGreenCard                         CoverageCode = "RESPONSABILIDADE_CIVIL_CARTA_VERDE"
-	CoverageCodeLiabilityPassengerCarsNonMercosur CoverageCode = "RESPONSABILIDADE_CIVIL_VEICULOS_DE_PASSEIO_ACORDOS_FORA_DO_MERCOSUL"
+	CoverageCodeLiabilityPassengerCarsNonMercosur CoverageCode = "RESPONSABILIDADE_CIVIL_VEICULOS_DE_PASSEIO_ACORDOS_FORA_DO_MERCOSUL" //nolint:gosec
 	CoverageCodeOthers                            CoverageCode = "OUTRAS"
 )
 
@@ -546,7 +546,7 @@ const (
 	ClaimStatusClosedWithCompensation     ClaimStatus = "ENCERRADO_COM_INDENIZACAO"
 	ClaimStatusClosedWithoutCompensation  ClaimStatus = "ENCERRADO_SEM_INDENIZACAO"
 	ClaimStatusReopened                   ClaimStatus = "REABERTO"
-	ClaimStatusCanceledByOperationalError ClaimStatus = "CANCELADO_POR_ERRO_OPERACIONAL"
+	ClaimStatusCanceledByOperationalError ClaimStatus = "CANCELADO_POR_ERRO_OPERACIONAL" //nolint:misspell
 	ClaimStatusInitialEvaluation          ClaimStatus = "AVALIACAO_INICIAL"
 )
 
@@ -600,14 +600,6 @@ type CountryCode string
 const (
 	CountryCodeBrazil CountryCode = "BRA"
 )
-
-type Filter struct {
-	OwnerID string
-}
-
-func policyID() string {
-	return ""
-}
 
 type Payment struct {
 	MovementDate             timeutil.BrazilDate            `json:"movementDate"`

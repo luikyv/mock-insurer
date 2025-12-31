@@ -159,7 +159,7 @@ const (
 	PeriodicityTrimestral     Periodicity = "TRIMESTRAL"
 	PeriodicityQuadrimestral  Periodicity = "QUADRIMESTRAL"
 	PeriodicitySemestral      Periodicity = "SEMESTRAL"
-	PeriodicityAnual          Periodicity = "ANUAL"
+	PeriodicityAnual          Periodicity = "ANUAL" //nolint:misspell
 	PeriodicityEsporadica     Periodicity = "ESPORADICA"
 	PeriodicityPagamentoUnico Periodicity = "PAGAMENTO_UNICO"
 	PeriodicityOutros         Periodicity = "OUTROS"
@@ -168,8 +168,8 @@ const (
 type TaxRegime string
 
 const (
-	TaxRegimeProgressivo TaxRegime = "PROGRESSIVO"
-	TaxRegimeRegressivo  TaxRegime = "REGRESSIVO"
+	TaxRegimeProgressivo TaxRegime = "PROGRESSIVO" //nolint:misspell
+	TaxRegimeRegressivo  TaxRegime = "REGRESSIVO"  //nolint:misspell
 )
 
 type ProductType string
@@ -246,7 +246,7 @@ const (
 	MovementPeriodicityTrimestral     MovementPeriodicity = "TRIMESTRAL"
 	MovementPeriodicityQuadrimestral  MovementPeriodicity = "QUADRIMESTRAL"
 	MovementPeriodicitySemestral      MovementPeriodicity = "SEMESTRAL"
-	MovementPeriodicityAnual          MovementPeriodicity = "ANUAL"
+	MovementPeriodicityAnual          MovementPeriodicity = "ANUAL" //nolint:misspell
 	MovementPeriodicityEsporadica     MovementPeriodicity = "ESPORADICA"
 	MovementPeriodicityPagamentoUnico MovementPeriodicity = "PAGAMENTO_UNICO"
 	MovementPeriodicityOutros         MovementPeriodicity = "OUTROS"
@@ -303,8 +303,8 @@ const (
 type PortabilityTaxRegime string
 
 const (
-	PortabilityTaxRegimeProgressivo PortabilityTaxRegime = "PROGRESSIVO"
-	PortabilityTaxRegimeRegressivo  PortabilityTaxRegime = "REGRESSIVO"
+	PortabilityTaxRegimeProgressivo PortabilityTaxRegime = "PROGRESSIVO" //nolint:misspell
+	PortabilityTaxRegimeRegressivo  PortabilityTaxRegime = "REGRESSIVO"  //nolint:misspell
 )
 
 type PortabilityType string
@@ -386,7 +386,7 @@ const (
 	EventStatusClosedWithCompensation         EventStatus = "ENCERRADO_COM_INDENIZACAO"
 	EventStatusClosedWithoutCompensation      EventStatus = "ENCERRADO_SEM_INDENIZACAO"
 	EventStatusReopened                       EventStatus = "REABERTO"
-	EventStatusCancelledDueToOperationalError EventStatus = "CANCELADO_POR_ERRO_OPERACIONAL"
+	EventStatusCancelledDueToOperationalError EventStatus = "CANCELADO_POR_ERRO_OPERACIONAL" //nolint:misspell
 	EventStatusInitialAssessment              EventStatus = "AVALIACAO_INICIAL"
 	EventStatusClosedWithSinglePaymentBenefit EventStatus = "ENCERRADO_COM_PAGAMENTO_UNICO_BENEFICIO"
 	EventStatusClosedWithIncomeBenefitGrant   EventStatus = "ENCERRADO_COM_CONCESSAO_DE_RENDA_BENEFICIO"
@@ -472,7 +472,7 @@ const (
 	IntermediaryTypeCorretor                        IntermediaryType = "CORRETOR"
 	IntermediaryTypeRepresentante                   IntermediaryType = "REPRESENTANTE"
 	IntermediaryTypeEstipulanteAverbadorInstituidor IntermediaryType = "ESTIPULANTE_AVERBADOR_INSTITUIDOR"
-	IntermediaryTypeCorrespondente                  IntermediaryType = "CORRESPONDENTE"
+	IntermediaryTypeCorrespondente                  IntermediaryType = "CORRESPONDENTE" //nolint:misspell
 	IntermediaryTypeAgenteDeMicrosseguros           IntermediaryType = "AGENTE_DE_MICROSSEGUROS"
 	IntermediaryTypeOutros                          IntermediaryType = "OUTROS"
 )
@@ -525,7 +525,7 @@ const (
 	SusepsTypeVRSA        SusepsType = "VRSA"
 	SusepsTypeVRI         SusepsType = "VRI"
 	SusepsTypeVDR         SusepsType = "VDR"
-	SusepsTypeTradicional SusepsType = "TRADICIONAL"
+	SusepsTypeTradicional SusepsType = "TRADICIONAL" //nolint:misspell
 	SusepsTypeOutros      SusepsType = "OUTROS"
 )
 
@@ -540,7 +540,7 @@ type CalculationBasis string
 
 const (
 	CalculationBasisMensal CalculationBasis = "MENSAL"
-	CalculationBasisAnual  CalculationBasis = "ANUAL"
+	CalculationBasisAnual  CalculationBasis = "ANUAL" //nolint:misspell
 )
 
 type FIE struct {

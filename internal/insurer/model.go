@@ -16,8 +16,8 @@ const (
 type ValidityType string
 
 const (
-	ValidityTypeAnnual                 ValidityType = "ANUAL"
-	ValidityTypeAnnualIntermittent     ValidityType = "ANUAL_INTERMITENTE"
+	ValidityTypeAnnual                 ValidityType = "ANUAL"              //nolint:misspell
+	ValidityTypeAnnualIntermittent     ValidityType = "ANUAL_INTERMITENTE" //nolint:misspell
 	ValidityTypePlurianual             ValidityType = "PLURIANUAL"
 	ValidityTypePlurianualIntermittent ValidityType = "PLURIANUAL_INTERMITENTE"
 	ValidityTypeSemestral              ValidityType = "SEMESTRAL"
@@ -137,7 +137,7 @@ const (
 	PremiumPeriodicityQuarterly     PremiumPeriodicity = "TRIMESTRAL"
 	PremiumPeriodicityQuadrimestral PremiumPeriodicity = "QUADRIMESTRAL"
 	PremiumPeriodicitySemiannual    PremiumPeriodicity = "SEMESTRAL"
-	PremiumPeriodicityAnnual        PremiumPeriodicity = "ANUAL"
+	PremiumPeriodicityAnnual        PremiumPeriodicity = "ANUAL" //nolint:misspell
 	PremiumPeriodicityOneTime       PremiumPeriodicity = "PAGAMENTO_UNICO"
 	PremiumPeriodicityEsporadic     PremiumPeriodicity = "ESPORADICA"
 	PremiumPeriodicityOthers        PremiumPeriodicity = "OUTROS"

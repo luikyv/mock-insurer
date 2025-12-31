@@ -15,11 +15,7 @@ func Permission(consentService consent.Service, permissions ...consent.Permissio
 	return PermissionWithOptions(consentService, nil, permissions...)
 }
 
-func PermissionWithOptions(consentService consent.Service, opts *Options, permissions ...consent.Permission) func(http.Handler) http.Handler {
-	if opts == nil {
-		opts = &Options{}
-	}
-
+func PermissionWithOptions(consentService consent.Service, _ *Options, permissions ...consent.Permission) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()

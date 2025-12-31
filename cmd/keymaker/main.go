@@ -41,7 +41,6 @@ func main() {
 	}
 
 	caCert, caKey := generateCACert("ca", *keysDir)
-	// caCert, caKey := loadCACertAndKey(filepath.Join(*keysDir, "ca.crt"), filepath.Join(*keysDir, "ca.key"))
 
 	generateTransportCert("server_transport", *softwareID, *orgID, caCert, caKey, *keysDir)
 	serverCert, serverKey := generateServerCert("server", *keysDir)
@@ -241,14 +240,14 @@ func generateSigningCert(
 
 // Saves data to a PEM file.
 func savePEMFile(filename, blockType string, data []byte) {
-	file, err := os.Create(filename)
+	file, err := os.Create(filename) //nolint:gosec
 	if err != nil {
 		log.Fatalf("Failed to create %s: %v", filename, err)
 	}
+	//nolint:errcheck
 	defer file.Close()
 
-	err = pem.Encode(file, &pem.Block{Type: blockType, Bytes: data})
-	if err != nil {
+	if err := pem.Encode(file, &pem.Block{Type: blockType, Bytes: data}); err != nil {
 		log.Fatalf("Failed to write PEM data to %s: %v", filename, err)
 	}
 }
@@ -267,7 +266,9 @@ func generateJWKS(
 		Certificates: []*x509.Certificate{cert},
 	}
 	hash := sha256.New()
-	_, _ = hash.Write(cert.Raw)
+	if _, err := hash.Write(cert.Raw); err != nil {
+		log.Fatal(err)
+	}
 	sigJWK.CertificateThumbprintSHA256 = hash.Sum(nil)
 
 	encKey := generateEncryptionJWK()
@@ -280,8 +281,7 @@ func generateJWKS(
 		log.Fatal(err)
 	}
 
-	err = os.WriteFile(filepath.Join(dir, name+".jwks"), jwksBytes, 0644)
-	if err != nil {
+	if err := os.WriteFile(filepath.Join(dir, name+".jwks"), jwksBytes, 0600); err != nil {
 		log.Fatal(err)
 	}
 
@@ -295,8 +295,7 @@ func generateJWKS(
 		log.Fatal(err)
 	}
 
-	err = os.WriteFile(filepath.Join(dir, name+"_pub.jwks"), publicJWKSBytes, 0644)
-	if err != nil {
+	if err := os.WriteFile(filepath.Join(dir, name+"_pub.jwks"), publicJWKSBytes, 0600); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -313,38 +312,4 @@ func generateEncryptionJWK() goidc.JSONWebKey {
 		Algorithm: string(goidc.RSA_OAEP),
 		Use:       string(goidc.KeyUsageEncryption),
 	}
-}
-
-// loadCACertAndKey loads a CA certificate and private key from PEM files.
-func loadCACertAndKey(certPath, keyPath string) (*x509.Certificate, *rsa.PrivateKey) {
-	certPEM, err := os.ReadFile(certPath)
-	if err != nil {
-		log.Fatalf("Failed to load CA cert: %v", err)
-	}
-	keyPEM, err := os.ReadFile(keyPath)
-	if err != nil {
-		log.Fatalf("Failed to load CA key: %v", err)
-	}
-
-	// Decode cert
-	block, _ := pem.Decode(certPEM)
-	if block == nil || block.Type != "CERTIFICATE" {
-		log.Fatalf("Failed to decode CA cert: %v", err)
-	}
-	cert, err := x509.ParseCertificate(block.Bytes)
-	if err != nil {
-		log.Fatalf("Failed to parse CA cert: %v", err)
-	}
-
-	// Decode key
-	block, _ = pem.Decode(keyPEM)
-	if block == nil || block.Type != "RSA PRIVATE KEY" {
-		log.Fatalf("Failed to decode CA key: %v", err)
-	}
-	key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if err != nil {
-		log.Fatalf("Failed to parse CA key: %v", err)
-	}
-
-	return cert, key
 }

@@ -92,4 +92,3 @@ func (s storage) transaction(ctx context.Context, fn func(Storage) error) error 
 		return fn(txStorage)
 	})
 }
-
