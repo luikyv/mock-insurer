@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	webhookInteractionIDHeader = "X-Webhook-Interaction-ID"
+	webhookInteractionIDHeader = "X-Webhook-Interaction-Id"
 	consentPath                = "/open-insurance/webhook/v1/consents/%s/consents/%s"
 )
 
