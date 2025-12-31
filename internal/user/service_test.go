@@ -169,7 +169,7 @@ func TestUpdate(t *testing.T) {
 					t.Errorf("got CNPJ %v, want %s", updated.CNPJ, *tt.updates.CNPJ)
 				}
 			}
-			if updated.CreatedAt != user.CreatedAt {
+			if !updated.CreatedAt.Equal(user.CreatedAt.Time) {
 				t.Errorf("got CreatedAt %s, want %s", updated.CreatedAt.String(), user.CreatedAt.String())
 			}
 			if updated.UpdatedAt.Before(user.UpdatedAt) {
