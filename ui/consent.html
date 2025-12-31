@@ -156,6 +156,378 @@
             </section>
             {{ end }}
 
+            {{ if .FinancialAssistanceContracts }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="financial-assistance-contracts-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Financial Assistance Contracts</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="financial-assistance-contracts-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="financial-assistance-contracts-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which financial assistance contracts to share.</p>
+                  <button
+                    type="button"
+                    id="financial-assistance-contracts-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .FinancialAssistanceContracts }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="financial-assistance-contracts"
+                        value="{{ .ID }}"
+                        checked
+                        class="financial-assistance-contract-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
+            {{ if .AcceptanceAndBranchesAbroadPolicies }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="acceptance-and-branches-abroad-policies-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Acceptance and Branches Abroad Policies</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="acceptance-and-branches-abroad-policies-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="acceptance-and-branches-abroad-policies-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which acceptance and branches abroad policies to share.</p>
+                  <button
+                    type="button"
+                    id="acceptance-and-branches-abroad-policies-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .AcceptanceAndBranchesAbroadPolicies }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="acceptance-and-branches-abroad-policies"
+                        value="{{ .ID }}"
+                        checked
+                        class="acceptance-and-branches-abroad-policy-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
+            {{ if .FinancialRiskPolicies }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="financial-risk-policies-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Financial Risk Policies</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="financial-risk-policies-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="financial-risk-policies-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which financial risk policies to share.</p>
+                  <button
+                    type="button"
+                    id="financial-risk-policies-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .FinancialRiskPolicies }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="financial-risk-policies"
+                        value="{{ .ID }}"
+                        checked
+                        class="financial-risk-policy-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
+            {{ if .HousingPolicies }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="housing-policies-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Housing Policies</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="housing-policies-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="housing-policies-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which housing policies to share.</p>
+                  <button
+                    type="button"
+                    id="housing-policies-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .HousingPolicies }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="housing-policies"
+                        value="{{ .ID }}"
+                        checked
+                        class="housing-policy-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
+            {{ if .LifePensionContracts }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="life-pension-contracts-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Life Pension Contracts</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="life-pension-contracts-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="life-pension-contracts-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which life pension contracts to share.</p>
+                  <button
+                    type="button"
+                    id="life-pension-contracts-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .LifePensionContracts }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="life-pension-contracts"
+                        value="{{ .ID }}"
+                        checked
+                        class="life-pension-contract-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
+            {{ if .PatrimonialPolicies }}
+            <section class="rounded-xl border border-slate-200 overflow-hidden">
+              <!-- header / accordion button -->
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 hover:bg-slate-100 transition"
+                data-target="patrimonial-policies-list"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="text-left">
+                    <p class="text-sm font-medium text-slate-900 leading-tight">Patrimonial Policies</p>
+                  </div>
+                </div>
+                <svg
+                  data-chevron="patrimonial-policies-list"
+                  class="h-4 w-4 text-slate-400 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <!-- body -->
+              <div id="patrimonial-policies-list" class="hidden bg-white">
+                <div class="flex items-center justify-between px-4 pt-2 pb-1">
+                  <p class="text-[11px] text-slate-500">Select which patrimonial policies to share.</p>
+                  <button
+                    type="button"
+                    id="patrimonial-policies-select-all"
+                    class="text-[11px] text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Select all
+                  </button>
+                </div>
+                <ul class="divide-y divide-slate-100 max-h-40 overflow-y-auto">
+                  {{ range .PatrimonialPolicies }}
+                  <li class="px-4 py-2.5 flex items-center justify-between gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="patrimonial-policies"
+                        value="{{ .ID }}"
+                        checked
+                        class="patrimonial-policy-checkbox h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-200"
+                      />
+                      <div>
+                        <p class="text-sm text-slate-900 leading-tight">ID: {{ .ID }}</p>
+                      </div>
+                    </label>
+                  </li>
+                  {{ end }}
+                </ul>
+              </div>
+            </section>
+            {{ end }}
+
             {{ if .CustomerPersonalInfo }}
             <section class="rounded-xl border border-slate-200 overflow-hidden">
               <div class="px-4 py-2.5 flex items-center justify-between gap-3">

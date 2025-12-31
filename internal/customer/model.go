@@ -222,7 +222,7 @@ const (
 	PersonalDocumentTypeCNPJ     PersonalDocumentType = "CNPJ"
 	PersonalDocumentTypeRG       PersonalDocumentType = "RG"
 	PersonalDocumentTypeCNH      PersonalDocumentType = "CNH"
-	PersonalDocumentTypePassport PersonalDocumentType = "PASSPORT"
+	PersonalDocumentTypePassport PersonalDocumentType = "PASSAPORTE"
 	PersonalDocumentTypeOthers   PersonalDocumentType = "OUTROS"
 	PersonalDocumentTypeNone     PersonalDocumentType = "SEM_OUTROS_DOCUMENTOS"
 )

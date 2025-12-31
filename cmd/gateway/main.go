@@ -289,12 +289,12 @@ func main() {
 								}
 							],
 							"ApiFamilyType": "consents",
-							"ApiVersion": "3.2.0",
+							"ApiVersion": "3.0.0",
 							"Status": "Active"
 						},
 						{
 							"ApiFamilyType": "customers",
-							"ApiVersion": "1.6.0",
+							"ApiVersion": "1.0.0",
 							"Status": "Active",
 							"ApiDiscoveryEndpoints": [
 								{
@@ -319,7 +319,7 @@ func main() {
 						},
 						{
 							"ApiFamilyType": "insurance-auto",
-							"ApiVersion": "1.4.0",
+							"ApiVersion": "1.0.0",
 							"Status": "Active",
 							"ApiDiscoveryEndpoints": [
 								{
@@ -337,6 +337,60 @@ func main() {
 							]
 						},
 						{
+							"ApiFamilyType": "insurance-capitalization-title",
+							"ApiVersion": "1.0.0",
+							"Status": "Active",
+							"ApiDiscoveryEndpoints": [
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-capitalization-title/v1/insurance-capitalization-title/plans"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-capitalization-title/v1/insurance-capitalization-title/{planId}/plan-info"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-capitalization-title/v1/insurance-capitalization-title/{planId}/settlements"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-capitalization-title/v1/insurance-capitalization-title/{planId}/events"
+								}
+							]
+						},
+						{
+							"ApiFamilyType": "insurance-financial-assistance",
+							"ApiVersion": "1.0.0",
+							"Status": "Active",
+							"ApiDiscoveryEndpoints": [
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-financial-assistance/v1/insurance-financial-assistance/contracts"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-financial-assistance/v1/insurance-financial-assistance/{contractId}/contract-info"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-financial-assistance/v1/insurance-financial-assistance/{contractId}/movements"
+								}
+							]
+						},
+						{
+							"ApiFamilyType": "insurance-acceptance-and-branches-abroad",
+							"ApiVersion": "1.0.0",
+							"Status": "Active",
+							"ApiDiscoveryEndpoints": [
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-acceptance-and-branches-abroad/v1/insurance-acceptance-and-branches-abroad"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-acceptance-and-branches-abroad/v1/insurance-acceptance-and-branches-abroad/{policyId}/policy-info"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-acceptance-and-branches-abroad/v1/insurance-acceptance-and-branches-abroad/{policyId}/premium"
+								},
+								{
+									"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/insurance-acceptance-and-branches-abroad/v1/insurance-acceptance-and-branches-abroad/{policyId}/claim"
+								}
+							]
+						},
+						{
 							"ApiDiscoveryEndpoints": [
 							{
 								"ApiEndpoint": "https://matls-api.mockinsurer.local/open-insurance/resources/v3/resources"
@@ -348,7 +402,7 @@ func main() {
 						},
 						{
                         	"ApiFamilyType": "quote-auto",
-                        	"ApiVersion": "1.10.0",
+                        	"ApiVersion": "1.0.0",
                         	"Status": "Active",
                         	"ApiDiscoveryEndpoints": [
                         	    {

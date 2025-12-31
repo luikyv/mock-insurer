@@ -231,6 +231,218 @@ CREATE TABLE insurance_capitalization_title_settlements (
     updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
+CREATE TABLE insurance_financial_assistance_contracts (
+    id TEXT PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_financial_assistance_contracts (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    contract_id TEXT NOT NULL REFERENCES insurance_financial_assistance_contracts(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_financial_assistance_contracts PRIMARY KEY (consent_id, contract_id)
+);
+
+CREATE TABLE insurance_financial_assistance_movements (
+    id UUID PRIMARY KEY,
+    contract_id TEXT NOT NULL REFERENCES insurance_financial_assistance_contracts(id) ON DELETE CASCADE,
+    movement_data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_acceptance_and_branches_abroad_policies (
+    id TEXT PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_acceptance_and_branches_abroad_policies (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    policy_id TEXT NOT NULL REFERENCES insurance_acceptance_and_branches_abroad_policies(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_acceptance_and_branches_abroad_policies PRIMARY KEY (consent_id, policy_id)
+);
+
+CREATE TABLE insurance_acceptance_and_branches_abroad_claims (
+    id UUID PRIMARY KEY,
+    policy_id TEXT NOT NULL REFERENCES insurance_acceptance_and_branches_abroad_policies(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_financial_risk_policies (
+    id TEXT PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_financial_risk_policies (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    policy_id TEXT NOT NULL REFERENCES insurance_financial_risk_policies(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_financial_risk_policies PRIMARY KEY (consent_id, policy_id)
+);
+
+CREATE TABLE insurance_financial_risk_claims (
+    id UUID PRIMARY KEY,
+    policy_id TEXT NOT NULL REFERENCES insurance_financial_risk_policies(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_housing_policies (
+    id TEXT PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_housing_policies (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    policy_id TEXT NOT NULL REFERENCES insurance_housing_policies(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_housing_policies PRIMARY KEY (consent_id, policy_id)
+);
+
+CREATE TABLE insurance_housing_claims (
+    id UUID PRIMARY KEY,
+    policy_id TEXT NOT NULL REFERENCES insurance_housing_policies(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_life_pension_contracts (
+    id TEXT PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_life_pension_contracts (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    contract_id TEXT NOT NULL REFERENCES insurance_life_pension_contracts(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_life_pension_contracts PRIMARY KEY (consent_id, contract_id)
+);
+
+CREATE TABLE insurance_life_pension_portabilities (
+    id UUID PRIMARY KEY,
+    contract_id TEXT NOT NULL REFERENCES insurance_life_pension_contracts(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_life_pension_withdrawals (
+    id UUID PRIMARY KEY,
+    contract_id TEXT NOT NULL REFERENCES insurance_life_pension_contracts(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_life_pension_claims (
+    id UUID PRIMARY KEY,
+    contract_id TEXT NOT NULL REFERENCES insurance_life_pension_contracts(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE insurance_patrimonial_policies (
+    id TEXT PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE consent_insurance_patrimonial_policies (
+    consent_id UUID NOT NULL REFERENCES consents(id) ON DELETE CASCADE,
+    policy_id TEXT NOT NULL REFERENCES insurance_patrimonial_policies(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES mock_users(id),
+    status TEXT NOT NULL,
+    org_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+
+    CONSTRAINT pk_consent_insurance_patrimonial_policies PRIMARY KEY (consent_id, policy_id)
+);
+
+CREATE TABLE insurance_patrimonial_claims (
+    id UUID PRIMARY KEY,
+    policy_id TEXT NOT NULL REFERENCES insurance_patrimonial_policies(id) ON DELETE CASCADE,
+    data JSONB NOT NULL,
+    org_id TEXT NOT NULL,
+    cross_org BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
 CREATE OR REPLACE VIEW consent_resources AS
     WITH authorised_consents AS (SELECT id, org_id FROM consents WHERE status = 'AUTHORISED')
 
@@ -258,21 +470,91 @@ CREATE OR REPLACE VIEW consent_resources AS
         consent_insurance_capitalization_title_plans.created_at,
         consent_insurance_capitalization_title_plans.updated_at
     FROM consent_insurance_capitalization_title_plans
-    JOIN authorised_consents ON consent_insurance_capitalization_title_plans.consent_id = authorised_consents.id AND consent_insurance_capitalization_title_plans.org_id = authorised_consents.org_id;
+    JOIN authorised_consents ON consent_insurance_capitalization_title_plans.consent_id = authorised_consents.id AND consent_insurance_capitalization_title_plans.org_id = authorised_consents.org_id
 
-    -- UNION ALL
+    UNION ALL
 
-    -- SELECT
-    --     consent_credit_contracts.type AS resource_type,
-    --     consent_credit_contracts.consent_id,
-    --     consent_credit_contracts.contract_id AS resource_id,
-    --     consent_credit_contracts.owner_id,
-    --     consent_credit_contracts.status,
-    --     consent_credit_contracts.org_id,
-    --     consent_credit_contracts.created_at,
-    --     consent_credit_contracts.updated_at
-    -- FROM consent_credit_contracts
-    -- JOIN authorised_consents ON consent_credit_contracts.consent_id = authorised_consents.id AND consent_credit_contracts.org_id = authorised_consents.org_id;
+    SELECT
+        'FINANCIAL_ASSISTANCE' AS resource_type,
+        consent_insurance_financial_assistance_contracts.consent_id,
+        consent_insurance_financial_assistance_contracts.contract_id AS resource_id,
+        consent_insurance_financial_assistance_contracts.owner_id,
+        consent_insurance_financial_assistance_contracts.status,
+        consent_insurance_financial_assistance_contracts.org_id,
+        consent_insurance_financial_assistance_contracts.created_at,
+        consent_insurance_financial_assistance_contracts.updated_at
+    FROM consent_insurance_financial_assistance_contracts
+    JOIN authorised_consents ON consent_insurance_financial_assistance_contracts.consent_id = authorised_consents.id AND consent_insurance_financial_assistance_contracts.org_id = authorised_consents.org_id
+
+    UNION ALL
+
+    SELECT
+        'DAMAGES_AND_PEOPLE_ACCEPTANCE_AND_BRANCHES_ABROAD' AS resource_type,
+        consent_insurance_acceptance_and_branches_abroad_policies.consent_id,
+        consent_insurance_acceptance_and_branches_abroad_policies.policy_id AS resource_id,
+        consent_insurance_acceptance_and_branches_abroad_policies.owner_id,
+        consent_insurance_acceptance_and_branches_abroad_policies.status,
+        consent_insurance_acceptance_and_branches_abroad_policies.org_id,
+        consent_insurance_acceptance_and_branches_abroad_policies.created_at,
+        consent_insurance_acceptance_and_branches_abroad_policies.updated_at
+    FROM consent_insurance_acceptance_and_branches_abroad_policies
+    JOIN authorised_consents ON consent_insurance_acceptance_and_branches_abroad_policies.consent_id = authorised_consents.id AND consent_insurance_acceptance_and_branches_abroad_policies.org_id = authorised_consents.org_id
+
+    UNION ALL
+
+    SELECT
+        'DAMAGES_AND_PEOPLE_FINANCIAL_RISKS' AS resource_type,
+        consent_insurance_financial_risk_policies.consent_id,
+        consent_insurance_financial_risk_policies.policy_id AS resource_id,
+        consent_insurance_financial_risk_policies.owner_id,
+        consent_insurance_financial_risk_policies.status,
+        consent_insurance_financial_risk_policies.org_id,
+        consent_insurance_financial_risk_policies.created_at,
+        consent_insurance_financial_risk_policies.updated_at
+    FROM consent_insurance_financial_risk_policies
+    JOIN authorised_consents ON consent_insurance_financial_risk_policies.consent_id = authorised_consents.id AND consent_insurance_financial_risk_policies.org_id = authorised_consents.org_id
+
+    UNION ALL
+
+    SELECT
+        'DAMAGES_AND_PEOPLE_HOUSING' AS resource_type,
+        consent_insurance_housing_policies.consent_id,
+        consent_insurance_housing_policies.policy_id AS resource_id,
+        consent_insurance_housing_policies.owner_id,
+        consent_insurance_housing_policies.status,
+        consent_insurance_housing_policies.org_id,
+        consent_insurance_housing_policies.created_at,
+        consent_insurance_housing_policies.updated_at
+    FROM consent_insurance_housing_policies
+    JOIN authorised_consents ON consent_insurance_housing_policies.consent_id = authorised_consents.id AND consent_insurance_housing_policies.org_id = authorised_consents.org_id
+
+    UNION ALL
+
+    SELECT
+        'LIFE_PENSION' AS resource_type,
+        consent_insurance_life_pension_contracts.consent_id,
+        consent_insurance_life_pension_contracts.contract_id AS resource_id,
+        consent_insurance_life_pension_contracts.owner_id,
+        consent_insurance_life_pension_contracts.status,
+        consent_insurance_life_pension_contracts.org_id,
+        consent_insurance_life_pension_contracts.created_at,
+        consent_insurance_life_pension_contracts.updated_at
+    FROM consent_insurance_life_pension_contracts
+    JOIN authorised_consents ON consent_insurance_life_pension_contracts.consent_id = authorised_consents.id AND consent_insurance_life_pension_contracts.org_id = authorised_consents.org_id
+
+    UNION ALL
+
+    SELECT
+        'DAMAGES_AND_PEOPLE_PATRIMONIAL' AS resource_type,
+        consent_insurance_patrimonial_policies.consent_id,
+        consent_insurance_patrimonial_policies.policy_id AS resource_id,
+        consent_insurance_patrimonial_policies.owner_id,
+        consent_insurance_patrimonial_policies.status,
+        consent_insurance_patrimonial_policies.org_id,
+        consent_insurance_patrimonial_policies.created_at,
+        consent_insurance_patrimonial_policies.updated_at
+    FROM consent_insurance_patrimonial_policies
+    JOIN authorised_consents ON consent_insurance_patrimonial_policies.consent_id = authorised_consents.id AND consent_insurance_patrimonial_policies.org_id = authorised_consents.org_id;
 
 CREATE TABLE insurance_auto_quotes (
     id TEXT PRIMARY KEY,

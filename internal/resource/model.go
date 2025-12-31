@@ -20,8 +20,11 @@ const (
 type Type string
 
 const (
-	TypeAuto                Type = "DAMAGES_AND_PEOPLE_AUTO"
-	TypeCapitalizationTitle Type = "CAPITALIZATION_TITLES"
+	TypeAuto                        Type = "DAMAGES_AND_PEOPLE_AUTO"
+	TypeCapitalizationTitle         Type = "CAPITALIZATION_TITLES"
+	TypeAcceptanceAndBranchesAbroad Type = "DAMAGES_AND_PEOPLE_ACCEPTANCE_AND_BRANCHES_ABROAD"
+	TypeFinancialAssistance         Type = "FINANCIAL_ASSISTANCE"
+	TypeFinancialRisk               Type = "DAMAGES_AND_PEOPLE_FINANCIAL_RISKS"
 )
 
 type Resource struct {

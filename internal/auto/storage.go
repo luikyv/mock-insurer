@@ -25,7 +25,8 @@ type storage struct {
 
 func (s storage) policies(ctx context.Context, ownerID, orgID string, pag page.Pagination) (page.Page[*Policy], error) {
 	query := s.db.WithContext(ctx).
-		Where("owner_id = ? OR org_id = ? OR cross_org = true", ownerID, orgID).
+		Where("org_id = ? OR cross_org = true", orgID).
+		Where("owner_id = ?", ownerID).
 		Order("created_at DESC")
 	policies, err := page.Paginate[*Policy](query, pag)
 	if err != nil {

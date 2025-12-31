@@ -13,17 +13,28 @@ import (
 	"time"
 
 	"github.com/luikyv/mock-insurer/cmd/cmdutil"
+	"github.com/luikyv/mock-insurer/internal/acceptancebranchesabroad"
+	acceptancebranchesabroadapi "github.com/luikyv/mock-insurer/internal/api/acceptancebranchesabroad"
 	autoapi "github.com/luikyv/mock-insurer/internal/api/auto"
 	capitalizationtitleapi "github.com/luikyv/mock-insurer/internal/api/capitalizationtitle"
 	consentapi "github.com/luikyv/mock-insurer/internal/api/consent"
 	customerapi "github.com/luikyv/mock-insurer/internal/api/customer"
+	financialassistanceapi "github.com/luikyv/mock-insurer/internal/api/financialassistance"
+	financialriskapi "github.com/luikyv/mock-insurer/internal/api/financialrisk"
+	housingapi "github.com/luikyv/mock-insurer/internal/api/housing"
+	lifepensionapi "github.com/luikyv/mock-insurer/internal/api/lifepension"
 	oidcapi "github.com/luikyv/mock-insurer/internal/api/oidc"
+	patrimonialapi "github.com/luikyv/mock-insurer/internal/api/patrimonial"
 	quoteautoapi "github.com/luikyv/mock-insurer/internal/api/quoteauto"
 	resourceapi "github.com/luikyv/mock-insurer/internal/api/resource"
 	"github.com/luikyv/mock-insurer/internal/auto"
 	"github.com/luikyv/mock-insurer/internal/client"
 	"github.com/luikyv/mock-insurer/internal/customer"
+	"github.com/luikyv/mock-insurer/internal/financialrisk"
+	"github.com/luikyv/mock-insurer/internal/housing"
 	"github.com/luikyv/mock-insurer/internal/idempotency"
+	"github.com/luikyv/mock-insurer/internal/lifepension"
+	"github.com/luikyv/mock-insurer/internal/patrimonial"
 	quoteauto "github.com/luikyv/mock-insurer/internal/quote/auto"
 	"github.com/luikyv/mock-insurer/internal/resource"
 	"github.com/luikyv/mock-insurer/internal/webhook"
@@ -34,6 +45,7 @@ import (
 	"github.com/luikyv/mock-insurer/internal/api"
 	"github.com/luikyv/mock-insurer/internal/capitalizationtitle"
 	"github.com/luikyv/mock-insurer/internal/consent"
+	"github.com/luikyv/mock-insurer/internal/financialassistance"
 	"github.com/luikyv/mock-insurer/internal/oidc"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"github.com/luikyv/mock-insurer/internal/user"
@@ -91,9 +103,28 @@ func main() {
 	customerService := customer.NewService(db)
 	autoService := auto.NewService(db)
 	capitalizationTitleService := capitalizationtitle.NewService(db)
+	financialAssistanceService := financialassistance.NewService(db)
+	acceptanceAndBranchesAbroadService := acceptancebranchesabroad.NewService(db)
+	financialRiskService := financialrisk.NewService(db)
+	housingService := housing.NewService(db)
+	lifePensionService := lifepension.NewService(db)
+	patrimonialService := patrimonial.NewService(db)
 	quoteAutoService := quoteauto.NewService(db)
 
-	op, err := openidProvider(db, clientService, userService, consentService, autoService, capitalizationTitleService)
+	op, err := openidProvider(
+		db,
+		clientService,
+		userService,
+		consentService,
+		autoService,
+		capitalizationTitleService,
+		financialAssistanceService,
+		acceptanceAndBranchesAbroadService,
+		financialRiskService,
+		housingService,
+		lifePensionService,
+		patrimonialService,
+	)
 	if err != nil {
 		slog.Error("failed to create openid provider", "error", err)
 		os.Exit(1)
@@ -108,6 +139,12 @@ func main() {
 	customerapi.NewServer(APIMTLSHost, customerService, consentService, op).RegisterRoutes(mux)
 	autoapi.NewServer(APIMTLSHost, autoService, consentService, op).RegisterRoutes(mux)
 	capitalizationtitleapi.NewServer(APIMTLSHost, capitalizationTitleService, consentService, op).RegisterRoutes(mux)
+	financialassistanceapi.NewServer(APIMTLSHost, financialAssistanceService, consentService, op).RegisterRoutes(mux)
+	acceptancebranchesabroadapi.NewServer(APIMTLSHost, acceptanceAndBranchesAbroadService, consentService, op).RegisterRoutes(mux)
+	financialriskapi.NewServer(APIMTLSHost, financialRiskService, consentService, op).RegisterRoutes(mux)
+	housingapi.NewServer(APIMTLSHost, housingService, consentService, op).RegisterRoutes(mux)
+	lifepensionapi.NewServer(APIMTLSHost, lifePensionService, consentService, op).RegisterRoutes(mux)
+	patrimonialapi.NewServer(APIMTLSHost, patrimonialService, consentService, op).RegisterRoutes(mux)
 	quoteautoapi.NewServer(APIMTLSHost, quoteAutoService, idempotencyService, op).RegisterRoutes(mux)
 
 	handler := middleware(mux)
@@ -188,6 +225,12 @@ func openidProvider(
 	consentService consent.Service,
 	autoService auto.Service,
 	capitalizationTitleService capitalizationtitle.Service,
+	financialAssistanceService financialassistance.Service,
+	acceptanceAndBranchesAbroadService acceptancebranchesabroad.Service,
+	financialRiskService financialrisk.Service,
+	housingService housing.Service,
+	lifePensionService lifepension.Service,
+	patrimonialService patrimonial.Service,
 ) (*provider.Provider, error) {
 	var scopes = []goidc.Scope{
 		goidc.ScopeOpenID,
@@ -197,6 +240,12 @@ func openidProvider(
 		customer.Scope,
 		auto.Scope,
 		capitalizationtitle.Scope,
+		financialassistance.Scope,
+		acceptancebranchesabroad.Scope,
+		financialrisk.Scope,
+		housing.Scope,
+		lifepension.Scope,
+		patrimonial.Scope,
 		quoteauto.Scope,
 		quoteauto.ScopeLead,
 		goidc.NewScope("dynamic-fields"),
@@ -275,7 +324,19 @@ func openidProvider(
 		provider.WithIDTokenEncryption(goidc.RSA_OAEP),
 		provider.WithIDTokenContentEncryptionAlgs(goidc.A256GCM),
 		provider.WithHandleGrantFunc(oidc.HandleGrantFunc(op, consentService)),
-		provider.WithPolicies(oidc.Policies(AuthHost, userService, consentService, autoService, capitalizationTitleService)...),
+		provider.WithPolicies(oidc.Policies(
+			AuthHost,
+			userService,
+			consentService,
+			autoService,
+			capitalizationTitleService,
+			financialAssistanceService,
+			acceptanceAndBranchesAbroadService,
+			financialRiskService,
+			housingService,
+			lifePensionService,
+			patrimonialService,
+		)...),
 		provider.WithNotifyErrorFunc(oidc.LogError),
 		provider.WithDCR(oidc.DCRFunc(oidc.DCRConfig{
 			Scopes:       scopes,

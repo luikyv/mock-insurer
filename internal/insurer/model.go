@@ -29,12 +29,6 @@ const (
 	ValidityTypeOthers                 ValidityType = "OUTROS"
 )
 
-type Currency string
-
-const (
-	CurrencyBRL Currency = "BRL"
-)
-
 type AmountDetails struct {
 	Amount         string   `json:"amount"`
 	UnitType       UnitType `json:"unitType"`
@@ -51,8 +45,8 @@ const (
 )
 
 type Unit struct {
-	Code        UnitCode        `json:"code"`
-	Description UnitDescription `json:"description"`
+	Code        UnitCode `json:"code"`
+	Description Currency `json:"description"`
 }
 
 type UnitCode string
@@ -61,10 +55,10 @@ const (
 	UnitCodeReal UnitCode = "R$"
 )
 
-type UnitDescription string
+type Currency string
 
 const (
-	UnitDescriptionBRL UnitDescription = "BRL"
+	CurrencyBRL Currency = "BRL"
 )
 
 type CountryCode string
@@ -133,4 +127,60 @@ type PeriodCountingMethod string
 const (
 	PeriodCountingMethodBusinessDays PeriodCountingMethod = "DIAS_UTEIS"
 	PeriodCountingMethodCalendarDays PeriodCountingMethod = "DIAS_CORRIDOS"
+)
+
+type PremiumPeriodicity string
+
+const (
+	PremiumPeriodicityMonthly       PremiumPeriodicity = "MENSAL"
+	PremiumPeriodicityBimonthly     PremiumPeriodicity = "BIMESTRAL"
+	PremiumPeriodicityQuarterly     PremiumPeriodicity = "TRIMESTRAL"
+	PremiumPeriodicityQuadrimestral PremiumPeriodicity = "QUADRIMESTRAL"
+	PremiumPeriodicitySemiannual    PremiumPeriodicity = "SEMESTRAL"
+	PremiumPeriodicityAnnual        PremiumPeriodicity = "ANUAL"
+	PremiumPeriodicityOneTime       PremiumPeriodicity = "PAGAMENTO_UNICO"
+	PremiumPeriodicityEsporadic     PremiumPeriodicity = "ESPORADICA"
+	PremiumPeriodicityOthers        PremiumPeriodicity = "OUTROS"
+)
+
+type PaymentMovementType string
+
+const (
+	PaymentMovementTypePremiumLiquidation                                  PaymentMovementType = "LIQUIDACAO_DE_PREMIO"
+	PaymentMovementTypePremiumRefundLiquidation                            PaymentMovementType = "LIQUIDACAO_DE_RESTITUICAO_DE_PREMIO"
+	PaymentMovementTypeAcquisitionCostLiquidation                          PaymentMovementType = "LIQUIDACAO_DE_CUSTO_DE_AQUISICAO"
+	PaymentMovementTypeAcquisitionCostRefundLiquidation                    PaymentMovementType = "LIQUIDACAO_DE_RESTITUICAO_DE_CUSTO_DE_AQUISICAO"
+	PaymentMovementTypePremiumReversal                                     PaymentMovementType = "ESTORNO_DE_PREMIO"
+	PaymentMovementTypePremiumRefundReversal                               PaymentMovementType = "ESTORNO_DE_RESTITUICAO_DE_PREMIO"
+	PaymentMovementTypeAcquisitionCostReversal                             PaymentMovementType = "ESTORNO_DE_CUSTO_DE_AQUISICAO"
+	PaymentMovementTypePremiumIssuanceWithoutEndorsement                   PaymentMovementType = "EMISSAO_DE_PREMIO_SEM_ENDOSSO"
+	PaymentMovementTypeInstallmentCancellation                             PaymentMovementType = "CANCELAMENTO_DE_PARCELA"
+	PaymentMovementTypePremiumRefundIssuanceWithoutEndorsement             PaymentMovementType = "EMISSAO_DE_RESTITUICAO_DE_PREMIO_SEM_ENDOSSO"
+	PaymentMovementTypeInstallmentReopening                                PaymentMovementType = "REABERTURA_DE_PARCELA"
+	PaymentMovementTypeWriteOffByLoss                                      PaymentMovementType = "BAIXA_POR_PERDA"
+	PaymentMovementTypePremiumAndInstallmentCancellationWithoutEndorsement PaymentMovementType = "CANCELAMENTO_DE_PREMIO_E_PARCELA_SEM_ENDOSSO"
+	PaymentMovementTypeFinancialCompensation                               PaymentMovementType = "COMPENSACAO_FINANCEIRA"
+)
+
+type PaymentMovementOrigin string
+
+const (
+	PaymentMovementOriginDirectIssuance              PaymentMovementOrigin = "EMISSAO_DIRETA"
+	PaymentMovementOriginAcceptedCoinsuranceIssuance PaymentMovementOrigin = "EMISSAO_ACEITA_DE_COSSEGURO"
+	PaymentMovementOriginCededCoinsuranceIssuance    PaymentMovementOrigin = "EMISSAO_CEDIDA_DE_COSSEGURO"
+)
+
+type PaymentType string
+
+const (
+	PaymentTypeBankSlip        PaymentType = "BOLETO"
+	PaymentTypeTED             PaymentType = "TED"
+	PaymentTypeTEF             PaymentType = "TEF"
+	PaymentTypeCreditCard      PaymentType = "CARTAO"
+	PaymentTypeDocument        PaymentType = "DOC"
+	PaymentTypeCheque          PaymentType = "CHEQUE"
+	PaymentTypeDiscountOnSheet PaymentType = "DESCONTO_EM_FOLHA"
+	PaymentTypePix             PaymentType = "PIX"
+	PaymentTypeCash            PaymentType = "DINHEIRO_EM_ESPECIE"
+	PaymentTypeOthers          PaymentType = "OUTROS"
 )

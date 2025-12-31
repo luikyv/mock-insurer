@@ -21,10 +21,6 @@ type storage struct {
 	db *gorm.DB
 }
 
-func newStorage(db *gorm.DB) storage {
-	return storage{db: db}
-}
-
 func (s storage) personalIdentifications(ctx context.Context, orgID string, opts *Filter, pag page.Pagination) (page.Page[*PersonalIdentification], error) {
 	query := s.db.WithContext(ctx).Where("org_id = ?", orgID).Order("created_at DESC")
 	if opts == nil {

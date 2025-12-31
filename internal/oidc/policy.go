@@ -12,10 +12,16 @@ import (
 	"github.com/luikyv/mock-insurer/ui"
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
+	"github.com/luikyv/mock-insurer/internal/acceptancebranchesabroad"
 	"github.com/luikyv/mock-insurer/internal/auto"
 	"github.com/luikyv/mock-insurer/internal/capitalizationtitle"
 	"github.com/luikyv/mock-insurer/internal/consent"
+	"github.com/luikyv/mock-insurer/internal/financialassistance"
+	"github.com/luikyv/mock-insurer/internal/financialrisk"
+	"github.com/luikyv/mock-insurer/internal/housing"
+	"github.com/luikyv/mock-insurer/internal/lifepension"
 	"github.com/luikyv/mock-insurer/internal/page"
+	"github.com/luikyv/mock-insurer/internal/patrimonial"
 	"github.com/luikyv/mock-insurer/internal/timeutil"
 	"github.com/luikyv/mock-insurer/internal/user"
 	"github.com/unrolled/secure"
@@ -27,12 +33,18 @@ const (
 	sessionParamUserID     = "user_id"
 	sessionParamBusinessID = "business_id"
 
-	formParamUsername                   = "username"
-	formParamPassword                   = "password"
-	formParamLogin                      = "login"
-	formParamConsent                    = "consent"
-	formParamAutoPolicyIDs              = "auto-policies"
-	formParamCapitalizationTitlePlanIDs = "capitalization-title-plans"
+	formParamUsername                             = "username"
+	formParamPassword                             = "password"
+	formParamLogin                                = "login"
+	formParamConsent                              = "consent"
+	formParamAutoPolicyIDs                        = "auto-policies"
+	formParamCapitalizationTitlePlanIDs           = "capitalization-title-plans"
+	formParamFinancialAssistanceContractIDs       = "financial-assistance-contracts"
+	formParamAcceptanceAndBranchesAbroadPolicyIDs = "acceptance-and-branches-abroad-policies"
+	formParamFinancialRiskPolicyIDs               = "financial-risk-policies"
+	formParamHousingPolicyIDs                     = "housing-policies"
+	formParamLifePensionContractIDs               = "life-pension-contracts"
+	formParamPatrimonialPolicyIDs                 = "patrimonial-policies"
 
 	correctPassword = "P@ssword01"
 )
@@ -45,6 +57,12 @@ func Policies(
 	consentService consent.Service,
 	autoService auto.Service,
 	capitalizationTitleService capitalizationtitle.Service,
+	financialAssistanceService financialassistance.Service,
+	acceptanceAndBranchesAbroadService acceptancebranchesabroad.Service,
+	financialRiskService financialrisk.Service,
+	housingService housing.Service,
+	lifePensionService lifepension.Service,
+	patrimonialService patrimonial.Service,
 ) []goidc.AuthnPolicy {
 	tmpl := template.Must(template.ParseFS(ui.Templates, "*.html"))
 	return []goidc.AuthnPolicy{
@@ -68,6 +86,12 @@ func Policies(
 				consentService,
 				autoService,
 				capitalizationTitleService,
+				financialAssistanceService,
+				acceptanceAndBranchesAbroadService,
+				financialRiskService,
+				housingService,
+				lifePensionService,
+				patrimonialService,
 			)),
 			goidc.NewAuthnStep("finish", grantAuthorizationStep()),
 		),
@@ -160,17 +184,29 @@ func grantConsentStep(
 	consentService consent.Service,
 	autoService auto.Service,
 	capitalizationTitleService capitalizationtitle.Service,
+	financialAssistanceService financialassistance.Service,
+	acceptanceAndBranchesAbroadService acceptancebranchesabroad.Service,
+	financialRiskService financialrisk.Service,
+	housingService housing.Service,
+	lifePensionService lifepension.Service,
+	patrimonialService patrimonial.Service,
 ) goidc.AuthnFunc {
 	type Page struct {
-		BaseURL                  string
-		CallbackID               string
-		UserCPF                  string
-		BusinessCNPJ             string
-		Nonce                    string
-		CustomerPersonalInfo     bool
-		CustomerBusinessInfo     bool
-		AutoPolicies             []*auto.Policy
-		CapitalizationTitlePlans []*capitalizationtitle.Plan
+		BaseURL                             string
+		CallbackID                          string
+		UserCPF                             string
+		BusinessCNPJ                        string
+		Nonce                               string
+		CustomerPersonalInfo                bool
+		CustomerBusinessInfo                bool
+		AutoPolicies                        []*auto.Policy
+		CapitalizationTitlePlans            []*capitalizationtitle.Plan
+		FinancialAssistanceContracts        []*financialassistance.Contract
+		AcceptanceAndBranchesAbroadPolicies []*acceptancebranchesabroad.Policy
+		FinancialRiskPolicies               []*financialrisk.Policy
+		HousingPolicies                     []*housing.Policy
+		LifePensionContracts                []*lifepension.Contract
+		PatrimonialPolicies                 []*patrimonial.Policy
 	}
 
 	renderConsentPage := func(w http.ResponseWriter, r *http.Request, as *goidc.AuthnSession, c *consent.Consent) (goidc.Status, error) {
@@ -214,6 +250,65 @@ func grantConsentStep(
 			consentPage.CapitalizationTitlePlans = plans.Records
 		}
 
+		if c.Permissions.HasFinancialAssistancePermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with financial assistance contracts")
+			contracts, err := financialAssistanceService.Contracts(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's financial assistance contracts", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's financial assistance contracts")
+			}
+			consentPage.FinancialAssistanceContracts = contracts.Records
+		}
+
+		if c.Permissions.HasAcceptanceAndBranchesAbroadPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with acceptance and branches abroad policies")
+			policies, err := acceptanceAndBranchesAbroadService.Policies(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's acceptance and branches abroad policies", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's acceptance and branches abroad policies")
+			}
+			consentPage.AcceptanceAndBranchesAbroadPolicies = policies.Records
+		}
+
+		if c.Permissions.HasFinancialRiskPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with financial risk policies")
+			policies, err := financialRiskService.Policies(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's financial risk policies", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's financial risk policies")
+			}
+			consentPage.FinancialRiskPolicies = policies.Records
+		}
+
+		if c.Permissions.HasHousingPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with housing policies")
+			policies, err := housingService.Policies(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's housing policies", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's housing policies")
+			}
+			consentPage.HousingPolicies = policies.Records
+		}
+
+		if c.Permissions.HasLifePensionPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with life pension contracts")
+			contracts, err := lifePensionService.Contracts(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's life pension contracts", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's life pension contracts")
+			}
+			consentPage.LifePensionContracts = contracts.Records
+		}
+
+		if c.Permissions.HasPatrimonialPermissions() {
+			slog.InfoContext(r.Context(), "rendering consent page with patrimonial policies")
+			policies, err := patrimonialService.Policies(r.Context(), userID, orgID, page.NewPagination(nil, nil))
+			if err != nil {
+				slog.ErrorContext(r.Context(), "could not load the user's patrimonial policies", "error", err)
+				return goidc.StatusFailure, fmt.Errorf("could not load the user's patrimonial policies")
+			}
+			consentPage.PatrimonialPolicies = policies.Records
+		}
 		return renderPage(w, tmpl, "consent", consentPage)
 	}
 
@@ -292,6 +387,59 @@ func grantConsentStep(
 			}
 		}
 
+		if c.Permissions.HasFinancialAssistancePermissions() {
+			financialAssistanceContractIDs := r.Form[formParamFinancialAssistanceContractIDs]
+			slog.InfoContext(r.Context(), "authorizing financial assistance contracts", "financial assistance contracts", financialAssistanceContractIDs)
+			if err := financialAssistanceService.Authorize(r.Context(), financialAssistanceContractIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize financial assistance contracts", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
+
+		if c.Permissions.HasAcceptanceAndBranchesAbroadPermissions() {
+			acceptanceAndBranchesAbroadPolicyIDs := r.Form[formParamAcceptanceAndBranchesAbroadPolicyIDs]
+			slog.InfoContext(r.Context(), "authorizing acceptance and branches abroad policies", "acceptance and branches abroad policies", acceptanceAndBranchesAbroadPolicyIDs)
+			if err := acceptanceAndBranchesAbroadService.Authorize(r.Context(), acceptanceAndBranchesAbroadPolicyIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize acceptance and branches abroad policies", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
+
+		if c.Permissions.HasFinancialRiskPermissions() {
+			financialRiskPolicyIDs := r.Form[formParamFinancialRiskPolicyIDs]
+			slog.InfoContext(r.Context(), "authorizing financial risk policies", "financial risk policies", financialRiskPolicyIDs)
+			if err := financialRiskService.Authorize(r.Context(), financialRiskPolicyIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize financial risk policies", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
+
+		if c.Permissions.HasHousingPermissions() {
+			housingPolicyIDs := r.Form[formParamHousingPolicyIDs]
+			slog.InfoContext(r.Context(), "authorizing housing policies", "housing policies", housingPolicyIDs)
+			if err := housingService.Authorize(r.Context(), housingPolicyIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize housing policies", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
+
+		if c.Permissions.HasLifePensionPermissions() {
+			lifePensionContractIDs := r.Form[formParamLifePensionContractIDs]
+			slog.InfoContext(r.Context(), "authorizing life pension contracts", "life pension contracts", lifePensionContractIDs)
+			if err := lifePensionService.Authorize(r.Context(), lifePensionContractIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize life pension contracts", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
+
+		if c.Permissions.HasPatrimonialPermissions() {
+			patrimonialPolicyIDs := r.Form[formParamPatrimonialPolicyIDs]
+			slog.InfoContext(r.Context(), "authorizing patrimonial policies", "patrimonial policies", patrimonialPolicyIDs)
+			if err := patrimonialService.Authorize(r.Context(), patrimonialPolicyIDs, userID, c.ID.String(), orgID); err != nil {
+				slog.InfoContext(r.Context(), "could not authorize patrimonial policies", "error", err)
+				return goidc.StatusFailure, err
+			}
+		}
 		return goidc.StatusSuccess, nil
 	}
 }

@@ -3,6 +3,7 @@ package v2
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/luikyv/go-oidc/pkg/goidc"
@@ -10,6 +11,7 @@ import (
 	"github.com/luikyv/mock-insurer/internal/api"
 	"github.com/luikyv/mock-insurer/internal/api/middleware"
 	"github.com/luikyv/mock-insurer/internal/consent"
+	"github.com/luikyv/mock-insurer/internal/errorutil"
 	"github.com/luikyv/mock-insurer/internal/page"
 	"github.com/luikyv/mock-insurer/internal/resource"
 )
@@ -96,5 +98,10 @@ func (s Server) ResourcesGetResources(ctx context.Context, req ResourcesGetResou
 }
 
 func writeResponseError(w http.ResponseWriter, r *http.Request, err error) {
+	if errors.As(err, &errorutil.Error{}) {
+		api.WriteError(w, r, api.NewError("INVALID_REQUEST", http.StatusUnprocessableEntity, err.Error()))
+		return
+	}
+
 	api.WriteError(w, r, err)
 }

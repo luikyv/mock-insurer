@@ -129,7 +129,7 @@ func (q *Quote) CreateOffers() {
 					UnitType: insurer.UnitTypeMonetary,
 					Unit: &insurer.Unit{
 						Code:        insurer.UnitCodeReal,
-						Description: insurer.UnitDescriptionBRL,
+						Description: insurer.CurrencyBRL,
 					},
 				},
 				TotalNetAmount: insurer.AmountDetails{
@@ -137,7 +137,7 @@ func (q *Quote) CreateOffers() {
 					UnitType: insurer.UnitTypeMonetary,
 					Unit: &insurer.Unit{
 						Code:        insurer.UnitCodeReal,
-						Description: insurer.UnitDescriptionBRL,
+						Description: insurer.CurrencyBRL,
 					},
 				},
 				IOF: insurer.AmountDetails{
@@ -145,7 +145,7 @@ func (q *Quote) CreateOffers() {
 					UnitType: insurer.UnitTypeMonetary,
 					Unit: &insurer.Unit{
 						Code:        insurer.UnitCodeReal,
-						Description: insurer.UnitDescriptionBRL,
+						Description: insurer.CurrencyBRL,
 					},
 				},
 			},

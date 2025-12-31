@@ -22,3 +22,27 @@ document.getElementById('auto-policies-select-all')?.addEventListener('click', (
 document.getElementById('capitalization-title-plans-select-all')?.addEventListener('click', () => {
   toggleGroup('.capitalization-title-plan-checkbox');
 });
+
+document.getElementById('financial-assistance-contracts-select-all')?.addEventListener('click', () => {
+  toggleGroup('.financial-assistance-contract-checkbox');
+});
+
+document.getElementById('acceptance-and-branches-abroad-policies-select-all')?.addEventListener('click', () => {
+  toggleGroup('.acceptance-and-branches-abroad-policy-checkbox');
+});
+
+document.getElementById('financial-risk-policies-select-all')?.addEventListener('click', () => {
+  toggleGroup('.financial-risk-policy-checkbox');
+});
+
+document.getElementById('housing-policies-select-all')?.addEventListener('click', () => {
+  toggleGroup('.housing-policy-checkbox');
+});
+
+document.getElementById('life-pension-contracts-select-all')?.addEventListener('click', () => {
+  toggleGroup('.life-pension-contract-checkbox');
+});
+
+document.getElementById('patrimonial-policies-select-all')?.addEventListener('click', () => {
+  toggleGroup('.patrimonial-policy-checkbox');
+});

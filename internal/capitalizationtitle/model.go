@@ -225,7 +225,7 @@ type DocumentType string
 const (
 	DocumentTypeCPF      DocumentType = "CPF"
 	DocumentTypeCNPJ     DocumentType = "CNPJ"
-	DocumentTypePassport DocumentType = "PASSPORTE"
+	DocumentTypePassport DocumentType = "PASSAPORTE"
 	DocumentTypeOthers   DocumentType = "OUTROS"
 )
 

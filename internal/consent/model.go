@@ -242,6 +242,42 @@ func (p Permissions) HasCapitalizationTitlePermissions() bool {
 	})
 }
 
+func (p Permissions) HasFinancialAssistancePermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "FINANCIAL_ASSISTANCE_")
+	})
+}
+
+func (p Permissions) HasAcceptanceAndBranchesAbroadPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_ACCEPTANCE_AND_BRANCHES_ABROAD_")
+	})
+}
+
+func (p Permissions) HasFinancialRiskPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_FINANCIAL_RISKS_")
+	})
+}
+
+func (p Permissions) HasHousingPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_HOUSING_")
+	})
+}
+
+func (p Permissions) HasLifePensionPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "LIFE_PENSION_") || strings.HasPrefix(string(permission), "CONTRACT_LIFE_PENSION_")
+	})
+}
+
+func (p Permissions) HasPatrimonialPermissions() bool {
+	return slices.ContainsFunc(p, func(permission Permission) bool {
+		return strings.HasPrefix(string(permission), "DAMAGES_AND_PEOPLE_PATRIMONIAL_")
+	})
+}
+
 var (
 	// Fase 2: Cadastro Pessoa Física
 	PermissionGroupPersonalRegistrationData Permissions = []Permission{

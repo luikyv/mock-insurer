@@ -102,63 +102,6 @@ type PremiumCoverage struct {
 	PremiumAmount insurer.AmountDetails `json:"premiumAmount"`
 }
 
-type Payment struct {
-	MovementDate             timeutil.BrazilDate         `json:"movementDate"`
-	MovementType             PaymentMovementType         `json:"movementType"`
-	MovementOrigin           *PaymentMovementOrigin      `json:"movementOrigin,omitempty"`
-	MovementPaymentsNumber   int                         `json:"movementPaymentsNumber"`
-	Amount                   insurer.AmountDetails       `json:"amount"`
-	MaturityDate             timeutil.BrazilDate         `json:"maturityDate"`
-	TellerID                 *string                     `json:"tellerId,omitempty"`
-	TellerIDType             *insurer.IdentificationType `json:"tellerIdType,omitempty"`
-	TellerIDOthers           *string                     `json:"tellerIdOthers,omitempty"`
-	TellerName               *string                     `json:"tellerName,omitempty"`
-	FinancialInstitutionCode *string                     `json:"financialInstitutionCode,omitempty"`
-	PaymentType              *PaymentType                `json:"paymentType,omitempty"`
-	PaymentTypeOthers        *string                     `json:"paymentTypeOthers,omitempty"`
-}
-
-type PaymentMovementType string
-
-const (
-	PaymentMovementTypePremiumLiquidation                                  PaymentMovementType = "LIQUIDACAO_DE_PREMIO"
-	PaymentMovementTypePremiumRefundLiquidation                            PaymentMovementType = "LIQUIDACAO_DE_RESTITUICAO_DE_PREMIO"
-	PaymentMovementTypeAcquisitionCostLiquidation                          PaymentMovementType = "LIQUIDACAO_DE_CUSTO_DE_AQUISICAO"
-	PaymentMovementTypeAcquisitionCostRefundLiquidation                    PaymentMovementType = "LIQUIDACAO_DE_RESTITUICAO_DE_CUSTO_DE_AQUISICAO"
-	PaymentMovementTypePremiumReversal                                     PaymentMovementType = "ESTORNO_DE_PREMIO"
-	PaymentMovementTypePremiumRefundReversal                               PaymentMovementType = "ESTORNO_DE_RESTITUICAO_DE_PREMIO"
-	PaymentMovementTypeAcquisitionCostReversal                             PaymentMovementType = "ESTORNO_DE_CUSTO_DE_AQUISICAO"
-	PaymentMovementTypePremiumIssuanceWithoutEndorsement                   PaymentMovementType = "EMISSAO_DE_PREMIO_SEM_ENDOSSO"
-	PaymentMovementTypeInstallmentCancellation                             PaymentMovementType = "CANCELAMENTO_DE_PARCELA"
-	PaymentMovementTypePremiumRefundIssuanceWithoutEndorsement             PaymentMovementType = "EMISSAO_DE_RESTITUICAO_DE_PREMIO_SEM_ENDOSSO"
-	PaymentMovementTypeInstallmentReopening                                PaymentMovementType = "REABERTURA_DE_PARCELA"
-	PaymentMovementTypeWriteOffByLoss                                      PaymentMovementType = "BAIXA_POR_PERDA"
-	PaymentMovementTypePremiumAndInstallmentCancellationWithoutEndorsement PaymentMovementType = "CANCELAMENTO_DE_PREMIO_E_PARCELA_SEM_ENDOSSO"
-	PaymentMovementTypeFinancialCompensation                               PaymentMovementType = "COMPENSACAO_FINANCEIRA"
-)
-
-type PaymentMovementOrigin string
-
-const (
-	PaymentMovementOriginDirectIssuance              PaymentMovementOrigin = "EMISSAO_DIRETA"
-	PaymentMovementOriginAcceptedCoinsuranceIssuance PaymentMovementOrigin = "EMISSAO_ACEITA_DE_COSSEGURO"
-	PaymentMovementOriginCededCoinsuranceIssuance    PaymentMovementOrigin = "EMISSAO_CEDIDA_DE_COSSEGURO"
-)
-
-type PaymentType string
-
-const (
-	PaymentTypeBankSlip        PaymentType = "BOLETO"
-	PaymentTypeTED             PaymentType = "TED"
-	PaymentTypeTEF             PaymentType = "TEF"
-	PaymentTypeCreditCard      PaymentType = "CARTAO"
-	PaymentTypeDocument        PaymentType = "DOC"
-	PaymentTypeCheque          PaymentType = "CHEQUE"
-	PaymentTypeDiscountOnSheet PaymentType = "DESCONTO_EM_FOLHA"
-	PaymentTypePix             PaymentType = "PIX"
-	PaymentTypeCash            PaymentType = "DINHEIRO_EM_ESPECIE"
-)
-
 type Claim struct {
 	ID        uuid.UUID `gorm:"primaryKey"`
 	Data      ClaimData `gorm:"serializer:json"`
@@ -411,7 +354,7 @@ type InsuredObjectCoverage struct {
 	GracePeriodEndDate            *timeutil.BrazilDate          `json:"gracePeriodEndDate,omitempty"`
 	AdjustmentRate                *string                       `json:"adjustmentRate,omitempty"`
 	PremiumAmount                 insurer.AmountDetails         `json:"premiumAmount"`
-	PremiumPeriodicity            PremiumPeriodicity            `json:"premiumPeriodicity"`
+	PremiumPeriodicity            insurer.PremiumPeriodicity    `json:"premiumPeriodicity"`
 	PremiumPeriodicityOthers      *string                       `json:"premiumPeriodicityOthers,omitempty"`
 	CompensationType              *CoverageCompensationType     `json:"compensationType,omitempty"`
 	CompensationTypeOthers        *string                       `json:"compensationTypeOthers,omitempty"`
@@ -438,20 +381,6 @@ const (
 	CoverageTypeRegularCommon             CoverageType = "REGULAR_COMUM"
 	CoverageTypeCapitalGlobal             CoverageType = "CAPITAL_GLOBAL"
 	CoverageTypeParametricAndIntermittent CoverageType = "PARAMETRICO_E_INTERMITENTE"
-)
-
-type PremiumPeriodicity string
-
-const (
-	PremiumPeriodicityMonthly       PremiumPeriodicity = "MENSAL"
-	PremiumPeriodicityBimonthly     PremiumPeriodicity = "BIMESTRAL"
-	PremiumPeriodicityQuarterly     PremiumPeriodicity = "TRIMESTRAL"
-	PremiumPeriodicityQuadrimestral PremiumPeriodicity = "QUADRIMESTRAL"
-	PremiumPeriodicitySemiannual    PremiumPeriodicity = "SEMESTRAL"
-	PremiumPeriodicityAnnual        PremiumPeriodicity = "ANUAL"
-	PremiumPeriodicityOneTime       PremiumPeriodicity = "PAGAMENTO_UNICO"
-	PremiumPeriodicityEsporadic     PremiumPeriodicity = "ESPORADICA"
-	PremiumPeriodicityOthers        PremiumPeriodicity = "OUTROS"
 )
 
 type CoverageCompensationType string
@@ -678,4 +607,20 @@ type Filter struct {
 
 func policyID() string {
 	return ""
+}
+
+type Payment struct {
+	MovementDate             timeutil.BrazilDate            `json:"movementDate"`
+	MovementType             insurer.PaymentMovementType    `json:"movementType"`
+	MovementOrigin           *insurer.PaymentMovementOrigin `json:"movementOrigin,omitempty"`
+	MovementPaymentsNumber   int                            `json:"movementPaymentsNumber"`
+	Amount                   insurer.AmountDetails          `json:"amount"`
+	MaturityDate             timeutil.BrazilDate            `json:"maturityDate"`
+	TellerID                 *string                        `json:"tellerId,omitempty"`
+	TellerIDType             *insurer.IdentificationType    `json:"tellerIdType,omitempty"`
+	TellerIDOthers           *string                        `json:"tellerIdOthers,omitempty"`
+	TellerName               *string                        `json:"tellerName,omitempty"`
+	FinancialInstitutionCode *string                        `json:"financialInstitutionCode,omitempty"`
+	PaymentType              *insurer.PaymentType           `json:"paymentType,omitempty"`
+	PaymentTypeOthers        *string                        `json:"paymentTypeOthers,omitempty"`
 }

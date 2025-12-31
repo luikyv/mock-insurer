@@ -61,6 +61,12 @@ cs-tests:
 		"Insurance auto api test v1.4.0" ./conformance/config.json \
 		"Insurance customer personal api test-v1.6.0" ./conformance/config.json \
 		"capitalization-title_test-plan_v1.5.0" ./conformance/config.json \
+		"financial-assistance_test-plan_v1n3" ./conformance/config.json \
+		"Insurance acceptance and branches abroad api test V1.4.0" ./conformance/config.json \
+		"Insurance financial risks api test-V1n4" ./conformance/config.json \
+		"Insurance Housing API test V1.4.0" ./conformance/config.json \
+		"life-pension_test-plan_v1n5" ./conformance/config.json \
+		"Insurance patrimonial api test-v1.5.0" ./conformance/config.json \
 		"quote-auto_test-plan-v1.10" ./conformance/config.json \
 		--expected-skips-file ./conformance/expected_skips.json \
 		--expected-failures-file ./conformance/expected_failures.json \
