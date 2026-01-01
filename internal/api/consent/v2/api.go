@@ -1,4 +1,4 @@
-//go:generate oapi-codegen -config=./config.yml -package=v2 -o=./api_gen.go ./swagger.yml
+//go:generate go tool oapi-codegen -config=./config.yml -package=v2 -o=./api_gen.go ./swagger.yml
 package v2
 
 import (
