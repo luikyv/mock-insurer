@@ -114,24 +114,23 @@ func (c *Claim) BeforeCreate(tx *gorm.DB) error {
 }
 
 type ContractData struct {
-	ProductCode        string              `json:"productCode"`
-	ProductName        string              `json:"productName"`
-	ProposalID         string              `json:"proposalId"`
-	ContractID         *string             `json:"contractId,omitempty"`
-	ContractingType    ContractingType     `json:"contractingType"`
-	EffectiveDateStart timeutil.BrazilDate `json:"effectiveDateStart"`
-	EffectiveDateEnd   timeutil.BrazilDate `json:"effectiveDateEnd"`
-	CertificateActive  bool                `json:"certificateActive"`
-	ConjugatedPlan     bool                `json:"conjugatedPlan"`
-	PlanType           *PlanType           `json:"planType,omitempty"`
-	Periodicity        Periodicity         `json:"periodicity"`
-	PeriodicityOthers  *string             `json:"periodicityOthers,omitempty"`
-	TaxRegime          TaxRegime           `json:"taxRegime"`
-	Insured            Insured             `json:"insured"`
-	Beneficiaries      *[]Beneficiary      `json:"beneficiaries,omitempty"`
-	Intermediary       *Intermediary       `json:"intermediary,omitempty"`
-	Suseps             []Suseps            `json:"suseps"`
-	// Create a table for this.
+	ProductCode           string                 `json:"productCode"`
+	ProductName           string                 `json:"productName"`
+	ProposalID            string                 `json:"proposalId"`
+	ContractID            *string                `json:"contractId,omitempty"`
+	ContractingType       ContractingType        `json:"contractingType"`
+	EffectiveDateStart    timeutil.BrazilDate    `json:"effectiveDateStart"`
+	EffectiveDateEnd      timeutil.BrazilDate    `json:"effectiveDateEnd"`
+	CertificateActive     bool                   `json:"certificateActive"`
+	ConjugatedPlan        bool                   `json:"conjugatedPlan"`
+	PlanType              *PlanType              `json:"planType,omitempty"`
+	Periodicity           Periodicity            `json:"periodicity"`
+	PeriodicityOthers     *string                `json:"periodicityOthers,omitempty"`
+	TaxRegime             TaxRegime              `json:"taxRegime"`
+	Insured               Insured                `json:"insured"`
+	Beneficiaries         *[]Beneficiary         `json:"beneficiaries,omitempty"`
+	Intermediary          *Intermediary          `json:"intermediary,omitempty"`
+	Suseps                []Suseps               `json:"suseps"`
 	MovementContributions []MovementContribution `json:"movementContributions"`
 	MovementBenefits      []MovementBenefit      `json:"movementBenefits"`
 }
@@ -296,8 +295,8 @@ const (
 type PortabilityDirection string
 
 const (
-	PortabilityDirectionEntrada PortabilityDirection = "ENTRADA"
-	PortabilityDirectionSaida   PortabilityDirection = "SAIDA"
+	PortabilityDirectionEntry PortabilityDirection = "ENTRADA"
+	PortabilityDirectionExit  PortabilityDirection = "SAIDA"
 )
 
 type PortabilityTaxRegime string

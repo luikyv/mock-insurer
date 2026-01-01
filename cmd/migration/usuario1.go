@@ -2048,7 +2048,7 @@ func seedUsuario1(ctx context.Context, db *gorm.DB) error {
 			},
 			Status:     lifepension.PortabilityStatusCompleted,
 			StatusDate: mustParseBrazilDate("2022-05-20"),
-			Direction:  lifepension.PortabilityDirectionEntrada,
+			Direction:  lifepension.PortabilityDirectionEntry,
 			PostedChargedAmount: insurer.AmountDetails{
 				Amount:         "1.65",
 				UnitType:       "PORCENTAGEM",

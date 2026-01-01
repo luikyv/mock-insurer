@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: API Planos de Previdência e Seguros de Pessoas ambos com cobertura por sobrevivência - Open Insurance Brasil
+  title: API Previdência Risco - Open Insurance Brasil
   description: |
-    API de Planos de Previdência e Seguros de Pessoas ambos com cobertura por sobrevivência do Open Insurance Brasil - Fase 2.\
+    API de Previdência Risco do Open Insurance Brasil - Fase 2.\
     Traz informações de contrato, contribuições e benefício, portabilidade, resgate e sinistro mantidas nas instituições transmissoras por seus clientes.\
     Não possui segregação entre pessoa natural e pessoa jurídica.\
     Requer consentimento do cliente para todos os `endpoints`.
@@ -17,48 +17,48 @@ info:
     Além disso, as `permissions` necessárias deverão ter sido solicitadas quando da criação do consentimento relacionado.\
     Relacionamos a seguir as `permissions` necessárias para a consulta de dados em cada `endpoint` da presente API.
 
-    ## Permissions necessárias para a API InsuranceLifePension
+    ## Permissions necessárias para a API InsurancePensionPlan
 
     Para cada um dos `paths` desta API, além dos escopos (`scopes`) indicados existem `permissions` que deverão ser observadas:
 
     ### `/contracts`
       - permissions:
-        - GET: **LIFE_PENSION_READ**
-    ### `/{certificateId}/contract-info`
+        - GET: **PENSION_PLAN_READ**
+    ### `/{pensionIdentification}/contract-info`
       - permissions:
-        - GET: **LIFE_PENSION_CONTRACTINFO_READ**
-    ### `/{certificateId}/movements`
+        - GET: **PENSION_PLAN_CONTRACTINFO_READ**
+    ### `/{pensionIdentification}/movements`
       - permissions:
-        - GET: **LIFE_PENSION_MOVEMENTS_READ**
-    ### `/{certificateId}/portabilities`
+        - GET: **PENSION_PLAN_MOVEMENTS_READ**
+    ### `/{pensionIdentification}/portabilites`
       - permissions:
-        - GET: **LIFE_PENSION_PORTABILITIES_READ**
-    ### `/{certificateId}/withdrawals`
+        - GET: **PENSION_PLAN_PORTABILITIES_READ**
+    ### `/{pensionIdentification}/withdrawals`
       - permissions:
-        - GET: **LIFE_PENSION_WITHDRAWALS_READ**
-    ### `/{certificateId}/claim`
+        - GET: **PENSION_PLAN_WITHDRAWALS_READ**
+    ### `/{pensionIdentification}/claim`
       - permissions:
-        - GET: **LIFE_PENSION_CLAIM**
+        - GET: **PENSION_PLAN_CLAIM**
   version: 1.5.0
   contact:
     name: Governança do Open Insurance Brasil
     url: "https://www.gov.br/susep"
 servers:
-  - url: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1"
+  - url: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1"
     description: Servidor de Produção
-  - url: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1"
+  - url: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1"
     description: Servidor de Homologação
 tags:
-  - name: InsuranceLifePension
-    description: Dados transacionais de Planos de Previdência e Seguros de Pessoas ambos com cobertura por sobrevivência
+  - name: InsurancePensionPlan
+    description: Dados transacionais de Previdência Risco
 paths:
-  /insurance-life-pension/contracts:
+  /insurance-pension-plan/contracts:
     get:
       tags:
-        - InsuranceLifePension
-      summary: Obtem a lista de identificação de InsuranceLifePension
-      description: "Método para obter a lista de identificação de InsuranceLifePension"
-      operationId: "getInsuranceLifePension"
+        - InsurancePensionPlan
+      summary: Obtem a lista de identificação de InsurancePensionPlan
+      description: "Método para obter a lista de identificação de InsurancePensionPlan"
+      operationId: "getInsurancePensionPlan"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
@@ -71,7 +71,7 @@ paths:
         - $ref: "#/components/parameters/pageSize"
       responses:
         "200":
-          $ref: "#/components/responses/OKResponseInsuranceLifePension"
+          $ref: "#/components/responses/OKResponseInsurancePensionPlan"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -95,28 +95,26 @@ paths:
             - openid
           OAuth2Security:
             - "consent:consentId"
-            - insurance-life-pension
-  /insurance-life-pension/{certificateId}/contract-info:
+            - insurance-pension-plan
+  /insurance-pension-plan/{pensionIdentification}/contract-info:
     get:
       tags:
-        - InsuranceLifePension
-      summary: Obtém as informações gerais do contrato identificado por {certificateId}
+        - InsurancePensionPlan
+      summary: Obtém as informações gerais do contrato identificado por {pensionIdentification}
       description: "Método para obter as informações gerais do contrato"
-      operationId: "getInsuranceLifePensioncertificateIdContractInfo"
+      operationId: "getInsurancePensionPlanpensionIdentificationContractInfo"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
         - $ref: "#/components/parameters/xFapiCustomerIpAddress"
         - $ref: "#/components/parameters/xFapiInteractionId"
         - $ref: "#/components/parameters/xCustomerUserAgent"
-        - $ref: "#/components/parameters/certificateId"        
+        - $ref: "#/components/parameters/pensionIdentification"
         - $ref: "#/components/parameters/x-v"
         - $ref: "#/components/parameters/x-min-v"
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
       responses:
         "200":
-          $ref: "#/components/responses/OKResponseInsuranceLifePensionContractInfo"
+          $ref: "#/components/responses/OKResponseInsurancePensionPlanContractInfo"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -140,26 +138,26 @@ paths:
             - openid
           OAuth2Security:
             - "consent:consentId"
-            - insurance-life-pension
-  /insurance-life-pension/{certificateId}/movements:
+            - insurance-pension-plan
+  /insurance-pension-plan/{pensionIdentification}/movements:
     get:
       tags:
-        - InsuranceLifePension
-      summary: Obtém os dados de movimentação do contrato identificado por {certificateId}
-      description: "Método para obter os dados de movimentação do contrato."
-      operationId: "getInsuranceLifePensioncertificateIdMovements"
+        - InsurancePensionPlan
+      summary: Obtém os dados de contribuições do contrato identificado por {pensionIdentification}
+      description: "Método para obter os dados de contribuições do contrato."
+      operationId: "getInsurancePensionPlanpensionIdentificationMovements"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
         - $ref: "#/components/parameters/xFapiCustomerIpAddress"
         - $ref: "#/components/parameters/xFapiInteractionId"
         - $ref: "#/components/parameters/xCustomerUserAgent"
-        - $ref: "#/components/parameters/certificateId"        
+        - $ref: "#/components/parameters/pensionIdentification"
         - $ref: "#/components/parameters/x-v"
         - $ref: "#/components/parameters/x-min-v"
       responses:
         "200":
-          $ref: "#/components/responses/OKResponseInsuranceLifePensionMovements"
+          $ref: "#/components/responses/OKResponseInsurancePensionPlanMovements"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -183,28 +181,28 @@ paths:
             - openid
           OAuth2Security:
             - "consent:consentId"
-            - insurance-life-pension
-  /insurance-life-pension/{certificateId}/portabilities:
+            - insurance-pension-plan
+  /insurance-pension-plan/{pensionIdentification}/portabilities:
     get:
       tags:
-        - InsuranceLifePension
-      summary: Obtém os dados de portabilidades do contrato identificada por {certificateId}
+        - InsurancePensionPlan
+      summary: Obtém os dados de portabilidades do contrato identificada por {pensionIdentification}
       description: "Método para obter os dados de portabilidades associadas ao contrato"
-      operationId: "getInsuranceLifePensioncertificateIdPortabilities"
+      operationId: "getInsurancePensionPlanpensionIdentificationPortabilities"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
         - $ref: "#/components/parameters/xFapiCustomerIpAddress"
         - $ref: "#/components/parameters/xFapiInteractionId"
         - $ref: "#/components/parameters/xCustomerUserAgent"
-        - $ref: "#/components/parameters/certificateId"        
+        - $ref: "#/components/parameters/pensionIdentification"
         - $ref: "#/components/parameters/x-v"
         - $ref: "#/components/parameters/x-min-v"
         - $ref: "#/components/parameters/page"
         - $ref: "#/components/parameters/pageSize"
       responses:
         "200":
-          $ref: "#/components/responses/OKResponseInsuranceLifePensionPortabilities"
+          $ref: "#/components/responses/OKResponseInsurancePensionPlanPortabilities"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -228,28 +226,28 @@ paths:
             - openid
           OAuth2Security:
             - "consent:consentId"
-            - insurance-life-pension
-  /insurance-life-pension/{certificateId}/withdrawals:
+            - insurance-pension-plan
+  /insurance-pension-plan/{pensionIdentification}/withdrawals:
     get:
       tags:
-        - InsuranceLifePension
-      summary: Obtém os dados de resgates do contrato identificado por {certificateId}
+        - InsurancePensionPlan
+      summary: Obtém os dados de resgates do contrato identificado por {pensionIdentification}
       description: "Método para obter os dados de resgates associados ao contrato"
-      operationId: "getInsuranceLifePensioncertificateIdWithdrawals"
+      operationId: "getInsurancePensionPlanpensionIdentificationWithdrawals"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
         - $ref: "#/components/parameters/xFapiCustomerIpAddress"
         - $ref: "#/components/parameters/xFapiInteractionId"
         - $ref: "#/components/parameters/xCustomerUserAgent"
-        - $ref: "#/components/parameters/certificateId"        
+        - $ref: "#/components/parameters/pensionIdentification"        
         - $ref: "#/components/parameters/x-v"
         - $ref: "#/components/parameters/x-min-v"
         - $ref: "#/components/parameters/page"
         - $ref: "#/components/parameters/pageSize"
       responses:
         "200":
-          $ref: "#/components/responses/OKResponseInsuranceLifePensionWithdrawal"
+          $ref: "#/components/responses/OKResponseInsurancePensionPlanWithdrawals"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -273,28 +271,28 @@ paths:
             - openid
           OAuth2Security:
             - "consent:consentId"
-            - insurance-life-pension
-  /insurance-life-pension/{certificateId}/claim:
+            - insurance-pension-plan
+  /insurance-pension-plan/{pensionIdentification}/claim:
     get:
       tags:
-        - InsuranceLifePension
-      summary: Obtém os dados de sinistro do contrato identificado por {certificateId}
+        - InsurancePensionPlan
+      summary: Obtém os dados de sinistro do contrato identificado por {pensionIdentification}
       description: "Método para obter os dados de sinistro associados ao contrato"
-      operationId: "getInsuranceLifePensioncertificateIdPeople"
+      operationId: "getInsurancePensionPlanpensionIdentificationPeople"
       parameters:
         - $ref: "#/components/parameters/Authorization"
         - $ref: "#/components/parameters/xFapiAuthDate"
         - $ref: "#/components/parameters/xFapiCustomerIpAddress"
         - $ref: "#/components/parameters/xFapiInteractionId"
         - $ref: "#/components/parameters/xCustomerUserAgent"
-        - $ref: "#/components/parameters/certificateId"        
+        - $ref: "#/components/parameters/pensionIdentification"        
         - $ref: "#/components/parameters/x-v"
         - $ref: "#/components/parameters/x-min-v"
         - $ref: "#/components/parameters/page"
         - $ref: "#/components/parameters/pageSize"
       responses:
         "200":
-          $ref: "#/components/responses/OKResponseInsuranceLifePensionClaim"
+          $ref: "#/components/responses/OKResponseInsurancePensionPlanClaim"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -318,10 +316,10 @@ paths:
             - openid
           OAuth2Security:
             - "consent:consentId"
-            - insurance-life-pension
+            - insurance-pension-plan
 components:
   schemas:
-    ResponseInsuranceLifePension:
+    ResponseInsurancePensionPlan:
       type: object
       required:
         - data
@@ -371,16 +369,15 @@ components:
                           items:
                             type: object
                             required:
+                              - pensionIdentification
                               - productName
-                              - certificateId
                             properties:
                               productName:
-                                description: Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade
                                 type: string
+                                description: Nome comercial do produto, pelo qual é identificado nos canais de distribuição e atendimento da sociedade
                                 maxLength: 100
-                                example: Produto A Previdência
-                              certificateId:
-                                description: Código único da sociedade
+                              pensionIdentification:
+                                description: Código único a ser definido pela sociedade participante
                                 type: string
                                 maxLength: 60
                                 example: "42"
@@ -388,8 +385,7 @@ components:
           $ref: "#/components/schemas/Links"
         meta:
           $ref: "#/components/schemas/Meta"
-
-    ResponseInsuranceLifePensionContractInfo:
+    ResponseInsurancePensionPlanContractInfo:
       type: object
       required:
         - data
@@ -397,122 +393,95 @@ components:
         - meta
       properties:
         data:
-          $ref: "#/components/schemas/InsuranceLifePensionContractInfo"
+          $ref: "#/components/schemas/InsurancePensionPlanContractInfo"
         links:
           $ref: "#/components/schemas/Links"
         meta:
           $ref: "#/components/schemas/Meta"
-
-    InsuranceLifePensionContractInfo:
+    InsurancePensionPlanContractInfo:
       type: object
       required:
-        - certificateId
-        - productCode
-        - conjugatedPlan
-        - proposalId
-        - certificateActive
-        - insureds
+        - pensionIdentification
         - contractingType
-        - effectiveDateStart
-        - effectiveDateEnd
-        - periodicity
-        - taxRegime
-        - suseps
+        - documents
       properties:
-        certificateId:
-          description: Identificador do certificado/apólice individual, caso contrato individual. Identificador do certificado, caso contrato coletivo.
+        pensionIdentification:
+          description: Código único a ser definido pela sociedade
           type: string
           maxLength: 60
-          example: "67"
-        productCode:
-          type: string
-          description: Código único a ser definido pela sociedade.
-          maxLength: 80
-          example: "1234"
-        conjugatedPlan:
-          description: O plano é conjugado?
-          type: boolean
-          example: true
-        proposalId:
-          description: Identificador da Proposta de seguro
-          type: string
-          maxLength: 60
-          example: "987"
-        certificateActive:
-          description: O Certificado está Ativo?
-          type: boolean
-          example: true
-        insureds:
-          $ref: "#/components/schemas/InsuranceLifePensionDocumentsInsured"
-        intermediary:
-          $ref: "#/components/schemas/InsuranceLifePensionDocumentsIntermediary"
+          example: "42"
         contractingType:
           description: Tipo de contratação
           type: string
           enum: [COLETIVO, INDIVIDUAL]
           example: INDIVIDUAL
-        contractId:
-          description: identificação do contrato/apólice, em caso de contratação coletiva, obrigatório caso Tipo de contratação seja COLETIVO
-          type: string
-          maxLength: 60
-          example: "681"
         planType:
-          description: Tipo do Plano (Quando Contrato Coletivo)
+          description: Tipo do plano, obrigatório se houver
           type: string
           enum:
             - AVERBADO
             - INSTITUIDO_CONTRIBUTARIO
             - INSTITUIDO_NAO_CONTRIBUTARIO
           example: AVERBADO
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/InsurancePensionPlanDocuments"
+    InsurancePensionPlanDocuments:
+      type: object
+      required:
+        - certificateId
+        - effectiveDateStart
+        - effectiveDateEnd
+        - proposalId
+        - insureds
+        - plans
+      properties:
+        certificateId:
+          description: Identificador utilizado para as "entidades de 1º nível", a saber, apólices individuais , bilhetes ei certificados de participante individual de previdência; por sua vez, nas operações coletivas equivale às apólices coletivas e aos contratos coletivos de previdência
+          type: string
+          maxLength: 60
+          example: "67"
+        contractId:
+          description: identificação do contrato/apólice, em caso de contratação coletiva, obrigatório caso Tipo de contratação seja COLETIVO
+          type: string
+          maxLength: 60
+          example: "681"
         effectiveDateStart:
           description: Data de Início da Vigência do documento.
           type: string
           format: date
-          example: "2021-05-21"
           maxLength: 10
-          pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+          pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+          example: "2021-05-21"
         effectiveDateEnd:
           description: Data de Fim da Vigência do documento.
           type: string
           format: date
-          example: "2021-05-21"
           maxLength: 10
-          pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+          pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+          example: "2021-05-21"
+        proposalId:
+          description: Identificador da Proposta
+          type: string
+          maxLength: 60
+          example: "987"
+        insureds:
+          type: array
+          items:
+            $ref: "#/components/schemas/InsurancePensionPlanDocumentsInsured"
         beneficiary:
           type: array
           items:
-            $ref: "#/components/schemas/InsuranceLifePensionDocumentsBeneficiary"
-        periodicity:
-          description: Peridicidade da Contribuição
-          type: string
-          enum:
-            [
-              MENSAL,
-              BIMESTRAL,
-              TRIMESTRAL,
-              QUADRIMESTRAL,
-              SEMESTRAL,
-              ANUAL,
-              ESPORADICA,
-              PAGAMENTO_UNICO,
-              OUTROS
-            ]
-          example: MENSAL
-        periodicityOthers:
-          description: Descricao do campo de Periodicidade da Contribuicao quando a opcao escolhida for OUTROS
-          type: string
-          maxLength: 100
-        taxRegime:
-          type: string
-          description: Regime Tributário
-          enum: [PROGRESSIVO, REGRESSIVO]
-          example: PROGRESSIVO
-        suseps:
+            $ref: "#/components/schemas/InsurancePensionPlanDocumentsBeneficiary"
+        intermediary:
           type: array
           items:
-            $ref: "#/components/schemas/InsuranceLifePensionSuseps"
-
-    InsuranceLifePensionDocumentsInsured:
+            $ref: "#/components/schemas/InsurancePensionPlanDocumentsIntermediary"
+        plans:
+          $ref: "#/components/schemas/InsurancePensionPlanDocumentsPlans"
+    
+    InsurancePensionPlanDocumentsInsured:
       description: Informações do segurado/participante
       type: object
       required:
@@ -550,9 +519,9 @@ components:
           description: "Data de nascimento, conforme especificação RFC-3339"
           type: string
           format: date
-          example: "2021-05-21"
           maxLength: 10
-          pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+          pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+          example: "2021-05-21"
         gender:
           description: Sexo do Segurado / Participante, Obrigatório, se houver
           type: string
@@ -574,7 +543,7 @@ components:
         townName:
           type: string
           maxLength: 50
-          pattern:  '^[A-Za-z\sáâãéêíïóôõúçÁÂÃÉÍÏÓÔÕÚÇ]+$'
+          pattern: '^[A-Za-z\sáâãéêíïóôõúçÁÂÃÉÍÏÓÔÕÚÇ]+$'
           example: Rio de Janeiro
           description: |
             Localidade: O nome da localidade corresponde à designação da cidade ou município no qual o endereço está localizado.
@@ -610,17 +579,17 @@ components:
           pattern: '[\w\W\s]*'
           example: Fundos
           description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.
-    InsuranceLifePensionDocumentsBeneficiary:
+    InsurancePensionPlanDocumentsBeneficiary:
       description: Informações do beneficiário/pessoa associada, obrigatório se houver.
       type: object
       required:
-        - documentNumber
-        - documentType
         - name
+        - documentType
+        - documentNumber
         - participationPercentage
       properties:
         documentNumber:
-          description: Documento do beneficiário
+          description: Documento de Identificação do beneficiário
           type: string
           maxLength: 60
           example: "12345678910"
@@ -637,27 +606,12 @@ components:
           type: string
           maxLength: 80
           example: Juan Kaique Cláudio Fernandes
-        birthDate:  
-          description: Data de nascimento do beneficiário
-          type: string
-          format: date
-          example: '2022-12-31'
-          maxLength: 10
-          pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
-        kinship:
-          description: Grau de parentesco do beneficiário em relação ao segurado
-          type: string
-          enum: [CONJUGE, PAIS, SOGROS, AVOS, BISAVOS, FILHOS, NETOS, BISNETOS, IRMAOS, TIOS, SOBRINHOS, OUTROS]
-          example: PAIS
-        kinshipOthers:
-          description: Campo para que seja informado o parentesco de beneficiário caso seja infromado "OUTROS" no campo "kinship".
-          type: string
         participationPercentage:
-          description: Percentual de participação do beneficiário.
+          description: Percentual de particiapação do beneficiário.
           type: string
           pattern: '^100\.0{1,9}$|^\d{1,2}\.\d{1,9}$'
           example: "10.00"
-    InsuranceLifePensionDocumentsIntermediary:
+    InsurancePensionPlanDocumentsIntermediary:
       description: Informações de intermediário, obrigatório se houver.
       type: object
       required:
@@ -681,7 +635,7 @@ components:
           type: string
           maxLength: 100
         documentNumber:
-          description: Documento do intermediador (Caso Tipo de Intermediador nao seja CORRETOR, ou quando for CORRETOR, porem o identificador do intermediador nao seja informado)
+          description: Documento do Intermediador (Caso Tipo de Intermediador nao seja Corretor, ou quando for Corretor, porem o identificador do intermediador nao seja informado)
           type: string
           maxLength: 60
           example: "12345678910"
@@ -746,25 +700,45 @@ components:
           maxLength: 200
           pattern: '[\w\W\s]*'
           example: "Av Naburo Ykesaki, 1270"
-        additionalInfo:
+        addressAdditionalInfo:
           type: string
           maxLength: 30
           pattern: '[\w\W\s]*'
           example: Fundos
-          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.   
-    InsuranceLifePensionSuseps:
+          description: Alguns logradouros ainda necessitam ser especificados por meio de complemento.
+
+    InsurancePensionPlanDocumentsPlans:
+      type: object
+      required:
+        - coverages
+      properties:
+        coverages:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePensionPlanDocumentsPlansCoverage'
+        grace:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePensionPlanDocumentsPlansGrace'
+    InsurancePensionPlanDocumentsPlansCoverage:
       type: object
       required:
         - coverageCode
         - susepProcessNumber
         - structureModality
-        - type
+        - periodicity
+        - coverageName
         - lockedPlan
-        - qualifiedProposer
+        - updateIndexLagging
+        - termStartDate
+        - termEndDate
+        - benefitAmount
+        - financialRegime
         - benefitPaymentMethod
-        - financialResultReversal
-        - calculationBasis
-        - FIE
+        - pricingMethod
+        - updateIndex
+        - contributionAmount
+        - chargedAmount
       properties:
         coverageCode:
           type: string
@@ -772,17 +746,17 @@ components:
           maxLength: 5
           example: "1999"
         susepProcessNumber:
-          description: Número do processo administrativo da Susep relacionado à cobertura contratada
+          description: Número do Processo Susep, obrigatório quando aplicável
           type: string
           maxLength: 60
           example: "12345"
         structureModality:
-          description: Modalidade de estruturação da cobertura
+          description: Modalidade de estruturação
           type: string
           enum: [BENEFICIO_DEFINIDO, CONTRIBUICAO_VARIAVEL]
           example: BENEFICIO_DEFINIDO
         benefitAmount:
-          description: Valor do beneficio em reais da cobertura contratada (Caso campo Modalidade de estruturacao for beneficio definido)
+          description: Valor do benefício em reais da cobertura contratada
           allOf:
             - $ref: "#/components/schemas/AmountDetails"
         rentsInterestRate:
@@ -790,155 +764,158 @@ components:
           type: string
           pattern: '^\d{1,3}\.\d{1,9}$'
           example: "10.00"
-        grace:
-          type: array
-          items:
-            $ref: "#/components/schemas/InsuranceLifePensionPlansGrace"
-        type:
-          description: Tipo de plano
+        periodicity:
           type: string
-          enum: [PGBL, PRGP, PAGP, PRSA, PRI, PDR, VGBL, VRGP, VAGP, VRSA, VRI, VDR, TRADICIONAL, OUTROS]
-          example: PGBL
-        typeDetails:
-          description: Descrição do Tipo de Plano, Campo obrigatório quando o domínio do campo 'Tipo de Plano' for OUTROS
+          description: Periodicidade de pagamento da Contribuição/Prêmio
+          enum:
+            [
+              MENSAL,
+              BIMESTRAL,
+              TRIMESTRAL,
+              QUADRIMESTRAL,
+              SEMESTRAL,
+              ANUAL,
+              ESPORADICA,
+              PAGAMENTO_UNICO,
+              OUTROS
+            ]
+          example: MENSAL
+        periodicityOthers:
+          description: Descricao do campo de Periodicidade de pagamento da Contribuicao/Premio quando a opcao escolhida for OUTROS
+          type: string
+          maxLength: 100
+        coverageName:
           type: string
           maxLength: 500
-          example: Descrição do Tipo de Plano  
+          description: Descrição / Nome da Cobertura
         lockedPlan:
           description: Indica se o plano consta como bloqueado
           type: boolean
           example: false
-        qualifiedProposer:
-          description: Proponente Qualificado
-          type: boolean
-          example: false
+        termStartDate:
+          description: Data de início de vigência da cobertura
+          type: string
+          format: date
+          maxLength: 10
+          pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+          example: "2021-05-21"
+        termEndDate:
+          type: string
+          format: date
+          description: Data de fim de vigência da cobertura. Obrigatório se houver.
+          maxLength: 10
+          pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+          example: "2021-05-21"
+        financialRegime:
+          description: Regime financeiro
+          type: string
+          enum:
+            - REPARTICAO_SIMPLES
+            - REPARTICAO_POR_CAPITAIS_DE_COBERTURA
+            - CAPITALIZACAO
+        benefitPaymentMethod:
+          description: Forma de Pagamento do Benefício
+          type: string
+          enum: [UNICO, RENDA]
+          example: UNICO
         biometricTable:
           type: string
           description: Tábua biométrica, se houver
-          example: AT50_M
-          enum: [AT49_M,AT49_F,AT50_M,AT50_F,AT55_M,AT55_F,AT71_M,AT71_F,AT83_M,AT83_F,AT2000_M,AT2000_F,CS041,CSO58,CSO80_M,CSO80_F,CSG_60,GAM71_M,GAM71_F,SGB51,SGB55,SGB71,SGB75,GKF70,GKF80,GKF95,GKM70,GKM80,GKM95,UP_84,IAPB_57,IAPB57_NIVELADA,ZIMMERMANN,WINKLEVOSS,BENTZIEN,EXP_IAPC,IAPB_57_FRACA,IAPB_57_FORTE,ALVARO_VINDAS,TASA_27,MULLER,HUNTER,EB7,UP94_M,AT49,AT2000_FEMALE_SUAVIZADA_10,TGA,AT2000_MALE_SUAVIZADA_10,BR_EMSSB_V2010M,BR_EMSSB_V2010F,SUSEP_IBGE,PERCENTUAL_FIXO,PERPETUA,BR_EMSMT_V2010M,BR_EMSMT_V2010F,BR_EMSSB_V2015M,BR_EMSSB_V2015F,BR_EMSMT_V2015M,BR_EMSMT_V2015F,BR_EMSMT_M,BR_EMSMT_F,BR_EMSSB_M,BR_EMSSB_F,BR_EMSSB_V2021M,BR_EMSSB_V2021F,BR_EMSMT_V2021M,BR_EMSMT_V2021F,OUTRAS]
-        benefitPaymentMethod:
-          description: Forma de pagamento do benefício
+          example: AT2000_M
+          enum:
+            [AT49_M,AT49_F,AT50_M,AT50_F,AT55_M,AT55_F,AT71_M,AT71_F,AT83_M,AT83_F,AT2000_M,AT2000_F,CS041,CSO58,CSO80_M,CSO80_F,CSG_60,GAM71_M,GAM71_F,SGB51,SGB55,SGB71,SGB75,GKF70,GKF80,GKF95,GKM70,GKM80,GKM95,UP_84,IAPB_57,IAPB57_NIVELADA,ZIMMERMANN,WINKLEVOSS,BENTZIEN,EXP_IAPC,IAPB_57_FRACA,IAPB_57_FORTE,ALVARO_VINDAS,TASA_27,MULLER,HUNTER,EB7,UP94_M,AT49,AT2000_FEMALE_SUAVIZADA_10,TGA,AT2000_MALE_SUAVIZADA_10,BR_EMSSB_V2010M,BR_EMSSB_V2010F,SUSEP_IBGE,PERCENTUAL_FIXO,PERPETUA,BR_EMSMT_V2010M,BR_EMSMT_V2010F,BR_EMSSB_V2015M,BR_EMSSB_V2015F,BR_EMSMT_V2015M,BR_EMSMT_V2015F,BR_EMSMT_M,BR_EMSMT_F,BR_EMSSB_M,BR_EMSSB_F,BR_EMSSB_V2021M,BR_EMSSB_V2021F,BR_EMSMT_V2021M,BR_EMSMT_V2021F,OUTRAS]
+        pricingMethod:
+          description: Forma de Tarifação
           type: string
-          enum: [UNICO, RENDA]
-          example: RENDA
-        pmbacInterestRate:
-          description: Taxa de Juros PMBaC, Obrigatório se houver
+          example: POR_IDADE
+          enum:
+            - POR_IDADE
+            - TAXA_MEDIA
+            - FAIXA_ETÁRIA
+            - OUTROS
+        pricingMethodDescription:
           type: string
-          pattern: '^\d{1,3}\.\d{1,9}$'
-          example: "10.00"
-        pmbacGuaranteePriceIndex:
-          description: Indíce de Preços Garantido PMBaC, Obrigatório se houver
+          description: Obrigatório quando a forma de tarifação for igual a OUTROS
+          maxLength: 500
+          example: OUTROS
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/InsurancePensionPlanEvent"   
+        updateIndex:
+          description: Índice de Atualização da Cobertura
           type: string
-          enum: [IPC-FGV, IGP-DI-FGV, IPCA-IBGE, IGPM-FGV, INPC-IBGE, TR, OUTROS]
           example: IPC-FGV
-        pmbacGuaranteePriceOthers:
-          description: Descricao do Indice de Precos Garantido PMBaC quando a opcao escolhida for OUTROS
+          enum:
+            - IPC-FGV
+            - IGP-DI-FGV
+            - IPCA-IBGE
+            - IGPM-FGV
+            - INPC-IBGE
+            - TR
+            - OUTROS
+        updateIndexDescription:
           type: string
-          maxLength: 100
-        pmbacIndexLagging:
-          description: Defasagem do Indíce PMBaC, Obrigatório se houver
+          description: Descrição do índice de atualização. Obrigatório quando o updateIndex for OUTROS 
+          maxLength: 500
+          example: OUTROS
+        updatePeriodicity:
+          type: string
+          description: Periodicidade de Atualização 
+          example: PERIODICIDADE
+        updatePeriodicityUnit:
+          type: string
+          description: Unidade da Periodicidade de Atualização da Cobertura (Quando Houver)
+          enum: [DIA, MES, ANO] 
+          example: DIA
+        updateIndexLagging:
+          description: Defasagem do índice de preços aplicado na atualização da renda (em meses)
           type: integer
           maxLength: 2
           example: 1
-        financialResultReversal:
-          description: Reversão do Resultado Financeiro, Obrigatório se houver
-          type: boolean
-          example: false
-        financialResultReversalPercentage:
-          description: Percentual de Reversão do Resultado Financeiro, obrigatório caso o campo 'Reversão do Resultado Financeiro' seja true.
-          type: string
-          pattern: '^100\.0{1,9}$|^\d{1,2}\.\d{1,9}$'
-          example: "10.00"
-        pdrOrVdrminimalGuaranteeIndex:
-          description: Indíce de Garantia Mínimia do PDR ou VDR, Obrigatório se houver
-          type: string
-          enum: [IPC-FGV, IGP-DI-FGV, IPCA-IBGE, IGPM-FGV, INPC-IBGE, TR, OUTROS]
-          example: IPC-FGV
-        pdrOrVdrminimalGuaranteeOthers:
-          description: Descricao do Indice de Garantia Minimia do PDR ou VDR quando a opcao escolhida for OUTROS
-          type: string
-          maxLength: 100
-        pdrOrVdrminimalGuaranteePercentage:
-          description: Percentual de Garantia Mínima do PDR ou VDR, Obrigatório se houver
-          type: string
-          pattern: '^100\.0{1,9}$|^\d{1,2}\.\d{1,9}$'
-          example: "10.00"
-        calculationBasis:
-          description: Base de Cálculo
-          type: string
-          example: MENSAL
-          enum: [MENSAL, ANUAL]
-        FIE:
-          type: array
-          items:
-            type: object
-            required:
-              - FIECNPJ
-              - FIEName
-              - FIETradeName
-              - pmbacAmount
-              - provisionSurplusAmount
-            properties:
-              FIECNPJ:
-                description: CNPJ do FIE
-                type: string
-                pattern: '^\d{14}$'
-                example: "12345678901234"
-              FIEName:
-                description: Razão social do FIE
-                type: string
-                example: RAZÃO SOCIAL
-              FIETradeName:
-                description: Nome fantasia do FIE
-                type: string
-                example: NOME FANTASIA
-              pmbacAmount:
-                description: |
-                  Valor PMBaC (fim do mês) 
-                  Valor da Provisão Matemática de Benefícios a Conceder (PMBaC), no fim de cada mês. Caso não haja saldo informar nulo
-                allOf:
-                  - $ref: "#/components/schemas/AmountDetails"
-              provisionSurplusAmount:
-                description: |
-                  Valor da provisão de excedentes financeiros (PEF) (valor ao final do mês) Caso não haja saldo informar nulo
-                allOf:
-                  - $ref: "#/components/schemas/AmountDetails"
-
-    InsuranceLifePensionPlansGrace:
-      description: Dados de Carência para RCC, Capitalização e Sobrevivência, obrigatório se houver
+        contributionAmount:
+          description: Valor de Contribuição da Cobertura
+          allOf:
+            - $ref: "#/components/schemas/AmountDetails"
+        chargedAmount:
+          description: Valor de Carregamento
+          allOf:
+            - $ref: "#/components/schemas/AmountDetails"
+    InsurancePensionPlanDocumentsPlansGrace:
       type: object
       properties:
         graceType:
           description: Tipo de carência, Obrigatório se houver
           type: string
+          example: PORTABILIDADE
           enum: [PORTABILIDADE, RESGATE]
-          example: RESGATE
         gracePeriod:
-          description: Informar o número de unidades do período de carência, de acordo com a periodicidade informada no próximo campo.
+          description: Campo para preenchimento do período de carência de resgate / portabilidade, Obrigatório se houver
           type: integer
           maxLength: 5
           example: 4
         gracePeriodicity:
           type: string
           description: Periodicidade da Carência, Obrigatório se houver
+          example: DIA
           enum: [DIA, MES, ANO]
-          example: ANO
         dayIndicator:
           type: string
           description: Índicador de dias úteis ou Corridos, Obrigatório se houver
-          enum: [UTEIS, CORRIDOS]
           example: UTEIS
+          enum: [UTEIS, CORRIDOS]
         gracePeriodStart:
-          description: Data de Início da Carência.
+          description: Data de Início da Carência. Obrigatório, se houver
           type: string
           format: date
+          maxLength: 10
           pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
           example: "2021-05-21"
         gracePeriodEnd:
           description: Data de Fim da carência. Obrigatório se houver
           type: string
           format: date
+          maxLength: 10
           pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
           example: "2021-05-21"
         gracePeriodBetween:
@@ -948,11 +925,26 @@ components:
           example: 6
         gracePeriodBetweenType:
           type: string
-          description: Tipo de Prazo de Carência entre Resgates, Obrigatório quando o valor do campo 'Tipo de Carencia' for 'RESGATE'
-          enum: [DIA, MES, ANO]
           example: DIA
-    
-    ResponseInsuranceLifePensionMovements:
+          description: Tipo de Prazo de Carência entre Resgates, Obrigatório quando o valor do campo 'carencia_tipo' for 'RESGATE'
+          enum: [DIA, MES, ANO]
+    InsurancePensionPlanEvent:
+      type: object
+      description: Eventos Geradores
+      required:
+        - eventType
+      properties:
+        eventType:
+          description: Indica o tipo de evento gerador aplicável à cobertura
+          type: string
+          example: INVALIDEZ
+          enum: [INVALIDEZ, MORTE, OUTROS]
+        eventTypeOthers:
+          description: Descrição do tipo de evento gerador quando for informada a opção OUTROS
+          type: string
+          example: OUTROS
+
+    ResponseInsurancePensionPlanMovements:
       type: object
       required:
         - data
@@ -960,12 +952,12 @@ components:
         - meta
       properties:
         data:
-          $ref: "#/components/schemas/InsuranceLifePensionMovements"
+          $ref: "#/components/schemas/InsurancePensionPlanMovements"
         links:
           $ref: "#/components/schemas/Links"
         meta:
           $ref: "#/components/schemas/Meta"
-    InsuranceLifePensionMovements:
+    InsurancePensionPlanMovements:
       type: object
       properties:
         movementContributions:
@@ -987,16 +979,16 @@ components:
                 description: Datas de Pagamentos das contribuições/prêmios comerciais (em relação aos últimos 12 meses), Obrigatório, se houver
                 type: string
                 format: date
-                example: '2021-05-21'
                 maxLength: 10
-                pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+                pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+                example: "2021-05-21"
               contributionExpirationDate:
                 description: Datas de Vencimentos das contribuições/prêmios comerciais (em relação aos últimos 12 meses)
                 type: string
                 format: date
-                example: "2021-05-21"
+                pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
                 maxLength: 10
-                pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+                example: "2021-05-21"
               chargedInAdvanceAmount:
                 description: Valor do carregamento cobrado de forma antecipada, Obrigatório se houver
                 allOf:
@@ -1018,16 +1010,13 @@ components:
                   ]
                 example: MENSAL
               periodicityOthers:
-                description: Descricao do campo de Periodicidade das contribuicoes quando a opcao escolhida for OUTROS
+                description: Descricao do campo de Periodicidade da contribuicoes quando a opcao escolhida for OUTROS
                 type: string
                 maxLength: 100
         movementBenefits:
           type: array
           items:
             type: object
-            required:
-              - benefitAmount
-              - benefitPaymentDate
             properties:
               benefitAmount:
                 description: Valores de benefícios recebidos (em relação aos últimos 12 meses), Obrigatório, se houver
@@ -1037,11 +1026,11 @@ components:
                 description: Datas de Pagamentos de benefícios recebidos (em relação aos últimos 12 meses), Obrigatório, se houver
                 type: string
                 format: date
-                example: "2021-05-21"
                 maxLength: 10
-                pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
-        
-    ResponseInsuranceLifePensionPortabilities:
+                pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+                example: "2021-05-21"
+
+    ResponseInsurancePensionPlanPortabilities:
       type: object
       required:
         - data
@@ -1049,12 +1038,12 @@ components:
         - meta
       properties:
         data:
-          $ref: "#/components/schemas/InsuranceLifePensionPortability"
+          $ref: "#/components/schemas/InsurancePensionPlanPortability"
         links:
           $ref: "#/components/schemas/Links"
         meta:
           $ref: "#/components/schemas/Meta"
-    InsuranceLifePensionPortability:
+    InsurancePensionPlanPortability:
       type: object
       required:
         - hasOccurredPortability
@@ -1073,7 +1062,7 @@ components:
               - amount
               - requestDate
               - liquidationDate
-              - postedChargedAmount
+              - chargingValue
             properties:
               direction:
                 description: Direção do fluxo de portabilidade
@@ -1083,7 +1072,7 @@ components:
               type:
                 type: string
                 description: Tipo de portabilidade, Obrigatório quando Tipo Fluxo for SAIDA
-                enum: [TOTAL, PARCIAL]
+                enum: [PARCIAL, TOTAL]
                 example: PARCIAL
               amount:
                 description: Valor portado
@@ -1095,16 +1084,16 @@ components:
                 format: date-time
                 maxLength: 20
                 pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-                example: "2022-05-20T08:30:00Z"
+                example: "2021-08-20T08:30:00Z"
               liquidationDate:
                 description: Declara a data de ocorrência da efetiva liquidação da portabilidade
                 type: string
-                format: date-time
                 maxLength: 20
                 pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
-                example: "2022-05-20T08:30:00Z"
-              postedChargedAmount:
-                description: Valor do carregamento cobrado de forma postecipada (caso nao haja reportar nulo)
+                format: date-time
+                example: "2021-08-20T08:30:00Z"
+              chargingValue:
+                description: Valor de carregamento cobrado de forma postecipada
                 allOf:
                   - $ref: "#/components/schemas/AmountDetails"
               sourceEntity:
@@ -1117,40 +1106,8 @@ components:
                 description: Processo Susep do plano originário da portabilidade
                 type: string
                 example: "12345"
-              taxRegime:
-                description: Regime de Tributação (Caso fluxo de portabilidade for de entrada e Ocorrência da portabilidade for Sim)
-                type: string
-                enum: [PROGRESSIVO, REGRESSIVO]
-                example: PROGRESSIVO
-              FIE:
-                type: array
-                description: Informações do FIE do Valor Portado (Caso Ocorrência da portabilidade for Sim)
-                items:
-                  type: object
-                  required:
-                    - portedType
-                  properties:
-                    FIECNPJ:
-                      description: CNPJ do FIE
-                      type: string
-                      maxLength: 14
-                      pattern: '^\d{14}$'
-                      example: "12345678901234"
-                    FIEName:
-                      description: Razão social do FIE
-                      type: string
-                      example: RAZÃO SOCIAL
-                    FIETradeName:
-                      description: Nome fantasia do FIE
-                      type: string
-                      example: NOME FANTASIA
-                    portedType:
-                      description: Tipo portado
-                      type: string
-                      enum: [ORIGEM, DESTINO]
-                      example: ORIGEM
 
-    ResponseInsuranceLifePensionWithdrawal:
+    ResponseInsurancePensionPlanWithdrawals:
       type: object
       required:
         - data
@@ -1160,12 +1117,12 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/InsuranceLifePensionWithdrawal"
+            $ref: "#/components/schemas/InsurancePensionPlanWithdrawal"
         links:
           $ref: "#/components/schemas/Links"
         meta:
           $ref: "#/components/schemas/Meta"
-    InsuranceLifePensionWithdrawal:
+    InsurancePensionPlanWithdrawal:
       type: object
       required:
         - withdrawalOccurence
@@ -1183,20 +1140,20 @@ components:
           description: Declara a data da solicitação do resgate, Obrigatório, se houver
           type: string
           format: date-time
-          example: "2022-05-20T08:30:00Z"
-          maxLength: 20
           pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+          maxLength: 20
+          example: "2021-08-20T08:30:00Z"
         amount:
-          description: Declara o valor bruto resgatado, Obrigatório, se houver
+          description: Valor do Resgate
           allOf:
             - $ref: "#/components/schemas/AmountDetails"
         liquidationDate:
           description: Declara a data da efetiva liquidação do valor resgatado, Obrigatório, se houver
           type: string
-          format: date-time
-          example: "2022-05-20T08:30:00Z"
-          maxLength: 20
           pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])T(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)Z$
+          format: date-time
+          maxLength: 20
+          example: "2021-08-20T08:30:00Z"
         postedChargedAmount:
           description: Valor do carregamento cobrado de forma postecipada, Obrigatório, se houver
           allOf:
@@ -1214,28 +1171,8 @@ components:
               ASSISTENCIA_FINANCEIRA
             ]
           example: RESGATE_REGULAR
-        FIE:
-          type: array
-          description: Informações do FIE do Valor Resgatado (Caso Ocorrência do resgate for Sim)
-          items:
-            type: object
-            properties:
-              FIECNPJ:
-                description: CNPJ do FIE
-                type: string
-                maxLength: 14
-                pattern: '^\d{14}$'
-                example: "12345678901234"
-              FIEName:
-                description: Razão social do FIE
-                type: string
-                example: RAZÃO SOCIAL
-              FIETradeName:
-                description: Nome fantasia do FIE
-                type: string
-                example: NOME FANTASIA        
 
-    ResponseInsuranceLifePensionClaim:
+    ResponseInsurancePensionPlanClaim:
       type: object
       required:
         - data
@@ -1245,13 +1182,13 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/InsuranceLifePensionClaim"
+            $ref: "#/components/schemas/InsurancePensionPlanClaim"
           minItems: 0
         links:
           $ref: "#/components/schemas/Links"
         meta:
           $ref: "#/components/schemas/Meta"
-    InsuranceLifePensionClaim:
+    InsurancePensionPlanClaim:
       type: object
       required:
         - eventInfo
@@ -1283,16 +1220,17 @@ components:
               description: Data de Aviso do Evento Gerador
               type: string
               format: date
-              example: "2021-05-21"
               maxLength: 10
-              pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+              pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+              example: "2021-05-21"
             eventRegisterDate:
               description: Data do Registro de Aviso à Seguradora
               type: string
               format: date
-              example: "2021-05-21"
+              pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
               maxLength: 10
-              pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+              example: "2021-05-21"
+
         incomeInfo:
           type: object
           description: Informacoes de Renda Concedida (caso renda tenha sido concedida)
@@ -1319,7 +1257,7 @@ components:
               enum: [CPF, RG, PASSAPORTE, OUTROS]
               example: "CPF"
             beneficiaryDocTypeOthers:
-              description: Descricao do campo de Tipo do Intermediador quando a opcao escolhida for OUTROS
+              description: Descricao do campo de Tipo de Documento do Beneficiario quando a opcao escolhida for OUTROS
               type: string
               maxLength: 100
             beneficiaryName:
@@ -1329,17 +1267,17 @@ components:
             beneficiaryCategory:
               description: Classificação do Beneficiário
               type: string
-              enum: [SEGURADO, CÔNJUGE, FILHO_MENOR_DE_IDADE, BENEFICIÁRIO_INDICADO]
+              enum: [SEGURADO, CONJUGE, FILHO_MENOR_DE_IDADE, BENEFICIARIO_INDICADO]
               example: "SEGURADO"
             beneficiaryBirthDate:
               description: Data de nascimento do beneficiário da renda concedida
               type: string
               format: date
-              example: "2021-05-21"    
               maxLength: 10
-              pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+              pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+              example: "2021-05-21"
             incomeType:
-              description: Tipo de Renda, Obrigatório, se houver
+              description: Tipo de Renda
               type: string
               enum:
                 - PAGAMENTO_UNICO
@@ -1359,7 +1297,7 @@ components:
             incomeTypeDetails:
               description: Descrição do Tipo de Renda, obrigatório se campo Tipo de Renda for OUTROS.
               type: string
-              maxLength: 500
+              maxLength: 100
               example: Descrição do Tipo de Renda
             reversedIncome:
               description: Renda Revertida, obrigatorio se campo Tipo de Renda for 4, 6, 8, 9, 11 e 12.
@@ -1381,9 +1319,9 @@ components:
               description: Data de Concessão
               type: string
               format: date
-              example: "2021-05-21"
               maxLength: 10
-              pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
+              pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
+              example: "2021-05-21"
             monetaryUpdateIndex:
               description: Índice de Atualização Monetária
               type: string
@@ -1404,17 +1342,10 @@ components:
               description: Data da última atualização do benefício
               type: string
               format: date
+              maxLength: 10
+              pattern: ^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$
               example: "2021-05-21"
-              maxLength: 10
-              pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
-            defermentDueDate:
-              description: Data do fim do período de diferimento do benefício concedido/a conceder
-              type: string
-              format: date
-              example: "2025-12-31"
-              maxLength: 10
-              pattern: '^(\d{4})-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$'
-          
+
     AmountDetails:
         type: object
         description: Detalhes de valores/limites
@@ -1499,28 +1430,28 @@ components:
         self:
           type: string
           description: URL da página atualmente requisitada
-          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-life-pension\/v\d+)(\/insurance-life-pension.*)?$
-          example: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1/insurance-life-pension"
+          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-pension-plan\/v\d+)(\/insurance-pension-plan.*)?$
+          example: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1/insurance-pension-plan"
         first:
           type: string
           description: URL da primeira página de registros
-          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-life-pension\/v\d+)(\/insurance-life-pension.*)?$
-          example: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1/insurance-life-pension"
+          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-pension-plan\/v\d+)(\/insurance-pension-plan.*)?$
+          example: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1/insurance-pension-plan"
         prev:
           type: string
           description: URL da página anterior de registros
-          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-life-pension\/v\d+)(\/insurance-life-pension.*)?$
-          example: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1/insurance-life-pension"
+          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-pension-plan\/v\d+)(\/insurance-pension-plan.*)?$
+          example: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1/insurance-pension-plan"
         next:
           type: string
           description: URL da próxima página de registros
-          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-life-pension\/v\d+)(\/insurance-life-pension.*)?$
-          example: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1/insurance-life-pension"
+          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-pension-plan\/v\d+)(\/insurance-pension-plan.*)?$
+          example: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1/insurance-pension-plan"
         last:
           type: string
           description: URL da última página de registros
-          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-life-pension\/v\d+)(\/insurance-life-pension.*)?$
-          example: "https://api.organizacao.com.br/open-insurance/insurance-life-pension/v1/insurance-life-pension"
+          pattern: ^(https:\/\/)(.*?)(\/open-insurance\/insurance-pension-plan\/v\d+)(\/insurance-pension-plan.*)?$
+          example: "https://api.organizacao.com.br/open-insurance/insurance-pension-plan/v1/insurance-pension-plan"
     Meta:
       type: object
       properties:
@@ -1589,9 +1520,9 @@ components:
         tratado como ausente. Se todas as versões solicitadas não forem suportadas, 
         o titular dos dados deve responder com o código de status 406 Not Acceptable.
   parameters:
-    certificateId:
-      name: certificateId
-      description: Código único a ser definido pela sociedade participante
+    pensionIdentification:
+      name: pensionIdentification
+      description: Código único a ser definido pela sociedade
       in: path
       required: true
       schema:
@@ -1702,10 +1633,10 @@ components:
           authorizationUrl: "https://authserver.example/authorization"
           tokenUrl: "https://authserver.example/token"
           scopes:
-            insurance-life-pension: Escopo necessário para acesso à API. O controle dos endpoints específicos é feito via permissions.
+            insurance-pension-plan: Escopo necessário para acesso à API. O controle dos endpoints específicos é feito via permissions.
   responses:
-    OKResponseInsuranceLifePension:
-      description: Dados de ResponseInsuranceLifePension obtidos com sucesso
+    OKResponseInsurancePensionPlan:
+      description: Dados de ResponseInsurancePensionPlan obtidos com sucesso
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1716,9 +1647,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ResponseInsuranceLifePension"
-    OKResponseInsuranceLifePensionContractInfo:
-      description: Dados de ResponseInsuranceLifePensionContractInfo obtidos com sucesso
+            $ref: "#/components/schemas/ResponseInsurancePensionPlan"
+    OKResponseInsurancePensionPlanContractInfo:
+      description: Dados de ResponseInsurancePensionPlanContractInfo obtidos com sucesso
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1729,9 +1660,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ResponseInsuranceLifePensionContractInfo"
-    OKResponseInsuranceLifePensionMovements:
-      description: Dados de ResponseInsuranceLifePensionMovements obtidos com sucesso
+            $ref: "#/components/schemas/ResponseInsurancePensionPlanContractInfo"
+    OKResponseInsurancePensionPlanMovements:
+      description: Dados de ResponseInsurancePensionPlanMovements obtidos com sucesso
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1742,9 +1673,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ResponseInsuranceLifePensionMovements"
-    OKResponseInsuranceLifePensionPortabilities:
-      description: Dados de ResponseInsuranceLifePensionPortabilities obtidos com sucesso
+            $ref: "#/components/schemas/ResponseInsurancePensionPlanMovements"
+    OKResponseInsurancePensionPlanPortabilities:
+      description: Dados de ResponseInsurancePensionPlanPortabilities obtidos com sucesso
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1755,9 +1686,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ResponseInsuranceLifePensionPortabilities"
-    OKResponseInsuranceLifePensionWithdrawal:
-      description: Dados de ResponseInsuranceLifePensionWithdrawal obtidos com sucesso
+            $ref: "#/components/schemas/ResponseInsurancePensionPlanPortabilities"
+    OKResponseInsurancePensionPlanWithdrawals:
+      description: Dados de ResponseInsurancePensionPlanWithdrawals obtidos com sucesso
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1768,9 +1699,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ResponseInsuranceLifePensionWithdrawal"
-    OKResponseInsuranceLifePensionClaim:
-      description: Dados de ResponseInsuranceLifePensionClaim obtidos com sucesso
+            $ref: "#/components/schemas/ResponseInsurancePensionPlanWithdrawals"
+    OKResponseInsurancePensionPlanClaim:
+      description: Dados de ResponseInsurancePensionPlanClaim obtidos com sucesso
       headers:
         x-fapi-interaction-id:
           schema:
@@ -1781,7 +1712,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ResponseInsuranceLifePensionClaim"
+            $ref: "#/components/schemas/ResponseInsurancePensionPlanClaim"
     BadRequest:
       description: "A requisição foi malformada, omitindo atributos obrigatórios, seja no payload ou através de atributos na URL"
       content:
