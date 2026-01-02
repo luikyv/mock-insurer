@@ -168,7 +168,7 @@ func main() {
 			}, (&jose.SignerOptions{}).WithType("JWT"))
 
 			ssClaims := map[string]any{
-				"iss":        "Open Banking Brasil sandbox SSA issuer",
+				"iss":        "Open Insurance Brasil Sandbox SSA issuer",
 				"org_id":     "00000000-0000-0000-0000-000000000000",
 				"org_name":   "Mock Insurer",
 				"org_number": "00000000000000",
@@ -189,18 +189,12 @@ func main() {
 					"https://localhost.emobix.co.uk:8443/test/a/mockinsurer/callback",
 				},
 				"software_roles": []string{
-					"DADOS",
-					"PAGTO",
+					"FORTEC",
 				},
 				"software_statement_roles": []any{
 					map[string]any{
-						"authorisation_domain": "Open Banking Brasil ",
-						"role":                 "DADOS",
-						"status":               "Active",
-					},
-					map[string]any{
-						"authorisation_domain": "Open Banking Brasil ",
-						"role":                 "PAGTO",
+						"authorisation_domain": "Open Insurance Brasil",
+						"role":                 "FORTEC",
 						"status":               "Active",
 					},
 				},
@@ -239,7 +233,7 @@ func main() {
 			http.ServeFile(w, r, "/keys/org_pub.jwks")
 		})
 
-		mux.HandleFunc("GET /openbanking.jwks", func(w http.ResponseWriter, r *http.Request) {
+		mux.HandleFunc("GET /openinsurance.jwks", func(w http.ResponseWriter, r *http.Request) {
 			log.Println("request keystore open insurance jwks")
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)

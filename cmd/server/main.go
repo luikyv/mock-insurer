@@ -61,7 +61,7 @@ var (
 	AuthMTLSHost            = "https://matls-auth." + BaseDomain
 	APIMTLSHost             = "https://matls-api." + BaseDomain
 	KeyStoreHost            = cmdutil.EnvValue("KEYSTORE_HOST", "https://keystore.local")
-	SoftwareStatementIssuer = cmdutil.EnvValue("SS_ISSUER", "Open Banking Brasil sandbox SSA issuer")
+	SoftwareStatementIssuer = cmdutil.EnvValue("SS_ISSUER", "Open Insurance Brasil Sandbox SSA issuer")
 	Port                    = cmdutil.EnvValue("PORT", "80")
 	DBCredentials           = cmdutil.EnvValue("DB_CREDENTIALS", `{"username":"admin","password":"pass","host":"database.local","port":5432,"dbname":"mockinsurer","sslmode":"disable"}`)
 	// TransportCertPath and TransportKeyPath are the file paths used for mutual TLS connections.
